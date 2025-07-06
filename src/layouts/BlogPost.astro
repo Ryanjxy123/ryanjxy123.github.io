@@ -1,0 +1,61 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import BaseHead from '../components/BaseHead.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import FormattedDate from '../components/FormattedDate.astro';
+import BaseLayout from "./BaseLayout.astro";
+import Container from "../components/Container.astro";
+import MarkdownBody from "../components/MarkdownBody.astro";
+
+type Props = CollectionEntry<'blog'>['data'];
+
+const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
+---
+
+<BaseLayout>
+	<BaseHead slot="head" title={title} description={description} image={heroImage} />
+	<Header />
+	<Container defaultPadding={true}>
+		<div class="mb-8">
+			<article class="text-black dark:text-white">
+				<h2 class="text-3xl font-bold leading-normal">{title}</h2>
+				<div class="mt-4">
+					<FormattedDate class="opacity-60" date={pubDate} />
+					{updatedDate && <span class="opacity-60">(Last updated on <FormattedDate date={pubDate}/>)</span>}
+
+					{Astro.props.tags && (
+					<div class="mt-4 mb-4 flex flex-wrap gap-2 items-center">
+						<span class="text-gray-600 dark:text-gray-400">标签：</span>
+						{Astro.props.tags.map(tag => (
+						<a
+							href={`/tags/${tag}/`}
+							class="
+							inline-flex items-center gap-1
+							px-3 py-1 rounded-full
+							bg-gradient-to-r from-purple-400 to-pink-400 text-white
+							dark:from-purple-600 dark:to-pink-600
+							hover:brightness-110 transition
+							text-xs font-semibold
+							shadow-sm hover:shadow-md
+							"
+						>
+							<svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M3 3h18v18H3V3z" />
+							</svg>
+							{tag}
+						</a>
+						))}
+					</div>
+					)}
+
+
+				<MarkdownBody class="mt-6">
+					<slot />
+				</MarkdownBody>
+			</article>
+		</div>
+		<slot name="comment" />
+	</Container>
+	<Footer />
+</BaseLayout>

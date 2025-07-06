@@ -1,0 +1,61 @@
+---
+import { getCollection } from 'astro:content';
+import BaseHead from '../../components/BaseHead.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Container from "../../components/Container.astro";
+
+// 获取所有博客文章
+const posts = await getCollection('blog');
+
+// 统计标签及数量
+const tagMap = new Map();
+posts.forEach(post => {
+  (post.data.tags || []).forEach(tag => {
+    tagMap.set(tag, (tagMap.get(tag) || 0) + 1);
+  });
+});
+
+// 排序标签（按数量降序）
+const tags = Array.from(tagMap.entries()).sort((a, b) => b[1] - a[1]);
+---
+
+<BaseLayout>
+  <BaseHead slot="head" title="所有标签 - 博客" description="博客标签汇总页面" />
+  <Header />
+
+  <Container defaultPadding={true}>
+    <h1 class="text-3xl font-bold mb-6 text-center">所有标签</h1>
+    {tags.length > 0 ? (
+      <ul class="flex flex-wrap justify-center gap-3">
+        {tags.map(([tag, count]) => (
+          <li>
+              <a 
+                href={`/tags/${tag}/`}
+                class="
+                  inline-flex items-center gap-2
+                  px-3 py-1 rounded-full
+                  bg-gradient-to-r from-purple-400 to-pink-400 text-white
+                  dark:from-purple-600 dark:to-pink-600
+                  hover:brightness-110 transition
+                  shadow-sm hover:shadow-md
+                  text-sm
+                "
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 7a4 4 0 010 8h0a4 4 0 010-8zm0 0a4 4 0 110 8h0a4 4 0 010-8zm10 10h.01M17 17a4 4 0 010-8h0a4 4 0 010 8zm0 0a4 4 0 110-8h0a4 4 0 010 8z" />
+                </svg>
+                {tag} ({count})
+              </a>
+
+          </li>
+        ))}
+      </ul>
+    ) : (
+      <p class="text-center">暂无标签</p>
+    )}
+  </Container>
+
+  <Footer />
+</BaseLayout>

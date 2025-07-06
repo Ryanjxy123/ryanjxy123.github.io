@@ -1,0 +1,49 @@
+---
+// src/pages/page/tags/index.astro
+import { getCollection } from 'astro:content';
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Header from "@/components/Header.astro";
+import * as Pinyin from "pinyin"; // 导入 pinyin，确保你已安装此包
+
+// getStaticPaths for the index page (optional, but good practice for SSG)
+export async function getStaticPaths() {
+  return [{ params: {} }]; // This page doesn't have dynamic segments, so just an empty params object.
+}
+
+// 获取所有文章，用于提取所有标签
+const allPosts = await getCollection('blog');
+const tagSet = new Set<string>();
+allPosts.forEach(post => {
+  (post.data.tags || []).forEach(tag => {
+    if (typeof tag === 'string') { // 确保tag是字符串类型
+      tagSet.add(tag);
+    }
+  });
+});
+
+// 对标签进行排序 (可选，让显示更有序)
+const sortedTags = Array.from(tagSet).sort((a, b) => a.localeCompare(b, 'zh-CN'));
+---
+
+<BaseLayout title="所有标签 - Ryanjxy's Blog">
+  <Header currentPageTitle="所有标签" />
+
+  <main class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <h1 class="text-3xl font-bold mb-6">所有标签</h1>
+    <div class="flex flex-wrap gap-3"> {/* 增加 gap-3 让标签间距更大 */}
+      {sortedTags.length > 0 ? (
+        sortedTags.map(tag => {
+          // 在这里生成拼音 slug，确保链接正确。注意路径是 /tags/slug
+          const slug = Pinyin.pinyin(tag, { style: Pinyin.STYLE_NORMAL }).flat().join('');
+          return (
+            <a href={`/tags/${slug}/`} class="inline-block bg-primary-100 text-primary-800 text-sm font-semibold px-4 py-2 rounded-full hover:bg-primary-200 transition-colors duration-200">
+              {tag} ({allPosts.filter(post => post.data.tags && post.data.tags.includes(tag)).length}) {/* 显示标签下的文章数量 */}
+            </a>
+          );
+        })
+      ) : (
+        <p class="text-gray-500">暂无标签。</p>
+      )}
+    </div>
+  </main>
+</BaseLayout>

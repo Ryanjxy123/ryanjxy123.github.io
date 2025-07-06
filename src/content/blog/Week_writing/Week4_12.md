@@ -2,10 +2,12 @@
 title: 'Week4（大一下）'
 # description: "周记"
 pubDate: '2025-04-21'    
-heroImage: "/week4_12.jpg"
+heroImage: "https://raw.githubusercontent.com/Ryanjxy123/picbed/main/data20250606005919.png"
 tags: ["周记"]
 
 ---
+
+![](https://raw.githubusercontent.com/Ryanjxy123/picbed/main/data20250606005919.png)
 
 <blockquote style="text-align: center;">
     <p ><em>All endings are beginnings, but we don't know it at the time.</em></p>

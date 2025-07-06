@@ -2,10 +2,12 @@
 title: 'Week2（大一下）'
 # description: "周记"
 pubDate: '2025-04-07'    
-heroImage: "/week2_12.webp"
+heroImage: "https://raw.githubusercontent.com/Ryanjxy123/picbed/main/databizhihui_com_20231111175006169969620684613.jpg"
 tags: ["周记"]
 
 ---
+
+![](https://raw.githubusercontent.com/Ryanjxy123/picbed/main/databizhihui_com_20231111175006169969620684613.jpg)
 
 <blockquote style="text-align: center;">
     <p ><em>不管前方的路有多苦，只要走的方向正确，不管多么崎岖不平，都比站在原地更接近幸福。</em></p>

@@ -2,12 +2,12 @@
 title: 'HW1 record'
 description: "李宏毅机器学习课程HW1"
 pubDate: '2025-06-30'    
-heroImage: "/HW1_record.jpg"
+heroImage: "https://raw.githubusercontent.com/Ryanjxy123/picbed/main/data【哲风壁纸】二次元-人物-动漫.png"
 tags: ["ML by LHY"]
 
 ---
 
-![a](/HW1_record.jpg)
+![a](https://raw.githubusercontent.com/Ryanjxy123/picbed/main/data【哲风壁纸】二次元-人物-动漫.png)
 
 # 作业介绍
 这是这个课程的第一次作业，主要内容：

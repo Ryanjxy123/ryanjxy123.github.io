@@ -2,12 +2,12 @@
 title: 'Week8（大一下）'
 # description: "周记"
 pubDate: '2025-05-19'    
-heroImage: "/week8_12.png"
+heroImage: "https://raw.githubusercontent.com/Ryanjxy123/picbed/main/data20250426071941174562318137809.jpg"
 tags: ["周记"]
 
 ---
 
-![a](/week8_12.png)
+![a](https://raw.githubusercontent.com/Ryanjxy123/picbed/main/data20250426071941174562318137809.jpg)
 
 <blockquote style="text-align: center;">
     <p ><em>真正的棋者，并没有所谓的妙手。</em></p>

@@ -83,11 +83,17 @@ conda activate ‘your env name’
 
 # 3.安装PyTorch
 
+
+⭐ 比较推荐去[pytorch](https://pytorch.org/get-started/locally/)官网，自行选取合适的指令下载
+
+或者按照一下操作进行：
+
 这时候我们只需要在命令行中输入：
 
 ```
-conda install pytorch=1.12.1 cudatoolkit=11.6
+conda install pytorch==2.5.0 torchvision==0.20.0 torchaudio==2.5.0 pytorch-cuda=12.4 -c pytorch -c nvidia
 ```
+
 
 选择[y]后等待安装完成就好
 

@@ -3,7 +3,7 @@ title: 'Normalization'
 description: "batch nrom vs layer norm"
 pubDate: '2025-07-18'    
 heroImage: "https://raw.githubusercontent.com/Ryanjxy123/picbed/main/datacommissionイラスト-132731053.png"
-tags: ["paper","knowledge share"]
+tags: ["paper read","knowledge share"]
 
 ---
 

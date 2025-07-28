@@ -64,6 +64,11 @@ sudo apt install ./qqxxx.deb
 
 跟着这个教程就好：https://zhuanlan.zhihu.com/p/1899143979288724094
 
+
+## 搜狗输入法
+
+可以参考学长的这篇[教程](https://axi404.top/blog/sogou-install)
+
 **一下是一些对于可能遇到问题的解决方案**
 
 

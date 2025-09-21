@@ -15,7 +15,7 @@ export default defineConfig({
   output: "static",
   adapter: vercel({ mode: "static" }),
 
-  integrations: [mdx(), sitemap(), svelte(), react()],
+  integrations: [mdx(),  svelte(), react()],
   markdown: {
     remarkPlugins: [remarkMath],
     rehypePlugins: [rehypeKatex],

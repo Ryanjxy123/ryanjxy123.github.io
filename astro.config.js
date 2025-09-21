@@ -1,19 +1,18 @@
-import { defineConfig } from 'astro/config';
-import vercel from '@astrojs/vercel/static'; // 静态站点用这个
-import mdx from '@astrojs/mdx';
-import sitemap from '@astrojs/sitemap';
+import { defineConfig } from "astro/config";
+import vercel from "@astrojs/vercel"; // ← 不再是 "@astrojs/vercel/static"
+import mdx from "@astrojs/mdx";
+import sitemap from "@astrojs/sitemap";
 import svelte from "@astrojs/svelte";
-import react from '@astrojs/react';  
+import react from "@astrojs/react";  
 import tailwindcss from "@tailwindcss/vite";
-import remarkMath from 'remark-math';
-import rehypeKatex from 'rehype-katex';
+import remarkMath from "remark-math";
+import rehypeKatex from "rehype-katex";
 
-// https://docs.astro.build/en/reference/configuration-reference/
 export default defineConfig({
   site: 'https://ryanjxy123.github.io',
-  base: '/',   // 如果你的站点不是部署在独立域名，而是 GitHub Pages 子路径，注意这里要改
-  output: 'static', // 确保是静态构建
-  adapter: vercel(), // <<< 一定要加上这一行！！！
+  base: '/',
+  output: "static",
+  adapter: vercel({ mode: "static" }), // ← 必须写 mode，否则 Vercel 不知道怎么处理
 
   integrations: [mdx(), sitemap(), svelte(), react()],
   markdown: {
@@ -21,7 +20,7 @@ export default defineConfig({
     rehypePlugins: [rehypeKatex],
     remarkRehype: {
       footnoteLabel: "脚注",
-      footnoteBackLabel: '文档内容的脚注'
+      footnoteBackLabel: "文档内容的脚注"
     }
   },
   vite: {

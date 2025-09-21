@@ -1,5 +1,5 @@
 ---
-title: 'Week1（大二下）'
+title: 'Week1（大二上）'
 # description: "周记"
 pubDate: '2025-09-14'    
 heroImage: "https://raw.githubusercontent.com/Ryanjxy123/picbed/main/data午天-134753367.png"

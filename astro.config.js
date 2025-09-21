@@ -18,11 +18,7 @@ export default defineConfig({
   integrations: [mdx(),  svelte(), react()],
   markdown: {
     remarkPlugins: [remarkMath],
-    rehypePlugins: [rehypeKatex],
-    remarkRehype: {
-      footnoteLabel: "脚注",
-      footnoteBackLabel: "文档内容的脚注"
-    }
+    rehypePlugins: [rehypeKatex]
   },
   vite: {
     plugins: [tailwindcss()]

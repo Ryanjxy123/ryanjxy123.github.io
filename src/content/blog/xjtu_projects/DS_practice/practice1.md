@@ -173,7 +173,7 @@ class ListNode {
 public class MergeSortedLists {
 
     public static ListNode createList(Scanner scanner) {
-        ListNode dummy = new ListNode(0);  // 哨兵节点
+        ListNode dummy = new ListNode(0);  
         ListNode tail = dummy;
 
         while (scanner.hasNextInt()) {

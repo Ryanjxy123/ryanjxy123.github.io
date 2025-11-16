@@ -2,7 +2,7 @@
 title: 'Week9（大二上）'
 # description: "周记"
 pubDate: '2025-11-09'    
-heroImage: "https://raw.githubusercontent.com/Ryanjxy123/picbed/main/data あめのひ-130947439.png"
+heroImage: "https://raw.githubusercontent.com/Ryanjxy123/picbed/main/dataあめのひ-130947439.png"
 tags: ["周记"]
 
 ---
@@ -22,7 +22,7 @@ tags: ["周记"]
 在忐忑不安的心情中，大物成绩也是出来了，也许又是运气使然，拿到了90+的分数，不过可能也不算什么高分，毕竟大家都很厉害题目应该也真的很简单。所以希望概率论也能被眷顾。  
 图论考试大概在12周左右，由于平时没怎么听过课，并且本人也不喜欢最后突击，所以最近一段时间打算开始学习+复习了，同时电路也开了模电的模块，上课感觉听课效果不好，接下来会自己听一些网课学一学。
 最近一段时间都没有背单词了，12月还有CET-6的考试，最近也要开始背单词了。  
-奖学金和优秀学生也进行了申请，后续估计也会全部通过，也算是给自己大一一年的比较好的交代：
+奖学金和优秀学生也进行了申请，后续估计也会全部通过，也算是给自己大一一年的比较好的交代：    
 ![](https://raw.githubusercontent.com/Ryanjxy123/picbed/main/data20251109132147.png)
 
 ![](https://raw.githubusercontent.com/Ryanjxy123/picbed/main/data20251109133406.png)

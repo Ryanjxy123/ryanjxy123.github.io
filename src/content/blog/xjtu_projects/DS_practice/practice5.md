@@ -2,11 +2,11 @@
 title: '数据结构与算法设计综合训练上机题目5'
 # description: "周记"
 pubDate: '2025-11-23'    
-heroImage: "https://raw.githubusercontent.com/Ryanjxy123/picbed/main/data無題-136350148.png"
+heroImage: "https://raw.githubusercontent.com/Ryanjxy123/picbed/main/data秋の匂い-136275604.png"
 tags: ["DS"]
-
 ---
 
+![](https://raw.githubusercontent.com/Ryanjxy123/picbed/main/data秋の匂い-136275604.png)
 
 ## 题目一：基于邻接矩阵的图遍历
 

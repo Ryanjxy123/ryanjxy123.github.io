@@ -1,5 +1,5 @@
 ---
-title: '双系统开机后无法进入Ubuntu图形化界面'
+title: '双系统开机后无法进入Ubuntu图形化界面的问题'
 pubDate: '2025-10-14'    
 heroImage: "https://raw.githubusercontent.com/Ryanjxy123/picbed/main/data消えろよクソ社会-135368483.png"
 tags: ["problems","Linux"]

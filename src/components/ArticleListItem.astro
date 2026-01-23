@@ -54,12 +54,23 @@ const readingTime = getReadingTime(body);
 
     {/* Layer 3: Relaxed Content Overlay */}
     <article class="relative z-10 flex flex-col justify-center h-full p-8 pr-20 w-full">
+        {/* Title */}
+        <h2
+            class="text-2xl font-bold text-gray-900 dark:text-white mb-2 leading-relaxed group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors drop-shadow-md"
+        >
+            <a href={url} class="block">
+                {title}
+            </a>
+        </h2>
+
         {/* Date / Meta */}
-        <div class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 mb-2 font-mono drop-shadow-sm">
+        <div
+            class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 mb-3 mt-1 font-mono drop-shadow-sm"
+        >
             <FormattedDate date={date} />
             <div class="flex items-center gap-1 ml-2">
                 <svg
-                    class="w-4 h-4"
+                    class="w-5 h-5"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -74,15 +85,6 @@ const readingTime = getReadingTime(body);
                 <span>{readingTime}</span>
             </div>
         </div>
-
-        {/* Title */}
-        <h2
-            class="text-2xl font-bold text-gray-900 dark:text-white mb-3 leading-relaxed group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors drop-shadow-md"
-        >
-            <a href={url} class="block">
-                {title}
-            </a>
-        </h2>
 
         {/* Excerpt - Optional, user implied focusing on Title/Image, but kept strictly if slot exists. */}
         {

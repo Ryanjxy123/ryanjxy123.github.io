@@ -38,6 +38,7 @@ const pageTitle = `标签：${Astro.props.currentPageTitle ?? SITE_TITLE}`;
                             date={post.data.pubDate}
                             tags={post.data.tags ?? []}
                             heroImage={post.data.heroImage}
+                            body={post.body}
                         >
                             {excerpt}
                         </ArticleListItem>

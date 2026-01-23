@@ -4,13 +4,11 @@ interface Props {
     class?: string;
 }
 
-const {date, class: className = ""} = Astro.props;
+const { date, class: className = "" } = Astro.props;
 ---
 
-<time datetime={date.toISOString()} class={className}>{
-    date.toLocaleDateString('en-us', {
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric',
-    })
-}</time>
+<time datetime={date.toISOString()} class={className}
+    >{
+        `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`
+    }</time
+>

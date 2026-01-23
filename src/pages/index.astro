@@ -1,22 +1,243 @@
 ---
-import BaseHead from '../components/BaseHead.astro';
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
-import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
+import BaseHead from "../components/BaseHead.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import { SITE_TITLE, SITE_DESCRIPTION, SITE_AUTHOR_NAME, SITE_AUTHOR_AVATAR } from "../consts";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Container from "../components/Container.astro";
-import MarkdownBody from "../components/MarkdownBody.astro";
+import { getCollection } from "astro:content";
 
-import * as markdownData from "./_index.md";
+const posts = await getCollection("blog");
+const postCount = posts.length;
+
+// Word Count Calculation (Approximate)
+const wordCount = posts.reduce((acc, post) => {
+	return acc + (post.body ? post.body.replace(/[#*`]/g, "").length : 0);
+}, 0);
+const wordCountDisplay = (wordCount / 10000).toFixed(1) + "w";
+
+// Run Days Calculation
+const startDate = new Date("2024-01-01"); // Assuming start from 2024 based on consts
+const today = new Date();
+const diffTime = Math.abs(today.getTime() - startDate.getTime());
+const runDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+// Recent Posts Logic
+const recentPosts = posts
+	.sort((a, b) => {
+		const dateA = new Date(a.data.pubDate || 0).valueOf();
+		const dateB = new Date(b.data.pubDate || 0).valueOf();
+		return dateB - dateA;
+	})
+	.slice(0, 6);
+
+// Icon Components (Lucide Style SVGs)
+const ClockIcon = `
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6">
+  <circle cx="12" cy="12" r="10"/>
+  <polyline points="12 6 12 12 16 14"/>
+</svg>
+`;
+
+const FileTextIcon = `
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6">
+  <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
+  <polyline points="14 2 14 8 20 8"/>
+  <line x1="16" y1="13" x2="8" y2="13"/>
+  <line x1="16" y1="17" x2="8" y2="17"/>
+  <line x1="10" y1="9" x2="8" y2="9"/>
+</svg>
+`;
+
+const BookOpenIcon = `
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6">
+  <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+  <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+</svg>
+`;
+
+const ArrowRightIcon = `
+<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M5 12h14"/>
+  <path d="m12 5 7 7-7 7"/>
+</svg>
+`;
 ---
 
 <BaseLayout>
 	<BaseHead slot="head" title={SITE_TITLE} description={SITE_DESCRIPTION} />
 	<Header largeBanner={true} />
 	<Container defaultPadding={true}>
-		<MarkdownBody class="py-2">
-			<markdownData.Content />
-		</MarkdownBody>
+		<div class="py-12 font-sans space-y-12">
+			<!-- Bento Grid Section -->
+			<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+				<!-- Profile Card (Row 1: Full Width) -->
+				<div
+					class="md:col-span-3 bg-white/60 dark:bg-zinc-900/60 backdrop-blur-md border border-zinc-200 dark:border-zinc-800 rounded-2xl p-6 flex flex-col sm:flex-row items-center sm:items-start gap-6 shadow-sm hover:shadow-md transition-shadow duration-300"
+				>
+					<div class="shrink-0 relative group">
+						<div
+							class="absolute -inset-1 bg-gradient-to-r from-blue-600 to-cyan-600 rounded-full blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"
+						>
+						</div>
+						<img
+							src={SITE_AUTHOR_AVATAR.src}
+							alt={SITE_AUTHOR_NAME}
+							class="relative w-28 h-28 rounded-full border-4 border-white dark:border-zinc-800 shadow-xl object-cover"
+						/>
+					</div>
+					<div class="flex-1 text-center sm:text-left">
+						<h1 class="text-2xl font-bold text-zinc-900 dark:text-zinc-100">{SITE_AUTHOR_NAME}</h1>
+						<p class="text-zinc-600 dark:text-zinc-400 mt-2 text-sm leading-relaxed max-w-2xl">
+							{SITE_DESCRIPTION}
+						</p>
+
+						<div class="mt-4 flex flex-wrap justify-center sm:justify-start gap-3">
+							<a
+								href="https://github.com/ryanjxy123"
+								target="_blank"
+								class="px-4 py-1.5 text-xs font-medium rounded-full bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors flex items-center gap-2"
+							>
+								<svg
+									xmlns="http://www.w3.org/2000/svg"
+									width="14"
+									height="14"
+									viewBox="0 0 24 24"
+									fill="none"
+									stroke="currentColor"
+									stroke-width="2"
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									><path
+										d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 1.5-3 1.5-3 1.5-3 1.5-3 1.5-3-.28-2.35-.28-3.5 0-3.5-.73-1.02-1.08-2.25-1-3.5-.38.56-.56 1.13-.56 1.7 0 1.9 2 4.1 2 4.1s-1.5.7-3.6 1.2c-2.1.5-3.6 1.2-3.6 1.2s2-2.2 2-4.1c0-.57-.18-1.14-.56-1.7-.72 1.22-1.07 2.44-1 3.5-.28 1.15-.28 2.35 0 3.5 0 0-1.5 1.5-3 1.5-3 1.5-3 1.5-3-.28 2.35-.28 3.5 0 3.5.73 1.02 1.08 2.25 1 3.5 3.3 0 6.6 2 6.6 5.5"
+									></path></svg
+								>
+								GitHub
+							</a>
+							<a
+								href="./blog"
+								class="px-4 py-1.5 text-xs font-medium rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 hover:bg-blue-200 dark:hover:bg-blue-900/50 transition-colors flex items-center gap-2"
+							>
+								<svg
+									xmlns="http://www.w3.org/2000/svg"
+									width="14"
+									height="14"
+									viewBox="0 0 24 24"
+									fill="none"
+									stroke="currentColor"
+									stroke-width="2"
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"
+									></path><circle cx="5" cy="19" r="1"></circle></svg
+								>
+								Blog
+							</a>
+						</div>
+					</div>
+				</div>
+
+				<!-- Run Days Card -->
+				<div
+					class="group bg-white/60 dark:bg-zinc-900/60 backdrop-blur-md border border-zinc-200 dark:border-zinc-800 rounded-2xl p-5 flex flex-col justify-between shadow-sm hover:shadow-md hover:border-blue-500/30 transition-all duration-300"
+				>
+					<div class="flex items-center justify-between mb-2">
+						<span class="text-zinc-500 dark:text-zinc-400 text-sm font-medium">运行天数</span>
+						<div
+							class="text-blue-500 bg-blue-100/50 dark:bg-blue-900/20 p-2 rounded-lg"
+							set:html={ClockIcon}
+						/>
+					</div>
+					<div
+						class="text-3xl font-bold text-zinc-900 dark:text-zinc-100 mt-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors"
+					>
+						{runDays}
+						<span class="text-xs font-normal text-zinc-400 ml-1 align-baseline">天</span>
+					</div>
+				</div>
+
+				<!-- Articles Card -->
+				<div
+					class="group bg-white/60 dark:bg-zinc-900/60 backdrop-blur-md border border-zinc-200 dark:border-zinc-800 rounded-2xl p-5 flex flex-col justify-between shadow-sm hover:shadow-md hover:border-green-500/30 transition-all duration-300"
+				>
+					<div class="flex items-center justify-between mb-2">
+						<span class="text-zinc-500 dark:text-zinc-400 text-sm font-medium">文章数目</span>
+						<div
+							class="text-green-500 bg-green-100/50 dark:bg-green-900/20 p-2 rounded-lg"
+							set:html={BookOpenIcon}
+						/>
+					</div>
+					<div
+						class="text-3xl font-bold text-zinc-900 dark:text-zinc-100 mt-2 group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors"
+					>
+						{postCount}
+						<span class="text-xs font-normal text-zinc-400 ml-1 align-baseline">篇</span>
+					</div>
+				</div>
+
+				<!-- Word Count Card -->
+				<div
+					class="group bg-white/60 dark:bg-zinc-900/60 backdrop-blur-md border border-zinc-200 dark:border-zinc-800 rounded-2xl p-5 flex flex-col justify-between shadow-sm hover:shadow-md hover:border-purple-500/30 transition-all duration-300"
+				>
+					<div class="flex items-center justify-between mb-2">
+						<span class="text-zinc-500 dark:text-zinc-400 text-sm font-medium">全站字数</span>
+						<div
+							class="text-purple-500 bg-purple-100/50 dark:bg-purple-900/20 p-2 rounded-lg"
+							set:html={FileTextIcon}
+						/>
+					</div>
+					<div
+						class="text-3xl font-bold text-zinc-900 dark:text-zinc-100 mt-2 group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors"
+					>
+						{wordCountDisplay}
+					</div>
+				</div>
+			</div>
+
+			<!-- Recent Posts Section -->
+			<div class="animate-fade-in-up mt-20">
+				<div class="flex items-center mb-8 pl-1 border-l-4 border-blue-500">
+					<h2 class="text-xl font-bold text-zinc-900 dark:text-zinc-100 ml-3">近期文章</h2>
+				</div>
+
+				<div class="grid gap-6 pt-4">
+					{
+						recentPosts.map(post => {
+							const date = post.data.pubDate ? new Date(post.data.pubDate) : null;
+							const dateString = date
+								? `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`
+								: "";
+							return (
+								<a
+									href={`/post/${post.slug}/`}
+									class="group relative bg-white/60 dark:bg-zinc-900/60 backdrop-blur-md border border-zinc-200 dark:border-zinc-800 rounded-2xl p-6 hover:bg-white dark:hover:bg-zinc-800 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg hover:border-blue-500/30"
+								>
+									<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-4">
+										<h3 class="text-lg font-bold text-zinc-900 dark:text-zinc-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors line-clamp-1">
+											{post.data.title}
+										</h3>
+										<div class="flex items-center gap-3 text-sm text-zinc-500 dark:text-zinc-400 shrink-0 font-mono">
+											<time datetime={date ? date.toISOString() : ""}>{dateString}</time>
+										</div>
+									</div>
+								</a>
+							);
+						})
+					}
+				</div>
+
+				<!-- View All Button -->
+				<div class="mt-12 text-center">
+					<a
+						href="/blog"
+						class="inline-flex items-center gap-2 px-8 py-3 rounded-full bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 font-bold hover:scale-105 active:scale-95 transition-all shadow-lg hover:shadow-xl hover:shadow-blue-500/20"
+					>
+						查看全部文章
+						<div class="w-5 h-5" set:html={ArrowRightIcon} />
+					</a>
+				</div>
+			</div>
+		</div>
 	</Container>
 	<Footer />
 </BaseLayout>

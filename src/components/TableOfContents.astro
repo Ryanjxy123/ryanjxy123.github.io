@@ -1,0 +1,59 @@
+---
+interface Props {
+    headings: { depth: number; slug: string; text: string }[];
+}
+
+const { headings } = Astro.props;
+
+const filteredHeadings = headings.filter(heading => heading.depth <= 3);
+---
+
+<nav class="toc-container">
+    <ul>
+        {
+            filteredHeadings.map(heading => (
+                <li class={heading.depth === 3 ? "pl-4" : ""}>
+                    <a
+                        href={`#${heading.slug}`}
+                        class="toc-link block py-1 transition-colors duration-200 border-l-2 border-transparent text-sm text-[#52525b] hover:text-[#18181b]"
+                    >
+                        {heading.text}
+                    </a>
+                </li>
+            ))
+        }
+    </ul>
+</nav>
+
+<style>
+    .active-toc-item {
+        color: #2563eb !important;
+        border-left-color: #2563eb !important;
+    }
+</style>
+
+<script>
+    const observer = new IntersectionObserver(
+        entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    document.querySelectorAll(".toc-link").forEach(link => {
+                        link.classList.remove("active-toc-item");
+                    });
+                    const id = entry.target.id;
+                    const link = document.querySelector(`.toc-link[href="#${id}"]`);
+                    if (link) {
+                        link.classList.add("active-toc-item");
+                    }
+                }
+            });
+        },
+        {
+            rootMargin: "-100px 0px -66% 0px",
+        },
+    );
+
+    document.querySelectorAll("h2, h3").forEach(heading => {
+        observer.observe(heading);
+    });
+</script>

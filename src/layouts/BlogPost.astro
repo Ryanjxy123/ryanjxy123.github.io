@@ -8,12 +8,16 @@ import BaseLayout from "./BaseLayout.astro";
 import Container from "../components/Container.astro";
 import MarkdownBody from "../components/MarkdownBody.astro";
 import TagBadge from "../components/TagBadge.astro";
+import TableOfContents from "../components/TableOfContents.astro";
 
 import { getReadingTime } from "../utils/readingTime";
 
-type Props = CollectionEntry<"blog">["data"] & { body?: string };
+type Props = CollectionEntry<"blog">["data"] & {
+	body?: string;
+	headings?: { depth: number; slug: string; text: string }[];
+};
 
-const { title, description, pubDate, updatedDate, heroImage, body } = Astro.props;
+const { title, description, pubDate, updatedDate, heroImage, body, headings } = Astro.props;
 const readingTime = getReadingTime(body);
 ---
 
@@ -61,29 +65,38 @@ const readingTime = getReadingTime(body);
 						<span>{readingTime}</span>
 					</div>
 				</div>
-				<div class="mt-4">
-					{
-						updatedDate && (
-							<span class="opacity-60">
-								(Last updated on <FormattedDate date={pubDate} />)
-							</span>
-						)
-					}
+				<div class="mt-4 grid grid-cols-1 lg:grid-cols-[1fr_240px] gap-8">
+					<div class="min-w-0">
+						{
+							updatedDate && (
+								<span class="opacity-60">
+									(Last updated on <FormattedDate date={pubDate} />)
+								</span>
+							)
+						}
 
+						{
+							Astro.props.tags && (
+								<div class="mt-4 mb-4 flex flex-wrap gap-2 items-center">
+									<span class="text-gray-600 dark:text-gray-400">标签：</span>
+									{Astro.props.tags.map(tag => (
+										<TagBadge tag={tag} variant="detail" />
+									))}
+								</div>
+							)
+						}
+
+						<MarkdownBody class="mt-6">
+							<slot />
+						</MarkdownBody>
+					</div>
 					{
-						Astro.props.tags && (
-							<div class="mt-4 mb-4 flex flex-wrap gap-2 items-center">
-								<span class="text-gray-600 dark:text-gray-400">标签：</span>
-								{Astro.props.tags.map(tag => (
-									<TagBadge tag={tag} variant="detail" />
-								))}
+						headings && headings.length > 0 && (
+							<div class="hidden lg:block sticky top-24 h-fit">
+								<TableOfContents headings={headings} />
 							</div>
 						)
 					}
-
-					<MarkdownBody class="mt-6">
-						<slot />
-					</MarkdownBody>
 				</div>
 			</article>
 			<slot name="comment" />

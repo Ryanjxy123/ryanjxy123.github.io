@@ -1,61 +1,144 @@
 ---
-import { getCollection } from 'astro:content';
-import BaseHead from '../../components/BaseHead.astro';
-import Header from '../../components/Header.astro';
-import Footer from '../../components/Footer.astro';
+import { getCollection } from "astro:content";
+import BaseHead from "../../components/BaseHead.astro";
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Container from "../../components/Container.astro";
 
-// 获取所有博客文章
-const posts = await getCollection('blog');
-
-// 统计标签及数量
+// Get all posts and calculate tag counts
+const posts = await getCollection("blog");
 const tagMap = new Map();
 posts.forEach(post => {
-  (post.data.tags || []).forEach(tag => {
-    tagMap.set(tag, (tagMap.get(tag) || 0) + 1);
-  });
+    (post.data.tags || []).forEach(tag => {
+        tagMap.set(tag, (tagMap.get(tag) || 0) + 1);
+    });
 });
 
-// 排序标签（按数量降序）
+// Sort tags by count (descending)
 const tags = Array.from(tagMap.entries()).sort((a, b) => b[1] - a[1]);
+
+// Define some nice gradient pairs for the bubbles
+const gradients = [
+    "from-pink-300 to-rose-300 dark:from-pink-700 dark:to-rose-800",
+    "from-purple-300 to-indigo-300 dark:from-purple-700 dark:to-indigo-800",
+    "from-blue-300 to-cyan-300 dark:from-blue-700 dark:to-cyan-800",
+    "from-teal-300 to-emerald-300 dark:from-teal-700 dark:to-emerald-800",
+    "from-orange-300 to-amber-300 dark:from-orange-700 dark:to-amber-800",
+];
 ---
 
 <BaseLayout>
-  <BaseHead slot="head" title="所有标签 - 博客" description="博客标签汇总页面" />
-  <Header />
+    <BaseHead slot="head" title="所有标签 - 博客" description="博客标签汇总页面" />
+    <Header />
 
-  <Container defaultPadding={true}>
-    <h1 class="text-3xl font-bold mb-6 text-center">所有标签</h1>
-    {tags.length > 0 ? (
-      <ul class="flex flex-wrap justify-center gap-3">
-        {tags.map(([tag, count]) => (
-          <li>
-              <a 
-                href={`/tags/${tag}/`}
-                class="
-                  inline-flex items-center gap-2
-                  px-3 py-1 rounded-full
-                  bg-gradient-to-r from-purple-400 to-pink-400 text-white
-                  dark:from-purple-600 dark:to-pink-600
-                  hover:brightness-110 transition
-                  shadow-sm hover:shadow-md
-                  text-sm
-                "
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 7a4 4 0 010 8h0a4 4 0 010-8zm0 0a4 4 0 110 8h0a4 4 0 010-8zm10 10h.01M17 17a4 4 0 010-8h0a4 4 0 010 8zm0 0a4 4 0 110-8h0a4 4 0 010 8z" />
-                </svg>
-                {tag} ({count})
-              </a>
+    <Container defaultPadding={true}>
+        <div class="relative min-h-[60vh] flex flex-col items-center justify-center overflow-hidden py-10">
+            <h1 class="text-4xl font-bold mb-10 text-center z-10 relative pointer-events-none">所有标签</h1>
 
-          </li>
-        ))}
-      </ul>
-    ) : (
-      <p class="text-center">暂无标签</p>
-    )}
-  </Container>
+            {
+                tags.length > 0 ? (
+                    <div class="bubble-container relative w-full max-w-5xl mx-auto flex flex-wrap justify-center content-center gap-8 p-4">
+                        {tags.map(([tag, count], index) => {
+                            // Assign a random gradient
+                            const gradientClass = gradients[index % gradients.length];
+                            // Random size between 80px and 140px based on count weight or random?
+                            // Let's use count to influence size slightly, but keep it constrained.
+                            // Base 90px + count * 5px, max 150px.
+                            const size = Math.min(150, 90 + count * 10);
 
-  <Footer />
+                            return (
+                                <a
+                                    href={`/tags/${tag}/`}
+                                    class={`
+                  bubble 
+                  flex items-center justify-center text-center 
+                  rounded-full 
+                  shadow-lg hover:shadow-xl hover:scale-105
+                  transition-transform duration-300
+                  bg-gradient-to-br ${gradientClass}
+                  text-gray-900 dark:text-white
+                  font-medium
+                  cursor-pointer
+                  z-0
+                `}
+                                    style={{
+                                        width: `${size}px`,
+                                        height: `${size}px`,
+                                        fontSize: `${Math.max(0.9, size / 80)}rem`,
+                                    }}
+                                >
+                                    <div class="pointer-events-none flex flex-col leading-tight">
+                                        <span>{tag}</span>
+                                        <span class="text-xs opacity-75 mt-0.5">({count})</span>
+                                    </div>
+                                </a>
+                            );
+                        })}
+                    </div>
+                ) : (
+                    <p class="text-center">暂无标签</p>
+                )
+            }
+        </div>
+    </Container>
+
+    <Footer />
 </BaseLayout>
+
+<script>
+    // Randomize animation delays and durations on client load
+    document.addEventListener("DOMContentLoaded", () => {
+        const bubbles = document.querySelectorAll(".bubble") as NodeListOf<HTMLElement>;
+
+        bubbles.forEach(bubble => {
+            // Very slow movement: 15s to 30s
+            const duration = 15 + Math.random() * 15;
+            // Random delay to desync
+            const delay = -1 * (Math.random() * 30);
+
+            bubble.style.animationName = Math.random() > 0.5 ? "floatA" : "floatB";
+            bubble.style.animationDuration = `${duration}s`;
+            bubble.style.animationDelay = `${delay}s`;
+            bubble.style.animationTimingFunction = "ease-in-out";
+            bubble.style.animationIterationCount = "infinite";
+        });
+    });
+</script>
+
+<style>
+    /* Define two slightly different float patterns for more variety */
+    @keyframes floatA {
+        0%,
+        100% {
+            transform: translate(0, 0);
+        }
+        25% {
+            transform: translate(10px, -15px);
+        }
+        50% {
+            transform: translate(-5px, 5px);
+        }
+        75% {
+            transform: translate(-10px, -10px);
+        }
+    }
+
+    @keyframes floatB {
+        0%,
+        100% {
+            transform: translate(0, 0);
+        }
+        33% {
+            transform: translate(-10px, 10px);
+        }
+        66% {
+            transform: translate(12px, -8px);
+        }
+    }
+
+    .bubble-container {
+        /* Optional: ensure container has enough height if bubbles are few */
+        min-height: 400px;
+    }
+</style>

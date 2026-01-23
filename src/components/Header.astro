@@ -4,7 +4,7 @@ import {
 	SITE_DESCRIPTION,
 	SITE_HEAD_IMAGE_DAY,
 	SITE_HEAD_IMAGE_NIGHT,
-	SITE_TITLE
+	SITE_TITLE,
 } from "../consts";
 import HeaderNav from "./HeaderNav.svelte";
 import { Image } from "astro:assets";
@@ -14,26 +14,39 @@ interface Props {
 	currentPageTitle?: string;
 }
 
-const {largeBanner, currentPageTitle} = Astro.props;
+const { largeBanner, currentPageTitle } = Astro.props;
 
 const presetSizes = [320, 640, 768, 1024, 1280, 1536, 1920, 2560];
-const imageSizes = presetSizes.map((e) => `(max-width: ${Math.floor(e / 2)}px) ${e}px, `).join('');
+const imageSizes = presetSizes.map(e => `(max-width: ${Math.floor(e / 2)}px) ${e}px, `).join("");
 
 const heightClassName = largeBanner ? "h-[calc(100svh+8rem)]" : "h-[calc(65lvh+8rem)]";
 ---
 
 <HeaderNav client:load>
-	<Image slot="avatar" class="block w-12 h-12 rounded-full" alt="头像" src={SITE_AUTHOR_AVATAR} width={48} densities={[1, 2, 3]} />
+	<Image
+		slot="avatar"
+		class="block w-12 h-12 rounded-full"
+		alt="头像"
+		src={SITE_AUTHOR_AVATAR}
+		width={48}
+		densities={[1, 2, 3]}
+	/>
 </HeaderNav>
 
-<header id="navBackground"
-		class={`${heightClassName} min-h-[30rem] flex flex-col z-0`}>
+<header id="navBackground" class={`${heightClassName} min-h-[30rem] flex flex-col z-0`}>
 	<div class="flex-auto relative">
-		{largeBanner ? <div id="navScrollNotice"
-						  aria-hidden="true"
-						  class="absolute h-2 w-16 -translate-x-2/4 left-2/4 bottom-4 bg-white/60 rounded-full transition-all"
-		></div> : null}
-		<div class={`absolute -translate-x-2/4 left-2/4 ${largeBanner ? "bottom-10" : "bottom-6"} w-full max-w-4xl text-white px-5 md:px-6 [filter:drop-shadow(0_20px_13px_rgb(0_0_0_/_0.1))_drop-shadow(0_8px_5px_rgb(0_0_0_/_0.4))]`}>
+		{
+			largeBanner ? (
+				<div
+					id="navScrollNotice"
+					aria-hidden="true"
+					class="absolute h-2 w-16 -translate-x-2/4 left-2/4 bottom-4 bg-white/60 rounded-full transition-all"
+				/>
+			) : null
+		}
+		<div
+			class={`absolute left-0 right-0 mx-auto ${largeBanner ? "bottom-10" : "bottom-6"} w-full max-w-6xl text-white px-5 md:px-8 text-left [filter:drop-shadow(0_20px_13px_rgb(0_0_0_/_0.1))_drop-shadow(0_8px_5px_rgb(0_0_0_/_0.4))]`}
+		>
 			<h1 class="text-4xl leading-normal font-bold">
 				<a href="./">
 					{currentPageTitle || SITE_TITLE}
@@ -42,7 +55,8 @@ const heightClassName = largeBanner ? "h-[calc(100svh+8rem)]" : "h-[calc(65lvh+8
 			<p class="text-base leading-normal mt-1">{SITE_DESCRIPTION}</p>
 		</div>
 	</div>
-	<div aria-hidden="true" class="flex-none h-32 w-full bg-gradient-to-b from-transparent to-white dark:to-gray-950"></div>
+	<div aria-hidden="true" class="flex-none h-32 w-full bg-gradient-to-b from-transparent to-white dark:to-gray-950">
+	</div>
 </header>
 
 <div class={`w-full ${heightClassName} min-h-[30rem] absolute left-0 top-0 -z-20`} aria-hidden="true">

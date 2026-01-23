@@ -8,15 +8,19 @@ const { headings } = Astro.props;
 const filteredHeadings = headings.filter(heading => heading.depth <= 3);
 ---
 
-<nav class="toc-container">
-    <div class="text-xs font-bold tracking-widest text-[#a1a1aa] uppercase mb-4">TABLE OF CONTENTS</div>
-    <ul>
+<nav class="toc-container relative pr-4 backdrop-blur-sm rounded-xl">
+    <div class="absolute left-0 top-0 bottom-0 w-[2px] bg-[#e4e4e7] dark:bg-[#27272a]"></div>
+    <div class="text-xs font-bold tracking-widest text-[#a1a1aa] uppercase mb-4 pl-4">TABLE OF CONTENTS</div>
+    <ul class="relative">
         {
             filteredHeadings.map(heading => (
-                <li class={heading.depth === 3 ? "pl-4" : ""}>
+                <li>
                     <a
                         href={"#" + heading.slug}
-                        class="toc-link block py-1 transition-colors duration-200 border-l-2 border-transparent text-sm text-[#52525b] hover:text-[#18181b]"
+                        class:list={[
+                            "toc-link block py-2 transition-colors duration-200 border-l-2 border-transparent text-sm text-[#71717a] hover:text-[#2563eb]",
+                            heading.depth === 3 ? "pl-8" : "pl-4",
+                        ]}
                     >
                         {heading.text}
                     </a>

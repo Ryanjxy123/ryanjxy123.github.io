@@ -16,9 +16,25 @@ posts.forEach(post => {
 });
 
 // Sort tags by count (descending)
-const tags = Array.from(tagMap.entries()).sort((a, b) => b[1] - a[1]);
+const rawTags = Array.from(tagMap.entries()).sort((a, b) => b[1] - a[1]);
 
-// Define some nice gradient pairs for the bubbles
+// Determine size for each tag
+const tags = rawTags.map(([tag, count]) => {
+    // User Formula: Diameter = Math.max( MinSize, CountWeight, TextLength * 14px )
+    // MinSize = 90
+    // TextLength * 14px (plus some padding to be safe, e.g. 20px)
+    // CountWeight = 90 + count * 5 (giving popular tags more prominence)
+
+    const minSize = 90;
+    const textWeight = tag.length * 14 + 20; // 14px per char estimate
+    const countWeight = 90 + count * 5;
+
+    // Calculate final diameter
+    const size = Math.max(minSize, Math.max(textWeight, countWeight));
+
+    return { tag, count, size };
+});
+
 const gradients = [
     "from-pink-300 to-rose-300 dark:from-pink-700 dark:to-rose-800",
     "from-purple-300 to-indigo-300 dark:from-purple-700 dark:to-indigo-800",
@@ -30,54 +46,52 @@ const gradients = [
 
 <BaseLayout>
     <BaseHead slot="head" title="所有标签 - 博客" description="博客标签汇总页面" />
-    <Header />
+    <Header currentPageTitle="所有标签" />
 
     <Container defaultPadding={true}>
-        <div class="relative min-h-[60vh] flex flex-col items-center justify-center overflow-hidden py-10">
-            <h1 class="text-4xl font-bold mb-10 text-center z-10 relative pointer-events-none">所有标签</h1>
-
+        <div
+            class="relative w-full h-[85vh] overflow-hidden rounded-3xl bg-slate-50/50 dark:bg-zinc-900/30 border border-zinc-200 dark:border-zinc-800 shadow-inner"
+            id="bubble-container"
+        >
             {
                 tags.length > 0 ? (
-                    <div class="bubble-container relative w-full max-w-5xl mx-auto flex flex-wrap justify-center content-center gap-8 p-4">
-                        {tags.map(([tag, count], index) => {
-                            // Assign a random gradient
-                            const gradientClass = gradients[index % gradients.length];
-                            // Random size between 80px and 140px based on count weight or random?
-                            // Let's use count to influence size slightly, but keep it constrained.
-                            // Base 90px + count * 5px, max 150px.
-                            const size = Math.min(150, 90 + count * 10);
-
-                            return (
-                                <a
-                                    href={`/tags/${tag}/`}
-                                    class={`
-                  bubble 
-                  flex items-center justify-center text-center 
-                  rounded-full 
-                  shadow-lg hover:shadow-xl hover:scale-105
-                  transition-transform duration-300
-                  bg-gradient-to-br ${gradientClass}
-                  text-gray-900 dark:text-white
-                  font-medium
-                  cursor-pointer
-                  z-0
-                `}
-                                    style={{
-                                        width: `${size}px`,
-                                        height: `${size}px`,
-                                        fontSize: `${Math.max(0.9, size / 80)}rem`,
-                                    }}
-                                >
-                                    <div class="pointer-events-none flex flex-col leading-tight">
-                                        <span>{tag}</span>
-                                        <span class="text-xs opacity-75 mt-0.5">({count})</span>
-                                    </div>
-                                </a>
-                            );
-                        })}
-                    </div>
+                    tags.map((item, index) => {
+                        const gradientClass = gradients[index % gradients.length];
+                        return (
+                            <a
+                                href={`/tags/${item.tag}/`}
+                                class={`
+                            bubble absolute 
+                            flex items-center justify-center 
+                            rounded-full 
+                            text-center font-medium 
+                            text-gray-900 dark:text-white 
+                            bg-gradient-to-br ${gradientClass}
+                            shadow-lg hover:shadow-2xl
+                            cursor-pointer
+                            select-none
+                            will-change-transform
+                            opacity-0
+                        `}
+                                style={{
+                                    width: `${item.size}px`,
+                                    height: `${item.size}px`,
+                                    fontSize: "1rem", // Base font size
+                                    zIndex: 10,
+                                }}
+                                data-size={item.size}
+                            >
+                                <div class="pointer-events-none flex flex-col leading-tight px-2">
+                                    <span class="break-words">{item.tag}</span>
+                                    <span class="text-xs opacity-75 mt-0.5">({item.count})</span>
+                                </div>
+                            </a>
+                        );
+                    })
                 ) : (
-                    <p class="text-center">暂无标签</p>
+                    <div class="flex items-center justify-center h-full">
+                        <p>暂无标签</p>
+                    </div>
                 )
             }
         </div>
@@ -87,58 +101,244 @@ const gradients = [
 </BaseLayout>
 
 <script>
-    // Randomize animation delays and durations on client load
+    // Physics Configuration
+    const CONFIG = {
+        friction: 1, // Moving through "air" - set to 1 for no air resistance, or slightly less for dampening
+        speedMin: 0.3,
+        speedMax: 0.8,
+        boundaryDamping: 1, // Energy retained after wall bounce (1 = elastic)
+        collisionDamping: 1, // Energy retained after particle collision
+        hoverScale: 1.1,
+    };
+
+    /**
+     * Vector Helper
+     */
+    class Vector {
+        x: number;
+        y: number;
+        constructor(x: number, y: number) {
+            this.x = x;
+            this.y = y;
+        }
+        add(v: Vector) {
+            return new Vector(this.x + v.x, this.y + v.y);
+        }
+        sub(v: Vector) {
+            return new Vector(this.x - v.x, this.y - v.y);
+        }
+        mult(n: number) {
+            return new Vector(this.x * n, this.y * n);
+        }
+        mag() {
+            return Math.sqrt(this.x * this.x + this.y * this.y);
+        }
+        normalize() {
+            const m = this.mag();
+            return m === 0 ? new Vector(0, 0) : new Vector(this.x / m, this.y / m);
+        }
+    }
+
+    class Particle {
+        element: HTMLElement;
+        x: number;
+        y: number;
+        vx: number;
+        vy: number;
+        radius: number;
+        mass: number;
+        isHovered: boolean = false;
+        originalZIndex: string;
+
+        constructor(element: HTMLElement, containerWidth: number, containerHeight: number) {
+            this.element = element;
+            this.radius = parseFloat(element.getAttribute("data-size") || "90") / 2;
+            this.mass = this.radius; // Mass proportional to radius
+
+            // Random Initial Position (Grid-ish or completely random)
+            // To prevent initial overlap, we could try harder, but random + separation force usually works fine
+            this.x = Math.random() * (containerWidth - this.radius * 2) + this.radius;
+            this.y = Math.random() * (containerHeight - this.radius * 2) + this.radius;
+
+            // Random Velocity
+            const speed = CONFIG.speedMin + Math.random() * (CONFIG.speedMax - CONFIG.speedMin);
+            const angle = Math.random() * Math.PI * 2;
+            this.vx = Math.cos(angle) * speed;
+            this.vy = Math.sin(angle) * speed;
+
+            this.originalZIndex = element.style.zIndex;
+
+            // Interaction
+            this.element.addEventListener("mouseenter", () => this.onHoverStart());
+            this.element.addEventListener("mouseleave", () => this.onHoverEnd());
+
+            // Show initially after setup
+            this.element.style.opacity = "1";
+        }
+
+        onHoverStart() {
+            this.isHovered = true;
+            this.vx = 0;
+            this.vy = 0;
+            this.element.style.zIndex = "50";
+            this.element.style.transform = `translate3d(${this.x - this.radius}px, ${this.y - this.radius}px, 0) scale(${CONFIG.hoverScale})`;
+        }
+
+        onHoverEnd() {
+            this.isHovered = false;
+            this.element.style.zIndex = "10";
+            // Give it a random nudge to restart movement
+            const speed = CONFIG.speedMin + Math.random() * (CONFIG.speedMax - CONFIG.speedMin);
+            const angle = Math.random() * Math.PI * 2;
+            this.vx = Math.cos(angle) * speed;
+            this.vy = Math.sin(angle) * speed;
+        }
+
+        update(width: number, height: number) {
+            if (this.isHovered) return;
+
+            // Update Position
+            this.x += this.vx;
+            this.y += this.vy;
+
+            // Boundary Collision
+            if (this.x - this.radius < 0) {
+                this.x = this.radius;
+                this.vx *= -1 * CONFIG.boundaryDamping;
+            } else if (this.x + this.radius > width) {
+                this.x = width - this.radius;
+                this.vx *= -1 * CONFIG.boundaryDamping;
+            }
+
+            if (this.y - this.radius < 0) {
+                this.y = this.radius;
+                this.vy *= -1 * CONFIG.boundaryDamping;
+            } else if (this.y + this.radius > height) {
+                this.y = height - this.radius;
+                this.vy *= -1 * CONFIG.boundaryDamping;
+            }
+
+            // Apply DOM
+            // Translate is typically top-left based, but our x,y is center based.
+            // So translate by x - radius, y - radius
+            this.element.style.transform = `translate3d(${this.x - this.radius}px, ${this.y - this.radius}px, 0)`;
+        }
+    }
+
+    // Main Simulation
     document.addEventListener("DOMContentLoaded", () => {
-        const bubbles = document.querySelectorAll(".bubble") as NodeListOf<HTMLElement>;
+        const container = document.getElementById("bubble-container");
+        if (!container) return;
 
-        bubbles.forEach(bubble => {
-            // Very slow movement: 15s to 30s
-            const duration = 15 + Math.random() * 15;
-            // Random delay to desync
-            const delay = -1 * (Math.random() * 30);
+        const bubbleElements = container.querySelectorAll(".bubble") as NodeListOf<HTMLElement>;
+        let particles: Particle[] = [];
+        let width = container.clientWidth;
+        let height = container.clientHeight;
 
-            bubble.style.animationName = Math.random() > 0.5 ? "floatA" : "floatB";
-            bubble.style.animationDuration = `${duration}s`;
-            bubble.style.animationDelay = `${delay}s`;
-            bubble.style.animationTimingFunction = "ease-in-out";
-            bubble.style.animationIterationCount = "infinite";
+        // Initialize Particles
+        // Try to place them without overlapping initially if possible, or just let them separate
+        bubbleElements.forEach(el => {
+            particles.push(new Particle(el, width, height));
         });
+
+        // Resize Observer
+        const resizeObserver = new ResizeObserver(entries => {
+            for (let entry of entries) {
+                width = entry.contentRect.width;
+                height = entry.contentRect.height;
+            }
+        });
+        resizeObserver.observe(container);
+
+        // Animation Loop
+        function animate() {
+            // 1. Collision Detection & Resolution
+            for (let i = 0; i < particles.length; i++) {
+                for (let j = i + 1; j < particles.length; j++) {
+                    resolveCollision(particles[i], particles[j]);
+                }
+            }
+
+            // 2. Update Positions
+            particles.forEach(p => p.update(width, height));
+
+            requestAnimationFrame(animate);
+        }
+
+        // Start
+        requestAnimationFrame(animate);
+
+        // Helper: Elastic Collision
+        function resolveCollision(p1: Particle, p2: Particle) {
+            const dx = p2.x - p1.x;
+            const dy = p2.y - p1.y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            const minDist = p1.radius + p2.radius;
+
+            if (distance < minDist) {
+                // Determine collision normal angle
+                const angle = Math.atan2(dy, dx);
+                const sin = Math.sin(angle);
+                const cos = Math.cos(angle);
+
+                // Rotate particle positions
+                // p1 is (0,0) relative to collision plane
+                const pos1 = { x: 0, y: 0 };
+                const pos2 = rotate({ x: dx, y: dy }, sin, cos, true);
+
+                // Rotate velocities
+                const vel1 = rotate({ x: p1.vx, y: p1.vy }, sin, cos, true);
+                const vel2 = rotate({ x: p2.vx, y: p2.vy }, sin, cos, true);
+
+                // Collision Reaction (1D Elastic)
+                const v1Final = { x: vel2.x, y: vel1.y }; // Swap x, keep y (assuming equal mass for simplicity, or calc below)
+                const v2Final = { x: vel1.x, y: vel2.y };
+
+                // Actual Momentum Conservation (m1=p1.mass, m2=p2.mass)
+                // v1 = ((m1-m2)*u1 + 2*m2*u2) / (m1+m2)
+                const m1 = p1.mass;
+                const m2 = p2.mass;
+                v1Final.x = ((m1 - m2) * vel1.x + 2 * m2 * vel2.x) / (m1 + m2);
+                v2Final.x = ((m2 - m1) * vel2.x + 2 * m1 * vel1.x) / (m1 + m2);
+
+                // Update velocities (Rotate back)
+                // Use temp to prevent immediate update affecting next step (though we updated local vars so it's fine)
+                const vel1F = rotate(v1Final, sin, cos, false);
+                const vel2F = rotate(v2Final, sin, cos, false);
+
+                if (!p1.isHovered) {
+                    p1.vx = vel1F.x;
+                    p1.vy = vel1F.y;
+                }
+                if (!p2.isHovered) {
+                    p2.vx = vel2F.x;
+                    p2.vy = vel2F.y;
+                }
+
+                // Separation just to prevent sticking (overlap correction)
+                const overlap = minDist - distance;
+                const separationForce = 0.5; // Slight separation each frame
+
+                // Move apart along the collision vector
+                const separationX = (dx / distance) * overlap * separationForce;
+                const separationY = (dy / distance) * overlap * separationForce;
+
+                if (!p1.isHovered) {
+                    p1.x -= separationX;
+                    p1.y -= separationY;
+                }
+                if (!p2.isHovered) {
+                    p2.x += separationX;
+                    p2.y += separationY;
+                }
+            }
+        }
+
+        function rotate(velocity: { x: number; y: number }, sin: number, cos: number, reverse: boolean) {
+            return {
+                x: reverse ? velocity.x * cos + velocity.y * sin : velocity.x * cos - velocity.y * sin,
+                y: reverse ? velocity.y * cos - velocity.x * sin : velocity.y * cos + velocity.x * sin,
+            };
+        }
     });
 </script>
-
-<style>
-    /* Define two slightly different float patterns for more variety */
-    @keyframes floatA {
-        0%,
-        100% {
-            transform: translate(0, 0);
-        }
-        25% {
-            transform: translate(10px, -15px);
-        }
-        50% {
-            transform: translate(-5px, 5px);
-        }
-        75% {
-            transform: translate(-10px, -10px);
-        }
-    }
-
-    @keyframes floatB {
-        0%,
-        100% {
-            transform: translate(0, 0);
-        }
-        33% {
-            transform: translate(-10px, 10px);
-        }
-        66% {
-            transform: translate(12px, -8px);
-        }
-    }
-
-    .bubble-container {
-        /* Optional: ensure container has enough height if bubbles are few */
-        min-height: 400px;
-    }
-</style>

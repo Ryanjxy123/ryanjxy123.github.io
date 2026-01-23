@@ -9,12 +9,13 @@ const filteredHeadings = headings.filter(heading => heading.depth <= 3);
 ---
 
 <nav class="toc-container">
+    <div class="text-xs font-bold tracking-widest text-[#a1a1aa] uppercase mb-4">TABLE OF CONTENTS</div>
     <ul>
         {
             filteredHeadings.map(heading => (
                 <li class={heading.depth === 3 ? "pl-4" : ""}>
                     <a
-                        href={`#${heading.slug}`}
+                        href={"#" + heading.slug}
                         class="toc-link block py-1 transition-colors duration-200 border-l-2 border-transparent text-sm text-[#52525b] hover:text-[#18181b]"
                     >
                         {heading.text}
@@ -55,5 +56,22 @@ const filteredHeadings = headings.filter(heading => heading.depth <= 3);
 
     document.querySelectorAll("h2, h3").forEach(heading => {
         observer.observe(heading);
+    });
+
+    // Handle TOC click events
+    document.querySelectorAll(".toc-link").forEach(link => {
+        link.addEventListener("click", e => {
+            const href = link.getAttribute("href");
+            if (!href || !href.startsWith("#")) return;
+
+            const targetId = href.substring(1);
+            const targetElement = document.getElementById(targetId);
+
+            if (targetElement) {
+                e.preventDefault();
+                targetElement.scrollIntoView({ behavior: "smooth" });
+                history.pushState(null, "", href);
+            }
+        });
     });
 </script>

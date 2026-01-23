@@ -4,6 +4,12 @@
 @plugin "@tailwindcss/typography";
 @import "katex/dist/katex.min.css";
 @import "katex/dist/katex.min.css";
+
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 80px;
+}
+
 @theme {
     --font-sans: ChillRoundF, -apple-system, "Microsoft YaHei", sans-serif;
 

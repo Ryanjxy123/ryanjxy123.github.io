@@ -8,17 +8,16 @@ const { headings } = Astro.props;
 const filteredHeadings = headings.filter(heading => heading.depth <= 3);
 ---
 
-<nav class="toc-container relative pr-4 backdrop-blur-sm rounded-xl">
-    <div class="absolute left-0 top-0 bottom-0 w-[2px] bg-[#e4e4e7] dark:bg-[#27272a]"></div>
-    <div class="text-xs font-bold tracking-widest text-[#a1a1aa] uppercase mb-4 pl-4">TABLE OF CONTENTS</div>
-    <ul class="relative">
+<nav class="sticky top-32 w-full pr-4">
+    <h3 class="mb-4 pl-2 text-sm font-bold tracking-widest text-[#52525b] uppercase">TABLE OF CONTENTS</h3>
+    <ul class="relative border-l-2 border-[#e4e4e7] dark:border-[#27272a] ml-2">
         {
             filteredHeadings.map(heading => (
                 <li>
                     <a
                         href={"#" + heading.slug}
                         class:list={[
-                            "toc-link block py-2 transition-colors duration-200 border-l-2 border-transparent text-sm text-[#71717a] hover:text-[#2563eb]",
+                            "toc-link block py-2 pl-4 text-sm text-[#71717a] transition-colors border-l-2 border-transparent -ml-[2px] hover:text-[#2563eb]",
                             heading.depth === 3 ? "pl-8" : "pl-4",
                         ]}
                     >
@@ -42,13 +41,23 @@ const filteredHeadings = headings.filter(heading => heading.depth <= 3);
         entries => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    document.querySelectorAll(".toc-link").forEach(link => {
-                        link.classList.remove("active-toc-item");
-                    });
-                    const id = entry.target.id;
-                    const link = document.querySelector(`.toc-link[href="#${id}"]`);
-                    if (link) {
-                        link.classList.add("active-toc-item");
+                    const id = entry.target.getAttribute("id");
+                    const allLinks = document.querySelectorAll(".toc-link");
+                    const activeLink = document.querySelector(`.toc-link[href="#${id}"]`);
+
+                    if (activeLink) {
+                        let foundActive = false;
+                        // 遍历所有链接，实现“拖尾”效果
+                        allLinks.forEach(link => {
+                            if (link === activeLink) {
+                                link.classList.add("active-toc-item");
+                                foundActive = true; // 标记找到当前项，之后的都不激活
+                            } else if (!foundActive) {
+                                link.classList.add("active-toc-item"); // 当前项之前的，全部激活
+                            } else {
+                                link.classList.remove("active-toc-item"); // 当前项之后的，全部取消
+                            }
+                        });
                     }
                 }
             });

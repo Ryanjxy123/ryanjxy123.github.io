@@ -11,9 +11,8 @@ const { defaultPadding } = Astro.props;
     <main class={`w-full max-w-6xl relative z-10 mx-auto ${defaultPadding ? "p-5 md:p-8" : ""}`}>
         <slot />
     </main>
-    <div
-        class="w-full max-w-6xl h-64 absolute bg-white dark:bg-[#18181b] md:rounded-3xl top-0 left-1/2 -translate-x-1/2"
+    <!-- <div
+        class="w-full max-w-6xl h-64 absolute bg-white/70 dark:bg-[#18181b]/90 md:rounded-3xl backdrop-blur-xl top-0 left-1/2 -translate-x-1/2"
         aria-hidden="true"
-    >
-    </div>
+    > -->
 </div>

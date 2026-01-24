@@ -6,18 +6,33 @@ import ClickEffect from "../components/ClickEffect.tsx";
 
 <!doctype html>
 <html lang={SITE_LANGUAGE}>
-<head>
-  <slot name="head"></slot>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" />
-  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
-  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
-    onload="renderMathInElement(document.body, {delimiters: [
+    <head>
+        <slot name="head" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" />
+        <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+        <script
+            defer
+            src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+            onload="renderMathInElement(document.body, {delimiters: [
       {left: '$$', right: '$$', display: true},
       {left: '$', right: '$', display: false}
-    ]});"></script>
-</head>
-<body class="dark:bg-gray-950">
-  <ClickEffect client:load />
-  <slot />
-</body>
+    ]});"
+        ></script>
+
+        <!-- 主题初始化脚本：防止页面闪烁 (FOUC) -->
+        <script is:inline>
+            (function () {
+                const theme =
+                    localStorage.getItem("theme") ||
+                    (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+                if (theme === "dark") {
+                    document.documentElement.classList.add("dark");
+                }
+            })();
+        </script>
+    </head>
+    <body class="dark:bg-transparent">
+        <ClickEffect client:load />
+        <slot />
+    </body>
 </html>

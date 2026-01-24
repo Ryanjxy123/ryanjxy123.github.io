@@ -4,6 +4,7 @@
 import authorAvatarImage from "./assets/headpicture.jpg";
 
 import headerImageNight from "./assets/header_night.webp";
+import headerImageDay from "./assets/header_day.webp";
 
 // 网站的 <html> 语言标签
 export const SITE_LANGUAGE = "en";
@@ -34,7 +35,7 @@ export const SITE_MENU: { title: string, href: string, target: string }[] = [
 ]
 
 // 网站横幅背景图片（明亮主题）
-export const SITE_HEAD_IMAGE_DAY = headerImageNight;
+export const SITE_HEAD_IMAGE_DAY = headerImageDay;
 
 // 网站横幅背景图片（暗黑主题）
 export const SITE_HEAD_IMAGE_NIGHT = headerImageNight;

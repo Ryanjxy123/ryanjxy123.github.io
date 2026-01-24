@@ -1,7 +1,8 @@
 <script lang="ts">
-    import {SITE_MENU} from "@/consts";
-    import {onDestroy, onMount} from 'svelte';
-    import type {OptionalValue} from "@/utils/types";
+    import { SITE_MENU } from "@/consts";
+    import { onDestroy, onMount } from "svelte";
+    import type { OptionalValue } from "@/utils/types";
+    import ThemeToggle from "./ThemeToggle.svelte";
 
     /*interface Props {
         avatar?: import('svelte').Snippet;
@@ -9,7 +10,8 @@
 
     let { avatar }: Props = $props();*/
 
-    const navBarClassNameBase = "absolute -translate-x-2/4 left-2/4 h-[var(--navBar-height)] md:h-[inherit] backdrop-blur-2xl bg-white/80 dark:bg-primary-950 dark:bg-primary-950/80 shadow-2xl [transition:top_150ms,height_400ms_cubic-bezier(.47,1.64,.41,.8)] overflow-clip";
+    const navBarClassNameBase =
+        "absolute -translate-x-2/4 left-2/4 h-[var(--navBar-height)] md:h-[inherit] backdrop-blur-2xl bg-white/80 dark:bg-[#18181b]/90 shadow-2xl [transition:top_150ms,height_400ms_cubic-bezier(.47,1.64,.41,.8)] overflow-clip";
     const navBarClassNameTop = "rounded-[2.25rem] top-4 w-[calc(100dvw-2rem)] md:w-max";
     const navBarClassNameNormal = "w-full top-0 shadow-[rgba(0,0,0,0.15)]";
 
@@ -35,11 +37,11 @@
     // 参考 https://stackoverflow.com/questions/3508605/how-can-i-transition-height-0-to-height-auto-using-css
     $effect(() => {
         if (mobileMenuOpen) {
-            mobileNavHeight = mobileNavBaseHeight + mobileMenuBaseHeight + (mobileMenuItemHeight * SITE_MENU.length);
+            mobileNavHeight = mobileNavBaseHeight + mobileMenuBaseHeight + mobileMenuItemHeight * SITE_MENU.length;
         } else {
             mobileNavHeight = mobileNavBaseHeight;
         }
-    })
+    });
 
     function handleScroll() {
         if (navBackground && window.scrollY > navBackground.getBoundingClientRect().height * (1 / 1.618)) {
@@ -105,7 +107,11 @@
 </script>
 
 <nav class="fixed w-full top-0 z-40">
-    <div id="navBar" class={navBarClassNameBase + " " + navBarClassName} style={`--navBar-height: ${mobileNavHeight}rem`}>
+    <div
+        id="navBar"
+        class={navBarClassNameBase + " " + navBarClassName}
+        style={`--navBar-height: ${mobileNavHeight}rem`}
+    >
         <div class="flex justify-between md:justify-center items-center gap-8 ps-3 pe-3 py-3">
             <a href="./" class="block flex-none" title="首页">
                 <!-- <img src={SITE_AUTHOR_AVATAR} alt="Avatar" class="block w-12 h-12 rounded-full"> -->
@@ -114,34 +120,58 @@
             <ul class="hidden md:contents">
                 {#each SITE_MENU as e}
                     <li class="contents">
-                        <a class="text-base leading-6 h-6 block text-black dark:text-white hover:text-accent-600 dark:hover:text-accent-500 transition-colors duration-200 flex-none"
-                           href={e.href} target={e.target}>{e.title}</a>
+                        <a
+                            class="text-base leading-6 h-6 block text-black dark:text-white hover:text-accent-600 dark:hover:text-accent-500 transition-colors duration-200 flex-none"
+                            href={e.href}
+                            target={e.target}>{e.title}</a
+                        >
                     </li>
                 {/each}
+                <!-- PC 端：主题切换按钮放在导航链接最右侧 -->
+                <li class="contents">
+                    <ThemeToggle />
+                </li>
             </ul>
-            <div class="flex flex-none">
-  
-                <button onclick={() => handleMobileMenuToggle()}
-                        aria-label="打开菜单"
-                        aria-controls={mobileMenuId}
-                        aria-expanded={mobileMenuOpen}
-                        class="w-12 h-12 md:hidden flex items-center justify-center rounded-full md:-ms-3 transition-colors bg-white/0 active:bg-white/10">
+            <div class="flex flex-none gap-2 items-center">
+                <!-- 移动端：主题切换按钮放在汉堡菜单左侧 -->
+                <div class="md:hidden">
+                    <ThemeToggle />
+                </div>
+
+                <button
+                    onclick={() => handleMobileMenuToggle()}
+                    aria-label="打开菜单"
+                    aria-controls={mobileMenuId}
+                    aria-expanded={mobileMenuOpen}
+                    class="w-12 h-12 md:hidden flex items-center justify-center rounded-full md:-ms-3 transition-colors bg-white/0 active:bg-white/10"
+                >
                     <span class="block relative w-5 h-5" aria-hidden="true">
-                        <span class={`duration-200 block w-5 h-[0.225rem] bg-black dark:bg-white rounded-full burger-bar-1 burger-bar-1--s${menuStep} absolute left-1/2`}></span>
-                        <span class={`duration-200 block w-5 h-[0.225rem] bg-black dark:bg-white rounded-full burger-bar-2 burger-bar-2--s${menuStepMiddle} absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2`}></span>
-                        <span class={`duration-200 block w-5 h-[0.225rem] bg-black dark:bg-white rounded-full burger-bar-3 burger-bar-3--s${menuStep} absolute left-1/2`}></span>
+                        <span
+                            class={`duration-200 block w-5 h-[0.225rem] bg-black dark:bg-white rounded-full burger-bar-1 burger-bar-1--s${menuStep} absolute left-1/2`}
+                        ></span>
+                        <span
+                            class={`duration-200 block w-5 h-[0.225rem] bg-black dark:bg-white rounded-full burger-bar-2 burger-bar-2--s${menuStepMiddle} absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2`}
+                        ></span>
+                        <span
+                            class={`duration-200 block w-5 h-[0.225rem] bg-black dark:bg-white rounded-full burger-bar-3 burger-bar-3--s${menuStep} absolute left-1/2`}
+                        ></span>
                     </span>
                 </button>
             </div>
         </div>
         <div class={`flex flex-col items-center md:hidden ${menuItemHidden ? "hidden" : ""}`} id={mobileMenuId}>
-            <hr class={`w-[calc(100%-1.5rem)] transition-colors duration-400 ${mobileMenuOpen ? "border-black/10 dark:border-white/10" : "border-transparent"}`}>
+            <hr
+                class={`w-[calc(100%-1.5rem)] transition-colors duration-400 ${mobileMenuOpen ? "border-black/10 dark:border-white/10" : "border-transparent"}`}
+            />
             <ul class="w-full p-3">
                 {#each SITE_MENU as e}
                     <li class="contents">
-                        <a onclick={() => handleMobileMenuToggle(false)}
-                           class="text-xl leading-6 h-14 flex items-center justify-center text-black dark:text-white hover:text-accent-600 dark:hover:text-accent-500 transition-colors duration-200 flex-none"
-                           href={e.href} target={e.target}>{e.title}</a>
+                        <a
+                            onclick={() => handleMobileMenuToggle(false)}
+                            class="text-xl leading-6 h-14 flex items-center justify-center text-black dark:text-white hover:text-accent-600 dark:hover:text-accent-500 transition-colors duration-200 flex-none"
+                            href={e.href}
+                            target={e.target}>{e.title}</a
+                        >
                     </li>
                 {/each}
             </ul>

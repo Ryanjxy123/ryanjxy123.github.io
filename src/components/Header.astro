@@ -40,7 +40,7 @@ const heightClassName = largeBanner ? "h-[calc(100svh+8rem)]" : "h-[calc(65lvh+8
 				<div
 					id="navScrollNotice"
 					aria-hidden="true"
-					class="absolute h-2 w-16 -translate-x-2/4 left-2/4 bottom-4 bg-white/60 rounded-full transition-all"
+					class="absolute h-2 w-16 -translate-x-2/4 left-2/4 bottom-4 bg-white/60 dark:bg-zinc-700/60 rounded-full transition-all"
 				/>
 			) : null
 		}
@@ -55,25 +55,24 @@ const heightClassName = largeBanner ? "h-[calc(100svh+8rem)]" : "h-[calc(65lvh+8
 			<p class="text-base leading-normal mt-1">{SITE_DESCRIPTION}</p>
 		</div>
 	</div>
-	<div aria-hidden="true" class="flex-none h-32 w-full bg-gradient-to-b from-transparent to-white dark:to-gray-950">
-	</div>
+	<!-- 底部渐变过渡（已移至背景图容器内，此处保留空间占位） -->
+	<div aria-hidden="true" class="flex-none h-32 w-full"></div>
 </header>
 
-<div class={`w-full ${heightClassName} min-h-[30rem] absolute left-0 top-0 -z-20`} aria-hidden="true">
-	<Image
-		src={SITE_HEAD_IMAGE_DAY}
-		widths={[...presetSizes, SITE_HEAD_IMAGE_DAY.width]}
-		sizes={`${imageSizes}${SITE_HEAD_IMAGE_DAY.width}px`}
-		quality={90}
-		alt="网站横幅图片"
-		class={`block dark:hidden w-full h-full ${heightClassName} object-center object-cover`}
+<!-- 背景图层：使用物理堆叠 + CSS 透明度切换 -->
+<div class="absolute top-0 left-0 w-full h-full overflow-hidden -z-50 pointer-events-none">
+	<!-- 白天背景图：亮色模式可见，暗色模式透明 -->
+	<img
+		src="/header_day.webp"
+		alt="Day Background"
+		class="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out opacity-100 dark:opacity-0"
 	/>
-	<Image
-		src={SITE_HEAD_IMAGE_NIGHT}
-		widths={[...presetSizes, SITE_HEAD_IMAGE_NIGHT.width]}
-		sizes={`${imageSizes}${SITE_HEAD_IMAGE_NIGHT.width}px`}
-		quality={90}
-		alt="网站横幅图片"
-		class={`hidden dark:block w-full h-full ${heightClassName} object-center object-cover`}
+	<!-- 夜间背景图：亮色模式透明，暗色模式可见 -->
+	<img
+		src="/header_night.webp"
+		alt="Night Background"
+		class="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out opacity-0 dark:opacity-100"
 	/>
+	<!-- 底部渐变遮罩 -->
+	<div class="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-white dark:to-[#050505]"></div>
 </div>

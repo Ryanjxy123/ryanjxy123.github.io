@@ -2,12 +2,53 @@
 
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
-@import "katex/dist/katex.min.css";
+
+/* Tailwind v4: 强制启用 class-based dark mode */
+@variant dark (&:where(.dark, .dark *));
+
 @import "katex/dist/katex.min.css";
 
 html {
     scroll-behavior: smooth;
     scroll-padding-top: 80px;
+}
+
+/* === 模块2：动态背景切换 === */
+:root {
+    /* 默认（白天）图片路径 */
+    --hero-bg-image: url('/header_day.webp');
+}
+
+html.dark {
+    /* 暗色（夜晚）图片路径 */
+    --hero-bg-image: url('/header_night.webp');
+}
+
+/* === 模块3：视觉风格重塑 === */
+/* 暗色模式强制背景色 - 接近纯黑（仅 html，作为兜底色） */
+html.dark {
+    background-color: #050505;
+}
+
+/* 关键：body 必须透明，否则会盖住 Header 的背景图 */
+html.dark body {
+    background-color: transparent !important;
+}
+
+/* 暗色模式下移除可能造成脏感的阴影 */
+html.dark .shadow-sm,
+html.dark .shadow-md,
+html.dark .shadow-lg,
+html.dark .shadow-xl {
+    --tw-shadow: 0 0 0 0 transparent;
+    --tw-shadow-colored: 0 0 0 0 transparent;
+}
+
+/* 暗色模式保留悬停阴影效果 */
+html.dark .hover\:shadow-lg:hover,
+html.dark .hover\:shadow-xl:hover {
+    --tw-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.6);
+    box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 
 @theme {
@@ -51,6 +92,7 @@ html {
     border-color: var(--color-accent-300);
     background-color: var(--color-accent-100);
 }
+
 @media (prefers-color-scheme: dark) {
     .prose a:hover {
         border-color: var(--color-accent-700);

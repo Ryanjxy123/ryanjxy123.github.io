@@ -17,7 +17,7 @@ const readingTime = getReadingTime(body);
 ---
 
 <div
-    class="group relative rounded-2xl overflow-hidden bg-white dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 shadow-sm hover:shadow-xl transition-all duration-300 h-64"
+    class="group relative rounded-2xl overflow-hidden bg-white dark:bg-black/40 border border-zinc-200 dark:border-zinc-800 shadow-sm hover:shadow-xl transition-all duration-300 h-48 lg:h-64"
 >
     {/* Layer 1: Image (Full Width Backdrop) */}
     {
@@ -53,10 +53,10 @@ const readingTime = getReadingTime(body);
     </div>
 
     {/* Layer 3: Relaxed Content Overlay */}
-    <article class="relative z-10 flex flex-col justify-center h-full p-8 pr-20 w-full">
+    <article class="relative z-10 flex flex-col justify-center h-full p-5 pr-5 lg:p-8 lg:pr-20 w-full">
         {/* Title */}
         <h2
-            class="text-3xl font-bold text-gray-900 dark:text-white mb-2 leading-relaxed group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors drop-shadow-md"
+            class="text-lg lg:text-3xl font-bold text-gray-900 dark:text-white mb-2 leading-tight lg:leading-relaxed group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors drop-shadow-md"
         >
             <a href={url} class="block">
                 {title}
@@ -65,12 +65,12 @@ const readingTime = getReadingTime(body);
 
         {/* Date / Meta */}
         <div
-            class="flex items-center gap-3 text-2xl text-gray-600 dark:text-gray-400 mb-3 mt-1 font-mono drop-shadow-sm"
+            class="flex items-center gap-2 lg:gap-3 text-xs lg:text-2xl text-gray-600 dark:text-gray-400 mb-3 mt-1 font-mono drop-shadow-sm"
         >
             <FormattedDate date={date} />
             <div class="flex items-center gap-1 ml-2">
                 <svg
-                    class="w-7 h-7"
+                    class="w-4 h-4 lg:w-7 lg:h-7"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -98,7 +98,7 @@ const readingTime = getReadingTime(body);
         {/* Tags (Solid Pill Style) */}
         {
             tags.length > 0 && (
-                <div class="flex flex-wrap gap-2 mt-auto">
+                <div class="flex flex-wrap gap-2 mt-2 lg:mt-auto">
                     {tags.map(tag => (
                         <TagBadge tag={tag} variant="card" />
                     ))}

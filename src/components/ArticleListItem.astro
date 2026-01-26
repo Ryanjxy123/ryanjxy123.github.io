@@ -26,7 +26,11 @@ const readingTime = getReadingTime(body);
                 class="absolute top-0 bottom-0 right-0 w-[65%] z-0 transition-transform duration-700 group-hover:scale-105"
                 style="-webkit-mask-image: linear-gradient(to right, transparent 0%, transparent 10%, black 50%, black 100%); mask-image: linear-gradient(to right, transparent 0%, transparent 10%, black 50%, black 100%);"
             >
-                <img src={heroImage} alt="" class="w-full h-full object-cover object-center" />
+                <img
+                    src={heroImage}
+                    alt=""
+                    class="w-full h-full object-cover object-center dark:brightness-[0.7] dark:group-hover:brightness-90 transition-all duration-500"
+                />
             </div>
         )
     }

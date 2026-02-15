@@ -9,6 +9,8 @@ tags: ["projects"]
   
 ![](https://raw.githubusercontent.com/Ryanjxy123/picbed/main/data130061492_p0_master1200.jpg)
 
+*image from [ゲン助](https://www.pixiv.net/users/32008)*
+
 # nanobot 远程控制部署教程
 
 ![](https://raw.githubusercontent.com/Ryanjxy123/picbed/main/data20260213205401728.png)

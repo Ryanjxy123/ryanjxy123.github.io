@@ -17,7 +17,7 @@ tags: ["environment configuration", "share_somethings"]
 
 ## 2.配置node.js
 
-1. 请在你的 PowerShell 终端中，直接运行以下指令来安装 Node.js 的 LTS（长期支持稳定版）：
+1. 请在你的 PowerShell 终端中，直接运行以下指令来安装 Node.js：
 
 ```
 winget install OpenJS.NodeJS.LTS
@@ -25,9 +25,7 @@ winget install OpenJS.NodeJS.LTS
 
 运行后，屏幕上可能会弹出一个确认协议的提示，输入 Y 并回车即可自动下载并安装。
 
-2.安装完成后，当前的 VS Code 终端还记不住新安装的 npm。
-
-必须关闭当前的终端窗口（点击终端面板右上角的垃圾桶图标），或者直接重启一下 VS Code。
+2. 安装完成后，重启一下 VS Code。
 
 打开一个新的终端，输入以下命令验证是否安装成功：
 
@@ -35,7 +33,7 @@ winget install OpenJS.NodeJS.LTS
 npm -v
 ```
 
-如果它输出了一串数字（例如 10.8.2），说明安装大功告成！
+如果输出了一串数字（例如 10.8.2），说明安装成功。
 
 ## 3.安装claude code
 

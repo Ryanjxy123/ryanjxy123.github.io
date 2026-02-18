@@ -26,9 +26,7 @@ export const SITE_COPYRIGHT_YEAR_START = "2024";
 
 // 网站头部导航菜单
 export const SITE_MENU: { title: string, href: string, target: string }[] = [
-    { title: "首页", href: "./", target: "" },
     { title: "博客", href: "./blog/", target: "" },
-    { title: "标签", href: "./page/tags/", target: "" }, // 保持不变，指向 /page/tags/
     { title: "归档", href: "./page/archive/", target: "" },
     { title: "链接", href: "./page/links/", target: "" }
     // { title: "外部链接", href: "https://www.example.com", target: "_blank" }

@@ -134,12 +134,31 @@ const ArrowRightIcon = `
 					</div>
 				</div>
 
+				<!-- About Section -->
+				<div class="md:col-span-3">
+					<div class="flex items-center gap-2 mb-4">
+						<div class="w-1 h-6 bg-blue-500 rounded-full"></div>
+						<h2 class="text-xl font-bold text-zinc-900 dark:text-zinc-100">About</h2>
+					</div>
+					<p class="text-zinc-600 dark:text-zinc-400 text-base leading-relaxed">
+						我是一名来自西安交通大学软件工程专业的24级本科生。目前主要关注多模态大模型（MLLM）与算法方向，对人工智能领域保持着浓厚的兴趣与持续探索的热情。欢迎与我交流~
+					</p>
+				</div>
+
+				<!-- Statistics Title -->
+				<div class="md:col-span-3">
+					<div class="flex items-center gap-2 mb-4">
+						<div class="w-1 h-6 bg-blue-500 rounded-full"></div>
+						<h2 class="text-xl font-bold text-zinc-900 dark:text-zinc-100">统计</h2>
+					</div>
+				</div>
+
 				<!-- Run Days Card -->
 				<div
 					class="group bg-white dark:bg-[#18181b] border border-zinc-200 dark:border-zinc-800 rounded-2xl p-5 flex flex-col justify-between shadow-sm dark:shadow-none hover:shadow-md dark:hover:shadow-none hover:border-blue-500/30 transition-all duration-300"
 				>
 					<div class="flex items-center justify-between mb-2">
-						<span class="text-zinc-500 dark:text-zinc-400 text-sm font-medium">运行天数</span>
+						<span class="text-zinc-500 dark:text-zinc-400 text-base font-medium">运行天数</span>
 						<div
 							class="text-blue-500 bg-blue-100/50 dark:bg-blue-900/20 p-2 rounded-lg"
 							set:html={ClockIcon}
@@ -149,7 +168,7 @@ const ArrowRightIcon = `
 						class="text-3xl font-bold text-zinc-900 dark:text-zinc-100 mt-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors"
 					>
 						{runDays}
-						<span class="text-xs font-normal text-zinc-400 ml-1 align-baseline">天</span>
+						<span class="text-base font-normal text-zinc-400 ml-1 align-baseline">天</span>
 					</div>
 				</div>
 
@@ -158,7 +177,7 @@ const ArrowRightIcon = `
 					class="group bg-white dark:bg-[#18181b] border border-zinc-200 dark:border-zinc-800 rounded-2xl p-5 flex flex-col justify-between shadow-sm dark:shadow-none hover:shadow-md dark:hover:shadow-none hover:border-green-500/30 transition-all duration-300"
 				>
 					<div class="flex items-center justify-between mb-2">
-						<span class="text-zinc-500 dark:text-zinc-400 text-sm font-medium">文章数目</span>
+						<span class="text-zinc-500 dark:text-zinc-400 text-base font-medium">文章数目</span>
 						<div
 							class="text-green-500 bg-green-100/50 dark:bg-green-900/20 p-2 rounded-lg"
 							set:html={BookOpenIcon}
@@ -168,7 +187,7 @@ const ArrowRightIcon = `
 						class="text-3xl font-bold text-zinc-900 dark:text-zinc-100 mt-2 group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors"
 					>
 						{postCount}
-						<span class="text-xs font-normal text-zinc-400 ml-1 align-baseline">篇</span>
+						<span class="text-base font-normal text-zinc-400 ml-1 align-baseline">篇</span>
 					</div>
 				</div>
 
@@ -177,7 +196,7 @@ const ArrowRightIcon = `
 					class="group bg-white dark:bg-[#18181b] border border-zinc-200 dark:border-zinc-800 rounded-2xl p-5 flex flex-col justify-between shadow-sm dark:shadow-none hover:shadow-md dark:hover:shadow-none hover:border-purple-500/30 transition-all duration-300"
 				>
 					<div class="flex items-center justify-between mb-2">
-						<span class="text-zinc-500 dark:text-zinc-400 text-sm font-medium">全站字数</span>
+						<span class="text-zinc-500 dark:text-zinc-400 text-base font-medium">全站字数</span>
 						<div
 							class="text-purple-500 bg-purple-100/50 dark:bg-purple-900/20 p-2 rounded-lg"
 							set:html={FileTextIcon}

@@ -1,15 +1,16 @@
 ---
+import { Image } from "astro:assets";
+
 interface Props {
     tagName?: string;
     url: string;
-    avatarUrl?: string;
+    avatarUrl?: string | Image;
     name: string;
     description?: string;
 }
 
 const { tagName: LinkWrapper = "li", url, avatarUrl, name, description } = Astro.props;
 ---
-
 <LinkWrapper>
     <a
         target="_blank"
@@ -19,20 +20,28 @@ const { tagName: LinkWrapper = "li", url, avatarUrl, name, description } = Astro
         <div class="row-[span_2]">
             {
                 avatarUrl ? (
-                    <img
-                        loading="lazy"
-                        src={avatarUrl}
-                        alt={name + " 的头像"}
-                        class="block size-16 bg-white dark:bg-zinc-900 object-cover rounded-xl"
-                    />
+                    typeof avatarUrl === 'string' ? (
+                        <Image
+                            src={avatarUrl}
+                            alt={name + " 的头像"}
+                            class="block size-16 bg-white/20 dark:bg-zinc-800 object-cover rounded-full"
+                            inferSize={true}
+                        />
+                    ) : (
+                        <Image
+                            src={avatarUrl}
+                            alt={name + " 的头像"}
+                            class="block size-16 bg-white/20 dark:bg-zinc-800 object-cover rounded-full"
+                        />
+                    )
                 ) : (
-                    <div class="block size-16 bg-black/30 dark:bg-white/30 object-cover rounded-xl" />
+                    <div class="block size-16 bg-black/30 dark:bg-white/30 object-cover rounded-full" />
                 )
             }
         </div>
         <p class="text-xl leading-[2rem] overflow-hidden text-ellipsis whitespace-nowrap m-0">{name}</p>
         <aside
-            class="text-base leading-[2rem] text-black dark:text-white opacity-60 overflow-hidden text-ellipsis whitespace-nowrap"
+            class="text-base leading-[2rem] text-black/80 dark:text-white/80 overflow-hidden text-ellipsis whitespace-nowrap"
         >
             {description}
         </aside>

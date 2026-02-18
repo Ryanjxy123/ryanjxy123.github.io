@@ -44,16 +44,6 @@ const heightClassName = largeBanner ? "h-[calc(100svh+8rem)]" : "h-[calc(65lvh+8
 				/>
 			) : null
 		}
-		<div
-			class={`absolute left-0 right-0 mx-auto ${largeBanner ? "bottom-10" : "bottom-6"} w-full max-w-6xl text-white px-5 md:px-8 text-left [filter:drop-shadow(0_20px_13px_rgb(0_0_0_/_0.1))_drop-shadow(0_8px_5px_rgb(0_0_0_/_0.4))]`}
-		>
-			<h1 class="text-4xl leading-normal font-bold">
-				<a href="./">
-					{currentPageTitle || SITE_TITLE}
-				</a>
-			</h1>
-			<p class="text-base leading-normal mt-1">{SITE_DESCRIPTION}</p>
-		</div>
 	</div>
 	<!-- 底部渐变过渡（已移至背景图容器内，此处保留空间占位） -->
 	<div aria-hidden="true" class="flex-none h-32 w-full"></div>

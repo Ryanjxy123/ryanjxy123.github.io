@@ -1,0 +1,84 @@
+---
+import FormattedDate from "./FormattedDate.astro";
+import TagBadge from "./TagBadge.astro";
+import { getReadingTime } from "../utils/readingTime";
+
+interface Props {
+    title: string;
+    url: string;
+    date: Date;
+    tags?: string[];
+    heroImage?: string;
+    body?: string;
+}
+
+const { title, url, date, tags = [], heroImage, body } = Astro.props;
+const readingTime = getReadingTime(body);
+
+// 格式化日期为 MM-DD
+const formattedDate = `${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+---
+
+<div class="group relative block aspect-square rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 hover:scale-105">
+    <!-- 文章链接（覆盖整个卡片） -->
+    <a href={url} class="absolute inset-0 z-0"></a>
+
+    {/* 图片背景 */}
+    {heroImage ? (
+        <img
+            src={heroImage}
+            alt={title}
+            class="absolute inset-0 w-full h-full object-cover pointer-events-none"
+        />
+    ) : (
+        <!-- 默认背景色 -->
+        <div class="absolute inset-0 bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-900 pointer-events-none"></div>
+    )}
+
+    <!-- 日期标签 -->
+    <div class="absolute top-4 left-4 bg-white/30 dark:bg-black/20 backdrop-blur-md border border-white/30 rounded-full shadow-sm z-10 pointer-events-auto">
+        <div class="flex items-center gap-1 px-3 py-1">
+            <svg
+                class="w-3 h-3 text-white opacity-80"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+            >
+                <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
+                </path>
+            </svg>
+            <span class="text-xs font-mono tracking-wide text-white">
+                {formattedDate}
+            </span>
+        </div>
+    </div>
+
+    <!-- 渐变遮罩 -->
+    <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent pointer-events-none"></div>
+
+    <!-- 标题内容 -->
+    <div class="absolute bottom-0 left-0 right-0 p-4 pointer-events-none">
+        <h3 class="text-lg font-bold text-white mb-2 line-clamp-2 drop-shadow-md">
+            {title}
+        </h3>
+
+        <!-- 标签 -->
+        {tags.length > 0 && (
+            <div class="flex flex-wrap gap-1 mb-2">
+                {tags.slice(0, 2).map(tag => (
+                    <a
+                        href={`/tags/${tag}/`}
+                        class="text-xs bg-white/20 dark:bg-black/30 text-white backdrop-blur-sm px-2 py-0.5 rounded-full relative z-10 pointer-events-auto"
+                    >
+                        {tag}
+                    </a>
+                ))}
+            </div>
+        )}
+    </div>
+</div>

@@ -117,7 +117,7 @@
                 <!-- <img src={SITE_AUTHOR_AVATAR} alt="Avatar" class="block w-12 h-12 rounded-full"> -->
                 <slot name="avatar"></slot>
             </a>
-            <ul class="hidden md:contents">
+            <ul class="hidden md:contents mx-auto">
                 {#each SITE_MENU as e}
                     <li class="contents">
                         <a

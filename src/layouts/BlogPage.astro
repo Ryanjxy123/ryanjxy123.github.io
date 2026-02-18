@@ -17,12 +17,9 @@ const { title, description = "" } = Astro.props;
 	<BaseHead slot="head" title={title} description={description} />
 	<Header />
 	<Container defaultPadding={true}>
-		<div class="mb-8">
+		<div>
 			<article class="text-black dark:text-white">
-				<h2 class="text-3xl font-bold leading-normal">{title}</h2>
-				<div class="mt-6">
-					<slot />
-				</div>
+				<slot />
 			</article>
 		</div>
 

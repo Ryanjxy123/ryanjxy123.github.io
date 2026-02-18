@@ -12,6 +12,7 @@ import rehypeKatex from 'rehype-katex';
 export default defineConfig({
   site: 'https://ryanjxy123.github.io',
   base: '/',
+  output: 'static',
   integrations: [mdx(), sitemap(), svelte(), react()],
   markdown: {
     remarkPlugins: [remarkMath],

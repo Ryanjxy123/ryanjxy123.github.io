@@ -20,8 +20,8 @@ tags: ["DS"]
 第一行：操作数 n (1 ≤ n ≤ 2×10^5)  
 接下来 n 行：每行一个操作（insert x、getmin 或 delmin）  
 【输出格式】  
-对于每个 getmin 操作，输出当前最小值，占一行。  
-```
+对于每个 getmin 操作，输出当前最小值，占一行。
+```text
 【输入样例】  
 7
 insert 3
@@ -37,7 +37,7 @@ delmin
 ```
 
 ## 代码：
-```
+```java
 import java.util.*;
 public class Main{
     public static void main(String[]args){
@@ -64,8 +64,8 @@ public class Main{
 第二行：中序遍历序列（n 个整数）  
 第三行：后序遍历序列（n 个整数）  
 【输出格式】   
-输出该树的先序遍历序列，用空格分隔。   
-```
+输出该树的先序遍历序列，用空格分隔。
+```text
 【输入样例】
 7
 4 2 5 1 6 3 7
@@ -74,7 +74,7 @@ public class Main{
 1 2 4 5 3 6 7
 ```
 ## 代码：
-```
+```java
 import java.util.*;
 public class Main2 {
     static int[] in,post;

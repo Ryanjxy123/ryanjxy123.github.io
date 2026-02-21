@@ -8,8 +8,8 @@ const { headings } = Astro.props;
 const filteredHeadings = headings.filter(heading => heading.depth <= 3);
 ---
 
-<nav class="sticky top-32 w-full pr-4">
-    <h3 class="mb-4 pl-2 text-sm font-bold tracking-widest text-[#52525b] uppercase">TABLE OF CONTENTS</h3>
+<nav class="w-full pr-4">
+    <h3 class="mb-4 pl-2 text-sm font-bold tracking-widest text-[#52525b] dark:text-gray-400 uppercase">TABLE OF CONTENTS</h3>
     <ul class="relative border-l-2 border-[#e4e4e7] dark:border-[#27272a] ml-2">
         {
             filteredHeadings.map(heading => (
@@ -17,8 +17,12 @@ const filteredHeadings = headings.filter(heading => heading.depth <= 3);
                     <a
                         href={"#" + heading.slug}
                         class:list={[
-                            "toc-link block py-2 pl-4 text-sm text-[#71717a] transition-colors border-l-2 border-transparent -ml-[2px] hover:text-[#2563eb]",
-                            heading.depth === 3 ? "pl-8" : "pl-4",
+                            "toc-link block py-2 text-sm text-[#71717a] dark:text-gray-400 transition-colors border-l-2 border-transparent -ml-[2px] hover:text-sky-500 dark:hover:text-sky-400 break-words",
+                            heading.depth === 2 && "pl-4",
+                            heading.depth === 3 && "pl-8",
+                            heading.depth === 4 && "pl-12",
+                            heading.depth === 5 && "pl-16",
+                            heading.depth === 6 && "pl-20",
                         ]}
                     >
                         {heading.text}
@@ -31,60 +35,125 @@ const filteredHeadings = headings.filter(heading => heading.depth <= 3);
 
 <style>
     .active-toc-item {
-        color: #2563eb !important;
-        border-left-color: #2563eb !important;
+        color: rgb(14 165 233) !important; /* sky-500 */
+        border-left-color: rgb(14 165 233) !important;
+        font-weight: 600;
+    }
+    .dark .active-toc-item {
+        color: rgb(56 189 248) !important; /* sky-400 */
+        border-left-color: rgb(56 189 248) !important;
     }
 </style>
 
 <script>
-    const observer = new IntersectionObserver(
-        entries => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const id = entry.target.getAttribute("id");
-                    const allLinks = document.querySelectorAll(".toc-link");
-                    const activeLink = document.querySelector(`.toc-link[href="#${id}"]`);
+    // 轻量级 ScrollSpy 实现
+    (function() {
+        // 获取所有目录链接
+        const tocLinks = document.querySelectorAll('.toc-link');
+        if (tocLinks.length === 0) return;
 
+        // 收集 TOC 中存在的所有标题 ID（去掉 # 号）
+        const tocIds = Array.from(tocLinks).map(link => {
+            const href = link.getAttribute('href');
+            return href ? href.substring(1) : '';
+        }).filter(id => id);
+
+        // 获取文章中存在的、且在 TOC 中有对应的标题元素
+        const headings = Array.from(document.querySelectorAll('article h2, article h3, article h4, article h5, article h6'))
+            .filter(heading => heading.id && tocIds.includes(heading.id));
+
+        if (headings.length === 0) return;
+
+        // 创建 IntersectionObserver
+        const observer = new IntersectionObserver(
+            (entries) => {
+                // 找出当前最突出的标题（最接近视口顶部且在视口内的标题）
+                let activeHeading = null;
+                let minDistance = Infinity;
+
+                entries.forEach(entry => {
+                    const rect = entry.boundingClientRect;
+                    const distance = Math.abs(rect.top);
+
+                    // 如果标题在视口内，或者刚刚离开视口
+                    if (entry.isIntersecting || rect.top < 0) {
+                        // 选择最接近视口顶部的标题
+                        if (distance < minDistance) {
+                            minDistance = distance;
+                            activeHeading = entry.target;
+                        }
+                    }
+                });
+
+                if (activeHeading) {
+                    const activeId = activeHeading.id;
+                    // 移除所有激活状态
+                    tocLinks.forEach(link => {
+                        link.classList.remove('active-toc-item');
+                    });
+                    // 激活对应链接
+                    const activeLink = document.querySelector(`.toc-link[href="#${activeId}"]`);
                     if (activeLink) {
-                        let foundActive = false;
-                        // 遍历所有链接，实现“拖尾”效果
-                        allLinks.forEach(link => {
-                            if (link === activeLink) {
-                                link.classList.add("active-toc-item");
-                                foundActive = true; // 标记找到当前项，之后的都不激活
-                            } else if (!foundActive) {
-                                link.classList.add("active-toc-item"); // 当前项之前的，全部激活
-                            } else {
-                                link.classList.remove("active-toc-item"); // 当前项之后的，全部取消
-                            }
-                        });
+                        activeLink.classList.add('active-toc-item');
                     }
                 }
-            });
-        },
-        {
-            rootMargin: "-100px 0px -66% 0px",
-        },
-    );
-
-    document.querySelectorAll("h2, h3").forEach(heading => {
-        observer.observe(heading);
-    });
-
-    // Handle TOC click events
-    document.querySelectorAll(".toc-link").forEach(link => {
-        link.addEventListener("click", e => {
-            const href = link.getAttribute("href");
-            if (!href || !href.startsWith("#")) return;
-
-            const targetId = href.substring(1);
-            const targetElement = document.getElementById(targetId);
-
-            if (targetElement) {
-                e.preventDefault();
-                targetElement.scrollIntoView({ behavior: "smooth" });
-                history.pushState(null, "", href);
+            },
+            {
+                rootMargin: '-80px 0px -50% 0px', // 调整触发区域：顶部偏移 80px（考虑固定导航栏），底部偏移 50%
+                threshold: 0.1
             }
+        );
+
+        // 观察所有相关标题
+        headings.forEach(heading => {
+            observer.observe(heading);
         });
-    });
+
+        // 点击目录链接时的平滑滚动和 URL 更新
+        tocLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                const href = link.getAttribute('href');
+                if (!href || !href.startsWith('#')) return;
+
+                const targetId = href.substring(1);
+                const targetElement = document.getElementById(targetId);
+
+                if (targetElement) {
+                    e.preventDefault();
+                    // 使用平滑滚动
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                    // 更新 URL 哈希而不触发跳转
+                    history.pushState(null, '', href);
+                }
+            });
+        });
+
+        // 页面加载时检查初始激活项
+        const checkInitialActive = () => {
+            // 检查 URL 哈希
+            const hash = window.location.hash.substring(1);
+            if (hash && tocIds.includes(hash)) {
+                const initialLink = document.querySelector(`.toc-link[href="#${hash}"]`);
+                if (initialLink) {
+                    initialLink.classList.add('active-toc-item');
+                    return;
+                }
+            }
+
+            // 如果没有哈希或哈希无效，检查第一个在视口内的标题
+            for (const heading of headings) {
+                const rect = heading.getBoundingClientRect();
+                if (rect.top >= 0 && rect.top < window.innerHeight * 0.5) {
+                    const firstLink = document.querySelector(`.toc-link[href="#${heading.id}"]`);
+                    if (firstLink) {
+                        firstLink.classList.add('active-toc-item');
+                        break;
+                    }
+                }
+            }
+        };
+
+        // 延迟执行以等待页面完全加载
+        setTimeout(checkInitialActive, 100);
+    })();
 </script>

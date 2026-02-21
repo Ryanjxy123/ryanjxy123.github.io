@@ -30,7 +30,7 @@ I. 可以用tensor(data)函数把某一表示数据的数组（其中data可为l
 
   
 
-```
+```python
 
 data = [[1, 2], [3, 4]]
 
@@ -44,7 +44,7 @@ II.也可以通过 from_numpy(data) 函数将numpy.ndarray格式的数据转�
 
   
 
-```
+```python
 
 np_array = np.array(data)
 
@@ -58,7 +58,7 @@ III. 生成一个与其他Tensor具有相同dtype和device等属性的Tensor，�
 
   
 
-```
+```python
 
 x_ones = torch.ones_like(x_data)
 
@@ -95,7 +95,7 @@ I.shape是一个存储tensor维度大小的元组，返回tensor.size（也可�
 
   
 
-```
+```python
 
 shape = (2, 3,)
 
@@ -153,7 +153,7 @@ III.device
 
   
 
-```
+```python
 
 tensor = torch.rand(3, 4)
 
@@ -183,7 +183,7 @@ I.将tensor放到gpu/cpu上
 
   
 
-```
+```python
 
 # We move our tensor to the GPU if available
 
@@ -201,7 +201,7 @@ II. 索引和切片
 
   
 
-```
+```python
 
 tensor = torch.ones(4, 4)
 
@@ -236,7 +236,7 @@ cat要求所有张量在 除拼接维度以外的其他维度上 shape 必须完
   
   
 
-```
+```python
 
 torch.cat(tensor_list, dim)
 
@@ -248,7 +248,7 @@ torch.cat(tensor_list, dim)
 
   
 
-```
+```python
 
 t1 = torch.cat([tensor, tensor, tensor], dim=1) // tensor为上一个代码的tensor
 
@@ -295,7 +295,7 @@ V. 乘法
 
   
 
-```
+```python
 
 a = torch.tensor([[1, 2], [3, 4]])
 
@@ -319,9 +319,9 @@ print(out)
 
   
 
-```
+```python
 
-a = torch.tensor([[1, 2], [3, 4]])  
+a = torch.tensor([[1, 2], [3, 4]])
 
 b = torch.tensor([[5, 6], [7, 8]])
 
@@ -343,7 +343,7 @@ out1 = torch.matmul(a, b)
 
   
 
-```
+```python
 
 print(tensor, "\n")
 

@@ -40,7 +40,7 @@ printList()：输出链表
 
 ## 代码：
 
-```
+```java
 import java.util.Scanner;
 
 
@@ -157,7 +157,7 @@ public class ReverseLinkedList {
 
 ## 代码：
 
-```
+```java
 import java.util.Scanner;
 
 class ListNode {

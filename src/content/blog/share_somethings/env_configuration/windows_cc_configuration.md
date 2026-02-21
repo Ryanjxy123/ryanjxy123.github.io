@@ -9,17 +9,17 @@ tags: ["environment configuration", "share_somethings"]
 
 ![](https://raw.githubusercontent.com/Ryanjxy123/picbed/main/data116226715_p0_master1200.jpg)
 
-*image from [おひとり](https://www.pixiv.net/users/8615136)*
-
-## 1.配置git
-
+*image from [おひとり](https://www.pixiv.net/users/8615136)*  
+   
+## 1.配置git    
+ 
 这一步可以参考知乎上这个教程来进行配置，十分详细，在此不进行过多叙述：[Git下载安装教程：git安装步骤手把手图文【超详细】](https://zhuanlan.zhihu.com/p/443527549)
-
+  
 ## 2.配置node.js
 
 1. 请在你的 PowerShell 终端中，直接运行以下指令来安装 Node.js：
 
-```
+```powershell
 winget install OpenJS.NodeJS.LTS
 ```
 
@@ -29,24 +29,24 @@ winget install OpenJS.NodeJS.LTS
 
 打开一个新的终端，输入以下命令验证是否安装成功：
 
-```
+```powershell
 npm -v
 ```
-
+  
 如果输出了一串数字（例如 10.8.2），说明安装成功。
 
 ## 3.安装claude code
 
 确认 npm -v 能正常输出版本号后，你就可以运行一下指令：
 
-```
+```powershell
 npm install -g @anthropic-ai/claude-code
 ```
 
 （如果下载速度过慢，可以在终端配置一下proxy）
 
 此时在终端输入：
-```
+```powershell
 claude
 ```
 出现如下界面则表示安装成功：
@@ -75,7 +75,7 @@ ps：如果是第一次安装claude，在终端输入claude后需要进行一些
 
 2. 在命令行输入并运行下面的代码，初始化 Conda 的 Bash 环境（可选，如果之前是conda环境则需要执行）
 
-```
+```bash
 conda init bash
 ```
 
@@ -83,7 +83,7 @@ conda init bash
 
 4. 命令行输入并运行下面的代码，自动查找bash.exe的绝对路径 -> 自动转换为纯反斜杠 -> 自动通过 setx 永久写入系统变量
 
-```
+```bash
 setx CLAUDE_CODE_GIT_BASH_PATH "$(cygpath -w /bin/bash.exe)"
 ```
 

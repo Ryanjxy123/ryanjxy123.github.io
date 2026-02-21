@@ -49,7 +49,7 @@ tags: ["ML by LHY"]
 
 ## 导入包
 
-```
+```python
 import math
 import numpy as np
 import pandas as pd
@@ -65,13 +65,13 @@ from sklearn.feature_selection import SelectKBest, f_regression
 
 其中
 
-```
+```python
 from tqdm import tqdm
 ```
 
 tqdm是python中一个用于美化显示进度条的库
 
-```
+```python
 from torch.utils.data import Dataset,DataLoader,random_split
 ```
 
@@ -79,7 +79,7 @@ Dataset:  自定义数据集结构
 DataLoader：将 `Dataset` 包装成可批量、可打乱、可多线程加载的可迭代对象，用于训练循环。  
 random_split: 随机把数据集按比例拆分。
 
-```
+```python
 from torch.utils.tensorboard import SummaryWriter
 ```
 
@@ -92,7 +92,7 @@ from torch.utils.tensorboard import SummaryWriter
 
 ## 一些优化函数
 
-```
+```python
 训练集划分：
 def train_valid_split(data_set, valid_ratio, seed):
     '''Split provided training data into training set and validation set'''
@@ -120,7 +120,7 @@ def predict(test_loader, model, device):
 其中
 
 
-```
+```python
 train_set, valid_set = random_split(...)
 ```
 
@@ -132,7 +132,7 @@ Subset:
     - indices: 子集对应的索引（列表）
 
 其中
-```
+```python
 pre.detach()
 ```
 
@@ -149,7 +149,7 @@ pre.detach()
 
 ## Dataset
 
-```
+```python
 class COVID19Dataset(Dataset):
     '''
     x: Features.
@@ -175,7 +175,7 @@ class COVID19Dataset(Dataset):
 
 ## Neural Network Model
 
-```
+```python
 class My_Model(nn.Module):
     def __init__(self, input_dim):
         super(My_Model, self).__init__()
@@ -197,7 +197,7 @@ class My_Model(nn.Module):
 
 ## Feature Selection
 
-```
+```python
 def select_feat(train_data, valid_data, test_data, select_all=True):
     '''Selects useful features to perform regression'''
     y_train, y_valid = train_data[:,-1], valid_data[:,-1]
@@ -212,7 +212,7 @@ def select_feat(train_data, valid_data, test_data, select_all=True):
 ```
 ## Training loop
 
-```
+```python
 def trainer(train_loader, valid_loader, model, config, device):
 
     criterion = nn.MSELoss(reduction='mean') # Define your loss function, do not modify this.
@@ -282,7 +282,7 @@ def trainer(train_loader, valid_loader, model, config, device):
 
 其中
 
-```
+```python
  x, y = x.to(device), y.to(device)
 ```
 
@@ -290,13 +290,13 @@ def trainer(train_loader, valid_loader, model, config, device):
     
 - 原来的 `x` 不会被原地修改
 
-```
+```python
 loss.backward()
 ```
 
 	`loss.backward()` 并不会更新权重参数本身，只是把梯度算好。
 
-```
+```python
 optimizer.step()
 ```
 
@@ -308,7 +308,7 @@ optimizer.step()
 
 “清零 → 正向 → 计算损失 → 反向（算梯度） → 优化（更新参数）”:
 
-```
+```python
 optimizer.zero_grad()               # Set gradient to zero.
 
 x, y = x.to(device), y.to(device)   # Move your data to device.
@@ -324,18 +324,18 @@ optimizer.step()
 
 ⭐一些细碎的知识：
 
-```
+```python
  loss_record.append(loss.detach().item())
 ```
 
-```
+```python
 loss.detach()
 ```
 **功能：** 创建一个与原张量内容相同的新张量，但这个新张量**不再是计算图的一部分**。这意味着对新张量的任何操作都不会被记录下来以供反向传播。它会中断从这个点开始的梯度流。  
 可用于特殊的阶段梯度流：  
 假设你有一个复杂的模型，其中包含两个子模型 `model_A` 和 `model_B`。你希望 `model_B` 的训练依赖于 `model_A` 的输出，但是你不希望 `model_B` 的梯度反向传播回去影响 `model_A` 的参数。
 
-```
+```python
 import torch
 import torch.nn as nn
 
@@ -382,7 +382,7 @@ loss_detached_path.backward() # 只有 model_B 的梯度会被计算和更新
 相当于将model_A那一部分从计算图中拿出  
 当 `loss_detached_path.backward()` 被调用时，梯度只能反向传播到 `model_B`。因为 `output_A_detached` 不在计算图中，梯度无法从 `output_A_detached` 向前传到 `model_A`。因此，`model_A` 的参数将不会被更新。
 
-```
+```python
 	loss.item()
 ```
 **功能：** 直接将一个包含单个元素的 PyTorch 张量转换为标准的 Python 标量（`float` 或 `int`）。
@@ -393,7 +393,7 @@ loss_detached_path.backward() # 只有 model_B 的梯度会被计算和更新
 
 从文件中读取数据并设置训练集、验证集和测试集。
 
-```
+```python
 # Set seed for reproducibility
 same_seed(config['seed'])
 
@@ -426,14 +426,14 @@ test_loader = DataLoader(test_dataset, batch_size=config['batch_size'], shuffle=
 
 ## start train
 
-```
+```python
 model = My_Model(input_dim=x_train.shape[1]).to(device) # put your model and data on the same computation device.
 trainer(train_loader, valid_loader, model, config, device)
 ```
 
 ## Testing
 
-```
+```python
 def save_pred(preds, file):
     ''' Save predictions to specified file '''
     with open(file, 'w') as fp:
@@ -490,7 +490,7 @@ save_pred(preds, 'pred.csv')
 
 ### ii 使用闭包
 
-```
+```python
         for x, y in train_pbar:
             x, y = x.to(device), y.to(device)
             def closure():
@@ -532,7 +532,7 @@ closure 本质是：
 通过 closure，优化器内部即可多次自动调用并获取最新梯度和损失。
 
 同时需要注意代码中
-```
+```python
             loss = closure()                        # Compute loss.
             optimizer.step(closure) 
 ```
@@ -560,12 +560,12 @@ closure 本质是：
 
 首先导入相关的包
 
-```
+```python
 from sklearn.feature_selection import SelectKBest, f_regression
 ```
 之后通过内置函数进行特征选择，选取出15个与得病率最相关的特征进行训练
 
-```
+```python
 # --- 核心修改：在训练集上进行特征选择并获取索引 ---
 k = 15 # 选择 K 个最佳特征的数量
 

@@ -51,7 +51,7 @@ tags: ["DS"]
 
 ## 代码：
 
-```
+```java
 import java.util.Scanner;
 import java.util.Stack;
 
@@ -114,7 +114,7 @@ public class Bracket{
 
 输入3：s= "xjtusexjtuse"，期望输出：-1
 
-```
+```java
 import java.util.*;
 
 public class FirstUnique {

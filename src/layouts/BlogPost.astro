@@ -103,4 +103,318 @@ const readingTime = getReadingTime(body);
 		</div>
 		<Footer />
 	</Container>
+
+<!-- 代码块增强样式 -->
+<style is:global>
+.code-block-wrapper {
+	position: relative;
+	margin-top: 1.5rem;
+	margin-bottom: 1.5rem;
+	border: 1px solid #e5e7eb;
+	border-radius: 0.375rem;
+	overflow: hidden;
+	background-color: #f9fafb;
+}
+
+.dark .code-block-wrapper {
+	border-color: #374151;
+	background-color: #1f2937;
+}
+
+.code-block-top-bar {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 0.5rem 1rem;
+	font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+	font-size: 0.75rem;
+	line-height: 1rem;
+	color: #6b7280;
+	background-color: #f3f4f6;
+	border-bottom: 1px solid #e5e7eb;
+}
+
+.dark .code-block-top-bar {
+	color: #9ca3af;
+	background-color: #374151;
+	border-bottom-color: #4b5563;
+}
+
+.code-block-language {
+	font-weight: 500;
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+}
+
+.code-block-copy-btn {
+	position: absolute;
+	top: 0.5rem;
+	right: 0.5rem;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 2rem;
+	height: 2rem;
+	padding: 0.25rem;
+	border-radius: 0.25rem;
+	background-color: #ffffff;
+	border: 1px solid #d1d5db;
+	color: #4b5563;
+	opacity: 0;
+	transition: opacity 0.2s ease, background-color 0.2s ease;
+	cursor: pointer;
+}
+
+.dark .code-block-copy-btn {
+	background-color: #4b5563;
+	border-color: #6b7280;
+	color: #d1d5db;
+}
+
+.code-block-wrapper:hover .code-block-copy-btn {
+	opacity: 1;
+}
+
+.code-block-copy-btn:hover {
+	background-color: #e5e7eb;
+}
+
+.dark .code-block-copy-btn:hover {
+	background-color: #6b7280;
+}
+
+.code-block-copy-btn svg {
+	width: 1rem;
+	height: 1rem;
+}
+
+.code-block-copy-btn.copied {
+	background-color: #10b981;
+	color: #ffffff;
+	border-color: #10b981;
+}
+
+.code-block-copy-btn.copied:hover {
+	background-color: #059669;
+}
+
+.code-block-wrapper pre {
+	margin: 0;
+	padding: 0.75rem 1rem 0.75rem 3.5em; /* 减小上下间距，左侧padding为行号预留空间 */
+	overflow-x: auto;
+	overflow-y: hidden !important; /* 彻底禁用垂直滚动 */
+	height: auto !important; /* 确保高度由内容决定 */
+	background-color: transparent !important;
+	border-radius: 0;
+	position: relative;
+	counter-reset: line;
+	white-space: pre;
+	/* Firefox 滚动条样式 */
+	scrollbar-width: thin;
+	scrollbar-color: rgba(110, 118, 129, 0.3) transparent;
+}
+
+.code-block-wrapper pre code {
+	background-color: transparent;
+}
+
+
+/* 暗黑模式滚动条样式 */
+.dark .code-block-wrapper pre {
+	/* Firefox 暗黑模式滚动条 */
+	scrollbar-color: rgba(255, 255, 255, 0.1) transparent;
+}
+
+
+/* 禁用代码换行，确保横向滚动 */
+.code-block-wrapper pre code {
+	white-space: pre;
+	display: block;
+	position: relative;
+}
+
+/* 行元素样式 */
+.code-block-wrapper pre code .line {
+	display: block;
+	position: relative;
+	counter-increment: line;
+	line-height: 0.5; /* 紧凑行间距 */
+	margin: 0;
+	padding: 0;
+}
+
+/* 行号伪元素 */
+.code-block-wrapper pre code .line::before {
+	content: counter(line);
+	position: absolute;
+	left: -3.5em;
+	top: 0;
+	width: 3.5em;
+	padding-right: 1em; /* 行号与代码的间距 */
+	text-align: right;
+	color: #9ca3af;
+	font-variant-numeric: tabular-nums;
+	user-select: none;
+	/* 移除垂直分割线 */
+	box-sizing: border-box;
+	line-height: inherit;
+}
+
+/* 暗黑模式行号样式 */
+.dark .code-block-wrapper pre code .line::before {
+	color: #6b7280;
+	/* 移除垂直分割线 */
+}
+
+/* 确保代码内容不折行 */
+.code-block-wrapper pre code,
+.code-block-wrapper pre code .line,
+.code-block-wrapper pre code .line > span {
+	white-space: pre !important;
+	word-wrap: normal !important;
+	word-break: normal !important;
+	overflow-wrap: normal !important;
+}
+
+/* 自定义滚动条样式 */
+.code-block-wrapper pre::-webkit-scrollbar {
+	height: 6px; /* 减小横向滚动条高度，使其更精致 */
+	width: 0;    /* 确认不显示垂直滚动条 */
+}
+
+/* 滚动条轨道（背景） */
+.code-block-wrapper pre::-webkit-scrollbar-track {
+	background: transparent;
+}
+
+/* 滚动条滑块（拖动块） */
+.code-block-wrapper pre::-webkit-scrollbar-thumb {
+	background-color: rgba(110, 118, 129, 0.3); /* 默认淡灰色 */
+	border-radius: 10px;
+}
+
+/* 夜晚模式下的滑块优化 */
+.dark .code-block-wrapper pre::-webkit-scrollbar-thumb {
+	background-color: rgba(255, 255, 255, 0.1); /* 更加透明，不突兀 */
+}
+
+/* 鼠标悬停时才加深颜色，平时尽量隐藏 */
+.code-block-wrapper pre:hover::-webkit-scrollbar-thumb {
+	background-color: rgba(110, 118, 129, 0.5);
+}
+
+/* Shiki 双主题变量映射 */
+html.dark .code-block-wrapper pre code,
+html.dark .code-block-wrapper pre code span,
+html.dark .astro-code,
+html.dark .astro-code span {
+	color: var(--shiki-dark) !important;
+	background-color: var(--shiki-dark-bg) !important;
+}
+
+</style>
+
+<!-- 代码块增强脚本 -->
+<script is:inline>
+(function() {
+	function enhanceCodeBlocks() {
+		// 找到所有 pre 标签，但排除已经被包装过的
+		document.querySelectorAll('pre:not(.code-block-enhanced)').forEach(pre => {
+			// 标记为已处理，避免重复处理
+			pre.classList.add('code-block-enhanced');
+
+			// 移除 Shiki 内联背景色
+			pre.style.backgroundColor = 'transparent';
+
+			// 获取语言
+			// 优先从 pre 的 data-language 属性中获取（Astro/Shiki 的标准方式）
+			let language = 'text';
+			const dataLanguage = pre.getAttribute('data-language');
+
+			if (dataLanguage && dataLanguage.trim() !== '') {
+				language = dataLanguage;
+			} else {
+				// 如果 data-language 不存在或为空，尝试从 code 元素的类名中获取
+				const code = pre.querySelector('code');
+				if (code) {
+					const classList = code.classList;
+					for (const cls of classList) {
+						if (cls.startsWith('language-')) {
+							language = cls.replace('language-', '');
+							break;
+						}
+					}
+				}
+			}
+
+			// 创建包装器
+			const wrapper = document.createElement('div');
+			wrapper.className = 'code-block-wrapper';
+
+			// 创建顶部栏
+			const topBar = document.createElement('div');
+			topBar.className = 'code-block-top-bar';
+
+			// 语言标签
+			const langSpan = document.createElement('span');
+			langSpan.className = 'code-block-language';
+			langSpan.textContent = language;
+
+			// 复制按钮
+			const copyBtn = document.createElement('button');
+			copyBtn.className = 'code-block-copy-btn';
+			copyBtn.setAttribute('type', 'button');
+			copyBtn.setAttribute('aria-label', '复制代码');
+			copyBtn.innerHTML = `
+				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+					<path stroke-linecap="round" stroke-linejoin="round" d="M15.666 3.888A2.25 2.25 0 0013.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 01-.75.75H9a.75.75 0 01-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 01-2.25 2.25H6.75A2.25 2.25 0 014.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 011.927-.184" />
+				</svg>
+			`;
+
+			// 复制成功图标
+			const checkIcon = `
+				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+					<path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+				</svg>
+			`;
+
+			// 复制逻辑
+			copyBtn.addEventListener('click', async () => {
+				const text = pre.innerText;
+				try {
+					await navigator.clipboard.writeText(text);
+					const originalHTML = copyBtn.innerHTML;
+					copyBtn.innerHTML = checkIcon;
+					copyBtn.classList.add('copied');
+					setTimeout(() => {
+						copyBtn.innerHTML = originalHTML;
+						copyBtn.classList.remove('copied');
+					}, 2000);
+				} catch (err) {
+					console.error('复制失败:', err);
+				}
+			});
+
+			topBar.appendChild(langSpan);
+			wrapper.appendChild(topBar);
+			wrapper.appendChild(pre.cloneNode(true));
+			pre.parentNode.replaceChild(wrapper, pre);
+
+			// 将复制按钮添加到包装器（绝对定位）
+			wrapper.appendChild(copyBtn);
+		});
+	}
+
+	// 在 Astro 页面加载后执行
+	if (document.readyState === 'loading') {
+		document.addEventListener('DOMContentLoaded', enhanceCodeBlocks);
+	} else {
+		enhanceCodeBlocks();
+	}
+
+	// 监听 View Transitions 事件
+	document.addEventListener('astro:page-load', enhanceCodeBlocks);
+})();
+</script>
+
 </BaseLayout>

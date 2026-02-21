@@ -100,3 +100,9 @@ html.dark .hover\:shadow-xl:hover {
     }
 
 }
+
+/* Shiki 双主题变量映射 */
+html.dark .astro-code, html.dark .astro-code span {
+  color: var(--shiki-dark) !important;
+  background-color: var(--shiki-dark-bg) !important;
+}

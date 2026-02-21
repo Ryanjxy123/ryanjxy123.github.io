@@ -39,7 +39,7 @@ HKUDS/nanobot 是一个主打极简主义与超轻量级的开源 AI 智能体�
 > 安装时如果进度条加载过慢，可能是电脑安全拦截，关闭所有安全防护软件后再查看进度。
 
 ### 创建并激活环境
-```
+```powershell
 conda create -n nanobot python=3.11 
 conda activate nanobot
 ```
@@ -48,7 +48,7 @@ conda activate nanobot
 1. 克隆 GitHub 仓库并安装依赖。  
 2. 执行初始化命令生成配置文件。
 
-```
+```powershell
 # 克隆项目
 git clone https://github.com/HKUDS/nanobot.git
 
@@ -67,9 +67,9 @@ nanobot onboard
 ## Step 3：配置 LLM 模型
 你需要一个大模型 API 来让 Nanobot 理解你的指令。编辑配置文件 ~/.nanobot/config.json。  
 推荐使用 OpenRouter（支持多种模型）或 OpenAI / Anthropic。  
-以下是使用 OpenRouter 的配置示例：  
+以下是使用 OpenRouter 的配置示例：
 
-```
+```text
 {
   "providers": {
     "openrouter": {
@@ -100,7 +100,7 @@ nanobot onboard
 1. 权限管理：
 进入 开发配置 -> 权限管理，搜索并开通以下两个权限：
 
-```
+```text
 im:message (获取与发送单聊、群组消息)
 im:message:send_as_bot (以应用身份发送消息)
 ```
@@ -127,7 +127,7 @@ im:message:send_as_bot (以应用身份发送消息)
 
 1. 修改配置文件：
 再次编辑 ~/.nanobot/config.json，找到 channels -> feishu 部分。
-```
+```text
   "channels": {
     "feishu": {
       "enabled": true,  // 修改为 true
@@ -142,7 +142,7 @@ im:message:send_as_bot (以应用身份发送消息)
 2. 启动网关服务：
 在项目终端执行以下命令启动 Nanobot。
 
-```
+```powershell
 nanobot gateway
 ```
 3. 验证连接：

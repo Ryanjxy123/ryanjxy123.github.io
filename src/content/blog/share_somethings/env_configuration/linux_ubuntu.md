@@ -36,7 +36,7 @@ https://zhuanlan.zhihu.com/p/5480997594
 
 2.之后启动终端，cd到包含下载.deb文件的路径下，执行：
 
-```
+```bash
 sudo apt install ./qqxxx.deb
 ```
 
@@ -80,7 +80,7 @@ Linux 默认将硬件时间（RTC）设为 UTC，Windows 默认将其设为本�
 
 也可以在Linux终端输入：
 
-```
+```bash
 sudo timedatectl set-local-rtc 1
 ```
 
@@ -88,12 +88,12 @@ sudo timedatectl set-local-rtc 1
 
 之后输入
 
-```
+```bash
 timedatectl
 ```
 进行检查，确认输出一下这行：
 
-```
+```text
 RTC in local TZ: yes
 ```
 
@@ -103,7 +103,7 @@ RTC in local TZ: yes
 
 1.首先确认显卡型号：
 
-```
+```bash
 lspci | grep VGA
 ```
 
@@ -112,7 +112,7 @@ lspci | grep VGA
 
 2.更新系统
 
-```
+```bash
 sudo apt update
 sudo apt upgrade -y
 sudo apt dist-upgrade -y
@@ -127,13 +127,13 @@ sudo reboot
 
 直接手动安装推荐驱动
 
-```
+```bash
 //查看推荐版本
 ubuntu-drivers devices
 ```
 再执行
 
-```
+```bash
 //将xxx改为推荐版本的编号
 sudo apt install nvidia-driver-xxx
 ```
@@ -144,7 +144,7 @@ Ubuntu 20.04 自带开源 amdgpu，若无法识别，可考虑升级内核（如
 
 通常开箱即用，若问题依旧可升级内核或安装：
 
-```
+```bash
 sudo apt install xserver-xorg-video-intel
 ```
 

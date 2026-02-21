@@ -27,7 +27,7 @@ tags: ["DS"]
 请写出 BFS 和 DFS 的遍历结果（从 0 开始）。
 
 ## 代码：
-```
+```java
 import java.util.*;
 
 public class GraphMatrix {
@@ -134,7 +134,7 @@ public class GraphMatrix {
 
 1. 定义图的数据结构：  
 
-```
+```c++
 typedef struct Node {
 
    int v;
@@ -158,8 +158,8 @@ typedef struct {
 
 3. 编写函数 voidDFS_List(Graph* g, int start) 对图进行 DFS 遍历并输出遍历序列。   
 
-4. 给定如下邻接表（n = 6），请写出 BFS 和 DFS 的输出序列，起点为1：  
-```
+4. 给定如下邻接表（n = 6），请写出 BFS 和 DFS 的输出序列，起点为1：
+```text
 1: 2 → 3
 
 2: 1 → 4 → 5
@@ -173,7 +173,7 @@ typedef struct {
 6: 3 → 5
 ```
 ## 代码：
-```
+```java
 import java.util.*;
 
 class Node {

@@ -41,7 +41,7 @@ tags: ["projects","meshcat","Pinocchio"]
 
 1. 有关相机位置姿态设置的函数代码如下：
 
-```
+```python
  def look_at(viz, camera_pos, target_pos, up=np.array([0, 0, 1])):
     camera_pos = np.array(camera_pos)
     target_pos = np.array(target_pos)
@@ -86,7 +86,7 @@ tags: ["projects","meshcat","Pinocchio"]
 
 之后再main函数中调用look_at函数即可:
 
-```
+```python
 # 可以放在vis.display的后面
 look_at(viz,camera_pos=[-0.0032, 0.01, 1.9526],target_pos=[-0.0032, -0.5903, 1.3026])
 
@@ -99,17 +99,17 @@ look_at(viz,camera_pos=[-0.0032, 0.01, 1.9526],target_pos=[-0.0032, -0.5903, 1.3
 2. 进行视频镜像调整之前，需要先安装必要的库依赖。进入虚拟环境后运行以下命令：
 
 安装moviepy和imageio库：
-```
+```powershell
 pip install moviepy imageio[ffmpeg]
 ```
 
 升级imageio库：
-```
+```powershell
 pip install --upgrade imageio
 ```
 
 升级imageio-ffmpeg库：
-```
+```powershell
 pip install --upgrade imageio-ffmpeg
 ```
 
@@ -121,7 +121,7 @@ pip install --upgrade imageio-ffmpeg
 
 
 
-```
+```python
 from moviepy.editor import VideoFileClip, vfx
 
 def mirror_video(input_path, output_path):

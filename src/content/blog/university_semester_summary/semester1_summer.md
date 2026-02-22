@@ -3,13 +3,11 @@ title: '大一暑假回顾'
 description: "假期总结"
 pubDate: '2025-08-20'    
 heroImage: "https://raw.githubusercontent.com/Ryanjxy123/picbed/main/dataDie%20As%20One-133779231.png"
+heroImageSource: "https://www.pixiv.net/artworks/133779231"  
 tags: ["vacation summary"]
 
 ---
 
-![](https://raw.githubusercontent.com/Ryanjxy123/picbed/main/dataDie%20As%20One-133779231.png)
-
-*image from [Rune Xiao](https://pixiviz.pwp.app/artist/44473246)*
 
 <blockquote style="text-align: center;">
     <p ><em>月亮变得很红了，已经没有时间了。</em></p>

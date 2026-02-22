@@ -3,13 +3,11 @@ title: 'Week16———期末周特别篇（大二上）'
 # description: "周记"
 pubDate: '2026-01-16'    
 heroImage: "https://raw.githubusercontent.com/Ryanjxy123/picbed/main/data139684763_p0_master1200.jpg"
+heroImageSource: "https://www.pixiv.net/artworks/139684763"
 tags: ["周记"]
 
 ---
 
-![](https://raw.githubusercontent.com/Ryanjxy123/picbed/main/data139684763_p0_master1200.jpg)
-
-*image from [ᴍᴏ](https://www.pixiv.net/users/53427081)*
 
 
 <blockquote style="text-align: center;">

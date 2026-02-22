@@ -3,16 +3,12 @@ title: '大一上总结回顾'
 description: "学期总结"
 pubDate: '2025-01-11'    
 heroImage: "https://raw.githubusercontent.com/Ryanjxy123/picbed/main/databizhihui_com_202504021743565097506000.jpg"
+heroImageSource: "https://raw.githubusercontent.com/Ryanjxy123/picbed/main/databizhihui_com_202504021743565097506000.jpg" 
 tags: ["semester summary"]
 
 ---
   
 
-  
-
-![](https://raw.githubusercontent.com/Ryanjxy123/picbed/main/databizhihui_com_202504021743565097506000.jpg)
-
-  
 
 <blockquote style="text-align: center;">
 

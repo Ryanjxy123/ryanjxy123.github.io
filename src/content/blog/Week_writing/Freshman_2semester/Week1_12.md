@@ -3,11 +3,11 @@ title: 'Week1（大一下）'
 # description: "周记"
 pubDate: '2025-03-31'    
 heroImage: "https://raw.githubusercontent.com/Ryanjxy123/picbed/main/databizhihui_com_20231113002504169980630419880.jpg"
+heroImageSource: "https://raw.githubusercontent.com/Ryanjxy123/picbed/main/databizhihui_com_20231113002504169980630419880.jpg"  
 tags: ["周记"]
 
 ---
 
-![](https://raw.githubusercontent.com/Ryanjxy123/picbed/main/databizhihui_com_20231113002504169980630419880.jpg)
 
 <blockquote style="text-align: center;">
     <p ><em>我不知将去何方，但我已经在路上。</em></p>

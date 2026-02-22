@@ -3,13 +3,11 @@ title: 'nanobot配置+使用教程(简单版)'
 description: ""
 pubDate: '2026-02-13'    
 heroImage: "https://raw.githubusercontent.com/Ryanjxy123/picbed/main/data130061492_p0_master1200.jpg"
+heroImageSource: "https://www.pixiv.net/artworks/130061492" 
 tags: ["projects"]
 
 ---
   
-![](https://raw.githubusercontent.com/Ryanjxy123/picbed/main/data130061492_p0_master1200.jpg)
-
-*image from [ゲン助](https://www.pixiv.net/users/32008)*
 
 # nanobot 远程控制部署教程
 

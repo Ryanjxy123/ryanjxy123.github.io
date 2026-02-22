@@ -3,13 +3,11 @@ title: '数据结构与算法设计综合训练上机题目2'
 # description: "周记"
 pubDate: '2025-11-02'    
 heroImage: "https://raw.githubusercontent.com/Ryanjxy123/picbed/main/data萃香🍂-131125125.png"
+heroImageSource: "https://www.pixiv.net/artworks/131125125"
 tags: ["DS"]
 
 ---
 
-![](https://raw.githubusercontent.com/Ryanjxy123/picbed/main/data萃香🍂-131125125.png)
-
-*image from [Rhea](https://pixiviz.pwp.app/artist/113473183)*
 
 ## 题目一
 

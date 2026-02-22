@@ -3,11 +3,10 @@ title: '数据结构与算法设计综合训练上机题目1'
 # description: "周记"
 pubDate: '2025-10-19'    
 heroImage: "https://raw.githubusercontent.com/Ryanjxy123/picbed/main/data%E8%91%AC%E9%80%81%E3%81%AE%E3%83%95%E3%83%AA%E3%83%BC%E3%83%AC%E3%83%B3%20P2-134948898.png"
+heroImageSource: "https://raw.githubusercontent.com/Ryanjxy123/picbed/main/data%E8%91%AC%E9%80%81%E3%81%AE%E3%83%95%E3%83%AA%E3%83%BC%E3%83%AC%E3%83%B3%20P2-134948898.png"
 tags: ["DS"]
 
 ---
-
-![](https://raw.githubusercontent.com/Ryanjxy123/picbed/main/data%E8%91%AC%E9%80%81%E3%81%AE%E3%83%95%E3%83%AA%E3%83%BC%E3%83%AC%E3%83%B3%20P2-134948898.png)
 
 ## 题目一
 

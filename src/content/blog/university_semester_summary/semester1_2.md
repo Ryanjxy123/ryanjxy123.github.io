@@ -3,13 +3,11 @@ title: '大一下总结回顾'
 description: "学期总结"
 pubDate: '2025-07-13'    
 heroImage: "https://raw.githubusercontent.com/Ryanjxy123/picbed/main/data132379284_p0_master1200.jpg"
+heroImageSource: "https://www.pixiv.net/artworks/132379284"   
 tags: ["semester summary"]
 
 ---
   
-![](https://raw.githubusercontent.com/Ryanjxy123/picbed/main/data132379284_p0_master1200.jpg)
-
-*image from [绘谋](https://www.pixiv.net/artworks/132379284)*
 
 <blockquote style="text-align: center;">
     <p ><em>一切好像很糟糕，但又好像刚刚好</em></p>

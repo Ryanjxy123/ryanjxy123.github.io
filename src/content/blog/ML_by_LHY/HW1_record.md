@@ -7,8 +7,6 @@ tags: ["ML by LHY"]
 
 ---
 
-![a](https://raw.githubusercontent.com/Ryanjxy123/picbed/main/data【哲风壁纸】二次元-人物-动漫.png)
-
 # 作业介绍
 这是这个课程的第一次作业，主要内容：
 通过所给的COVID19 的train的五天完整数据以及test的前四天完整数据以及第五天的feature数据，去预测test数据的第五天得病率。

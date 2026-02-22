@@ -3,13 +3,10 @@ title: 'Normalization'
 description: "batch nrom vs layer norm"
 pubDate: '2025-07-18'    
 heroImage: "https://raw.githubusercontent.com/Ryanjxy123/picbed/main/datacommissionイラスト-132731053.png"
+heroImageSource: "https://www.pixiv.net/artworks/132731053"  
 tags: ["paper read","knowledge share"]
 
 ---
-
-![](https://raw.githubusercontent.com/Ryanjxy123/picbed/main/datacommissionイラスト-132731053.png)
-
-*image from [めたたろう](https://pixiviz.pwp.app/artist/53999519)*
 
 
 最近刚好追溯到layer normalization这个正则化方法的论文，感觉稍微有些理解了便做一下记录，也分享一些相关的知识。

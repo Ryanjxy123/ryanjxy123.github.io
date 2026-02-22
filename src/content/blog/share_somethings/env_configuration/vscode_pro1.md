@@ -3,13 +3,10 @@ title: 'vscode突然打不开的解决办法'
 # description: "周记"
 pubDate: '2025-12-26'    
 heroImage: "https://raw.githubusercontent.com/Ryanjxy123/picbed/main/data%E5%A4%A9%E7%AB%A5%E3%82%A2%E3%83%AA%E3%82%B9%20Valentine%20is%20U-138945282.png"
+heroImageSource: "https://pixiviz.pwp.app/pic/138945282"  
 tags: ["problems"]
 
 ---
-
-![](https://raw.githubusercontent.com/Ryanjxy123/picbed/main/data%E5%A4%A9%E7%AB%A5%E3%82%A2%E3%83%AA%E3%82%B9%20Valentine%20is%20U-138945282.png)
-
-*image from [M.Q](https://pixiviz.pwp.app/artist/9243247)*
 
 ## 问题
 

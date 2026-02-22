@@ -3,11 +3,11 @@ title: 'Week3（大一下）'
 # description: "周记"
 pubDate: '2025-04-14'    
 heroImage: "https://raw.githubusercontent.com/Ryanjxy123/picbed/main/databizhihui_com_20231111141438169968327820688.jpg"
+heroImageSource: "https://raw.githubusercontent.com/Ryanjxy123/picbed/main/databizhihui_com_20231111141438169968327820688.jpg"  
 tags: ["周记"]
 
 ---
 
-![](https://raw.githubusercontent.com/Ryanjxy123/picbed/main/databizhihui_com_20231111141438169968327820688.jpg)
 
 <blockquote style="text-align: center;">
     <p ><em>

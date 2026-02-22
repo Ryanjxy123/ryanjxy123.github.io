@@ -3,13 +3,10 @@ title: 'Week3（大二上）'
 # description: "周记"
 pubDate: '2025-09-27'    
 heroImage: "https://raw.githubusercontent.com/Ryanjxy123/picbed/main/dataNight%20Reign-135515413.png"
+heroImageSource: "https://www.pixiv.net/artworks/135515413"
 tags: ["周记"]
 
 ---
-
-![](https://raw.githubusercontent.com/Ryanjxy123/picbed/main/dataNight%20Reign-135515413.png)
-
-*image from [PineA](https://pixiviz.pwp.app/artist/84609574)*
 
 
 <blockquote style="text-align: center;">

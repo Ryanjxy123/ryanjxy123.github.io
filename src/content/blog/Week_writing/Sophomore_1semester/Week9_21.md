@@ -3,14 +3,10 @@ title: 'Week9（大二上）'
 # description: "周记"
 pubDate: '2025-11-09'    
 heroImage: "https://raw.githubusercontent.com/Ryanjxy123/picbed/main/dataあめのひ-130947439.png"
+heroImageSource: "https://www.pixiv.net/artworks/130947439"
 tags: ["周记"]
 
 ---
-
-![](https://raw.githubusercontent.com/Ryanjxy123/picbed/main/dataあめのひ-130947439.png)
-
-*image from [冴島一茶](https://pixiviz.pwp.app/artist/16432504)*
-
 
 <blockquote style="text-align: center;">
     <p ><em>愿在我回看这条不平凡的路时，能为自己感到骄傲。</em></p>

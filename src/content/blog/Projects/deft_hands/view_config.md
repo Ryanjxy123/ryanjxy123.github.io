@@ -7,10 +7,6 @@ tags: ["projects","meshcat","Pinocchio"]
 
 ---
 
-![](https://raw.githubusercontent.com/Ryanjxy123/picbed/main/data無題-134240095.png)
-
-
-*image from [夏眠](https://pixiviz.pwp.app/artist/81852718)*
 
 此问题是在进行有关Renderer之后得到Robot image的部分出现的，在次进行相应记录。
 

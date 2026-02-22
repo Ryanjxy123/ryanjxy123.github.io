@@ -3,13 +3,10 @@ title: 'Week4（大二上）'
 # description: "周记"
 pubDate: '2025-10-05    '    
 heroImage: "https://raw.githubusercontent.com/Ryanjxy123/picbed/main/data居住区-75587265.png"
+heroImageSource: "https://www.pixiv.net/artworks/75587265"
 tags: ["周记"]
 
 ---
-
-![](https://raw.githubusercontent.com/Ryanjxy123/picbed/main/data居住区-75587265.png)
-
-*image from [電鬼](https://pixiviz.pwp.app/artist/10772)*
 
 
 <blockquote style="text-align: center;">

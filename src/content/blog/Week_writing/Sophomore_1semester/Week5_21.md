@@ -3,13 +3,11 @@ title: 'Week5（大二上）'
 # description: "周记"
 pubDate: '2025-10-12    '    
 heroImage: "https://raw.githubusercontent.com/Ryanjxy123/picbed/main/data无题-136332392.png"
+heroImageSource: "https://www.pixiv.net/artworks/136332392"
 tags: ["周记"]
 
 ---
 
-![](https://raw.githubusercontent.com/Ryanjxy123/picbed/main/data无题-136332392.png)
-
-*image from [momostima](https://pixiviz.pwp.app/artist/89801761)*
 
 
 <blockquote style="text-align: center;">

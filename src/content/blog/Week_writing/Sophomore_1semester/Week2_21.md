@@ -3,13 +3,11 @@ title: 'Week2（大二上）'
 # description: "周记"
 pubDate: '2025-09-21'    
 heroImage: "https://raw.githubusercontent.com/Ryanjxy123/picbed/main/data芽吹く-134748735.png"
+heroImageSource: "https://www.pixiv.net/artworks/134748735"
 tags: ["周记"]
 
 ---
 
-![](https://raw.githubusercontent.com/Ryanjxy123/picbed/main/data芽吹く-134748735.png)
-
-*image from [furi / ふーり](https://pixiviz.pwp.app/artist/41736171)*
 
 
 <blockquote style="text-align: center;">

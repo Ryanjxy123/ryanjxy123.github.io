@@ -3,11 +3,10 @@ title: 'Week6（大一下）'
 # description: "周记"
 pubDate: '2025-05-05'    
 heroImage: "https://raw.githubusercontent.com/Ryanjxy123/picbed/main/databizhihui_com_20231109141412169951045271252.jpg"
-tags: ["周记"]
-
+heroImageSource: "https://raw.githubusercontent.com/Ryanjxy123/picbed/main/databizhihui_com_20231109141412169951045271252.jpg"    
+tags: ["周记"]  
 ---
-
-![a](https://raw.githubusercontent.com/Ryanjxy123/picbed/main/databizhihui_com_20231109141412169951045271252.jpg)
+  
 
 <blockquote style="text-align: center;">
     <p ><em>有伤害人的人存在的话，也会有能抚慰伤痕的人。</em></p>

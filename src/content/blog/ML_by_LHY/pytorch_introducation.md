@@ -8,9 +8,6 @@ tags: ["ML by LHY"]
 ---
   
 
-![](https://raw.githubusercontent.com/Ryanjxy123/picbed/main/data【哲风壁纸】千束-莉可丽丝.png)
-
-  
 
 # 1.Tensor
 

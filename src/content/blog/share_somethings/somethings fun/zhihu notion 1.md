@@ -3,13 +3,11 @@ title: '知乎优质文章小记-1'
 description: ""
 pubDate: '2026-02-15'    
 heroImage: "https://raw.githubusercontent.com/Ryanjxy123/picbed/main/data130990804_p0_master1200.jpg"
+heroImageSource: "https://www.pixiv.net/artworks/130061492" 
 tags: ["zhihu", "share_somethings"]
 
 ---
 
-![](https://raw.githubusercontent.com/Ryanjxy123/picbed/main/data130990804_p0_master1200.jpg)
-
-*image from [fjsmu（ふじしむ）](https://www.pixiv.net/users/7569500)*
 
 本文内容摘自[SeroEC-柒](https://www.zhihu.com/people/77-20-28-71)的[《大学生该怎么卷？怎么活？——基于爬虫和AI分析从伊蕾娜从SOTA到Love的“算法”进化史》](https://zhuanlan.zhihu.com/p/2006174732488298539)。
 

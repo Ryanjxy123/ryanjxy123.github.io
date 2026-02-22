@@ -3,11 +3,10 @@ title: 'Week7（大一下）'
 # description: "周记"
 pubDate: '2025-05-12'    
 heroImage: "https://raw.githubusercontent.com/Ryanjxy123/picbed/main/data20250429015740174586306070437.jpg"
-tags: ["周记"]
-
+heroImageSource: "https://raw.githubusercontent.com/Ryanjxy123/picbed/main/data20250429015740174586306070437.jpg"   
+tags: ["周记"]  
 ---
-
-![a](https://raw.githubusercontent.com/Ryanjxy123/picbed/main/data20250429015740174586306070437.jpg)
+  
 
 <blockquote style="text-align: center;">
     <p ><em>改不了的事，知道没用；改得了的事，知道干嘛</em></p>

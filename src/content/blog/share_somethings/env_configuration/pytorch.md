@@ -3,14 +3,11 @@ title: 'Pytorch简易安装'
 description: "笨蛋方法"
 pubDate: '2025-07-09'    
 heroImage: "https://raw.githubusercontent.com/Ryanjxy123/picbed/main/data128323056_p0_master1200.jpg"
+heroImageSource: "https://pixiviz.pwp.app/pic/138945282"
 tags: ["environment configuration","pytorch"]
 
 ---
   
-![](https://raw.githubusercontent.com/Ryanjxy123/picbed/main/data128323056_p0_master1200.jpg)
-
-*image from [finaa](https://www.pixiv.net/artworks/128323056)*
-
 
 再次步骤前已经默认安装了anaconda（或miniconda），如果没安装请先安装
 

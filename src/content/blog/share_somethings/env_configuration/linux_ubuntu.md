@@ -2,13 +2,11 @@
 title: 'Linux双系统安装及软件配置'
 pubDate: '2025-07-28'    
 heroImage: "https://raw.githubusercontent.com/Ryanjxy123/picbed/main/data水中-133074580.png"
+heroImageSource: "https://pixiviz.pwp.app/pic/133074580"
 tags: ["environment configuration","Linux"]
 
 ---
 
-![](https://raw.githubusercontent.com/Ryanjxy123/picbed/main/data水中-133074580.png)
-
-*image from [TOKKYU](https://pixiviz.pwp.app/artist/23098486)*
 
 
 最近由于需要用到Linux系统，同时也是为了早些适应，所以自己动手配置了双系统，同时也便有了一下的教程，若有不足，欢迎指点。

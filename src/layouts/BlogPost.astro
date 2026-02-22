@@ -17,8 +17,9 @@ type Props = CollectionEntry<"blog">["data"] & {
 	headings?: { depth: number; slug: string; text: string }[];
 };
 
-const { title, description, pubDate, updatedDate, heroImage, body, headings } = Astro.props;
+const { title, description, pubDate, updatedDate, heroImage, heroImageSource, body, headings } = Astro.props;
 const readingTime = getReadingTime(body);
+const formattedDate = pubDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 ---
 
 <BaseLayout>
@@ -27,79 +28,212 @@ const readingTime = getReadingTime(body);
 	<Container defaultPadding={true}>
 		<div class="mb-8">
 			<article class="text-black dark:text-white">
-				<h1 class="text-3xl font-bold leading-normal">{title}</h1>
-				<div class="flex items-center gap-4 mt-3 mb-8 text-gray-500 text-xl">
-					<div class="flex items-center gap-1">
-						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							class="w-6 h-6"
-							viewBox="0 0 24 24"
-							fill="none"
-							stroke="currentColor"
-							stroke-width="2"
-							stroke-linecap="round"
-							stroke-linejoin="round"
-						>
-							<rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-							<line x1="16" y1="2" x2="16" y2="6"></line>
-							<line x1="8" y1="2" x2="8" y2="6"></line>
-							<line x1="3" y1="10" x2="21" y2="10"></line>
-						</svg>
-						<FormattedDate date={pubDate} />
-					</div>
-
-					<div class="flex items-center gap-1">
-						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							class="w-6 h-6"
-							viewBox="0 0 24 24"
-							fill="none"
-							stroke="currentColor"
-							stroke-width="2"
-							stroke-linecap="round"
-							stroke-linejoin="round"
-						>
-							<circle cx="12" cy="12" r="10"></circle>
-							<polyline points="12 6 12 12 16 14"></polyline>
-						</svg>
-						<span>{readingTime}</span>
-					</div>
-				</div>
-				<div class="mt-4 grid grid-cols-1 lg:grid-cols-[1fr_240px] gap-8">
+				<!-- 双栏容器：左侧主内容 + 右侧固定目录 -->
+				<div class="grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-8 items-start">
+					<!-- 左侧主内容栏（可滚动） -->
 					<div class="min-w-0">
 						{
-							updatedDate && (
-								<span class="opacity-60">
-									(Last updated on <FormattedDate date={pubDate} />)
-								</span>
-							)
-						}
-
-						{
-							Astro.props.tags && (
-								<div class="mt-4 mb-4 flex flex-wrap gap-2 items-center">
-									<span class="text-gray-600 dark:text-gray-400">标签：</span>
-									{Astro.props.tags.map(tag => (
-										<TagBadge tag={tag} variant="detail" />
-									))}
+							heroImage && (
+								<div class="mt-3 mb-8">
+									<img
+										src={heroImage}
+										alt={title}
+										class="w-full rounded-2xl object-cover max-h-96"
+										loading="lazy"
+									/>
 								</div>
 							)
 						}
 
+						<!-- 元数据行 -->
+						<div class="article-meta-row flex flex-wrap items-center gap-3 mt-3 mb-6 text-gray-500 text-base md:text-base leading-tight">
+							<!-- 日期 -->
+							<div class="flex items-center gap-1">
+								<svg
+									xmlns="http://www.w3.org/2000/svg"
+									class="w-6 h-6"
+									viewBox="0 0 24 24"
+									fill="none"
+									stroke="currentColor"
+									stroke-width="2"
+									stroke-linecap="round"
+									stroke-linejoin="round"
+								>
+									<rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+									<line x1="16" y1="2" x2="16" y2="6"></line>
+									<line x1="8" y1="2" x2="8" y2="6"></line>
+									<line x1="3" y1="10" x2="21" y2="10"></line>
+								</svg>
+								<FormattedDate date={pubDate} />
+							</div>
+
+							<!-- 阅读时间 -->
+							<div class="flex items-center gap-1">
+								<svg
+									xmlns="http://www.w3.org/2000/svg"
+									class="w-6 h-6"
+									viewBox="0 0 24 24"
+									fill="none"
+									stroke="currentColor"
+									stroke-width="2"
+									stroke-linecap="round"
+									stroke-linejoin="round"
+								>
+									<circle cx="12" cy="12" r="10"></circle>
+									<polyline points="12 6 12 12 16 14"></polyline>
+								</svg>
+								<span>{readingTime}</span>
+							</div>
+
+							<!-- 图片来源 -->
+							{
+								heroImage && (
+									<div class="flex items-center gap-1">
+										<svg
+											xmlns="http://www.w3.org/2000/svg"
+											class="w-6 h-6"
+											viewBox="0 0 24 24"
+											fill="none"
+											stroke="currentColor"
+											stroke-width="2"
+											stroke-linecap="round"
+											stroke-linejoin="round"
+										>
+											<rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+											<circle cx="8.5" cy="8.5" r="1.5"></circle>
+											<polyline points="21 15 16 10 5 21"></polyline>
+										</svg>
+										<a href={heroImageSource || heroImage} target="_blank" rel="noopener noreferrer" class="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:underline">
+											image
+										</a>
+									</div>
+								)
+							}
+
+							<!-- 标签 -->
+							{
+								Astro.props.tags && Astro.props.tags.length > 0 && (
+									<div class="flex items-start gap-1 flex-wrap">
+										<svg
+											xmlns="http://www.w3.org/2000/svg"
+											class="w-6 h-6 flex-shrink-0 mt-0.5"
+											viewBox="0 0 24 24"
+											fill="none"
+											stroke="currentColor"
+											stroke-width="2"
+											stroke-linecap="round"
+											stroke-linejoin="round"
+										>
+											<path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
+											<line x1="7" y1="7" x2="7.01" y2="7"></line>
+										</svg>
+										<div class="flex flex-wrap items-center gap-x-1 gap-y-1">
+											{
+												Astro.props.tags.map((tag, index) => (
+													<>
+														<a
+															href={`/tags/${tag}/`}
+															class="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:underline"
+														>
+															{tag}
+														</a>
+														{index < Astro.props.tags.length - 1 && <span class="text-gray-500"> / </span>}
+													</>
+												))
+											}
+										</div>
+									</div>
+								)
+							}
+						</div>
+
+						<!-- 更新日期 -->
+						{
+							updatedDate && (
+								<div class="mt-2 mb-6 opacity-60 text-sm">
+									(Last updated on <FormattedDate date={updatedDate} />)
+								</div>
+							)
+						}
+
+						<!-- 分割线 -->
+						<hr class="meta-divider my-8 border-gray-300 dark:border-gray-700" />
+
+						<h1 class="text-4xl font-bold leading-normal">{title}</h1>
+
+						<!-- 正文内容 -->
 						<MarkdownBody class="mt-6">
 							<slot />
 						</MarkdownBody>
+
+						<!-- 版权协议卡片 -->
+						<div class="relative border border-gray-200 dark:border-zinc-800 rounded-xl p-6 bg-gray-50 dark:bg-zinc-900 mt-8 mb-8">
+							<!-- 标题和链接 -->
+							<div class="mb-6">
+								<h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2">{title}</h3>
+								<p class="text-sm text-gray-500 dark:text-gray-400 break-all">{Astro.url.href}</p>
+							</div>
+							<!-- 三列信息 -->
+							<div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+								<div>
+									<div class="font-medium text-gray-700 dark:text-gray-300">Author</div>
+									<div class="text-gray-600 dark:text-gray-400">Ryanjxy</div>
+								</div>
+								<div>
+									<div class="font-medium text-gray-700 dark:text-gray-300">Published at</div>
+									<div class="text-gray-600 dark:text-gray-400">{formattedDate}</div>
+								</div>
+								<div>
+									<div class="font-medium text-gray-700 dark:text-gray-300">Copyright</div>
+									<div class="text-gray-600 dark:text-gray-400">
+										<a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener noreferrer" class="hover:underline">CC BY-NC-SA 4.0</a>
+									</div>
+								</div>
+							</div>
+							<!-- 大型半透明版权水印 -->
+							<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="absolute top-[35%] -translate-y-1/2 right-1 w-28 h-28 opacity-[0.03] text-gray-900 dark:text-white pointer-events-none">
+								<circle cx="12" cy="12" r="10"></circle>
+								<path d="M14.83 14.83a4 4 0 1 1 0-5.66"></path>
+							</svg>
+							<!-- 动态手写签名 -->
+							<svg viewBox="0 0 180 50" class="absolute bottom-2 right-[-20px] w-36 h-12 opacity-30 text-gray-700 dark:text-gray-300">
+								<text x="15" y="38" font-family="'Brush Script MT', 'Comic Sans MS', cursive" font-size="36" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" class="signature-text">Ryanjxy</text>
+							</svg>
+						</div>
+
+						<style>
+							.signature-text {
+								/* 保持 800 确保长名字 Ryanjxy 完整显示 */
+								stroke-dasharray: 800;
+								stroke-dashoffset: 800;
+
+								/* 10秒为一个周期，无限循环 */
+								animation: auto-sign 10s ease-in-out infinite;
+							}
+							/* 自动循环签名动画的时间轴 */
+							@keyframes auto-sign {
+								0%   { stroke-dashoffset: 800; } /* 0秒：开始，完全隐藏 */
+								20%  { stroke-dashoffset: 0; }   /* 2秒：完全画出 */
+								60%  { stroke-dashoffset: 0; }   /* 2秒~6秒：保持显示 4 秒钟，供读者看清 */
+								80%  { stroke-dashoffset: 800; } /* 6秒~8秒：倒退擦除 */
+								100% { stroke-dashoffset: 800; } /* 8秒~10秒：保持空白隐藏状态 2 秒钟，然后开始下一次循环 */
+							}
+						</style>
 					</div>
+
+					<!-- 右侧目录栏（固定悬浮） -->
 					{
 						headings && headings.length > 0 && (
-							<div class="hidden lg:block sticky top-24 h-fit">
+							<div class="hidden lg:block sticky top-24 h-fit mt-3">
 								<TableOfContents headings={headings} />
 							</div>
 						)
 					}
 				</div>
+
+
+				<slot name="comment" />
 			</article>
-			<slot name="comment" />
 		</div>
 		<Footer />
 	</Container>

@@ -3,11 +3,11 @@ title: '数据结构与算法设计综合训练上机题目3'
 # description: "周记"
 pubDate: '2025-11-09'    
 heroImage: "https://raw.githubusercontent.com/Ryanjxy123/picbed/main/datanew%20glenn-chan-137447994.png"
+heroImageSource: "https://raw.githubusercontent.com/Ryanjxy123/picbed/main/datanew%20glenn-chan-137447994.png"
 tags: ["DS"]
 
 ---
 
-![](https://raw.githubusercontent.com/Ryanjxy123/picbed/main/datanew%20glenn-chan-137447994.png)
 
 
 ## 题目一：判断二叉树是否为镜像对称树

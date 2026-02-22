@@ -3,13 +3,10 @@ title: '免费简单的图床搭建教程'
 description: ""
 pubDate: '2026-02-16'    
 heroImage: "https://raw.githubusercontent.com/Ryanjxy123/picbed/main/data139489775_p0_master1200.jpg"
+heroImageSource: "https://www.pixiv.net/artworks/139489775"  
 tags: ["environment configuration", "share_somethings"]
 
 ---
-
-![](https://raw.githubusercontent.com/Ryanjxy123/picbed/main/data139489775_p0_master1200.jpg)
-
-*image from [airfish 空气鱼](https://www.pixiv.net/users/67512705)*
 
 
 本文是基于picgo软件+github的仓库的图床搭建教程，纯新手向，并完全免费，下面是具体指引步骤。

@@ -3,11 +3,11 @@ title: 'Week5（大一下）'
 # description: "周记"
 pubDate: '2025-04-28'    
 heroImage: "https://raw.githubusercontent.com/Ryanjxy123/picbed/main/data20250606010617.png"
+heroImageSource: "https://raw.githubusercontent.com/Ryanjxy123/picbed/main/data20250606010617.png"  
 tags: ["周记"]
 
 ---
 
-![](https://raw.githubusercontent.com/Ryanjxy123/picbed/main/data20250606010617.png)
 
 <blockquote style="text-align: center;">
     <p ><em>今天总是和昨天不一样，所以很珍贵。</em></p>

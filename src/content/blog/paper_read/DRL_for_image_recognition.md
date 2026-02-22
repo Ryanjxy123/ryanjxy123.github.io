@@ -8,9 +8,6 @@ tags: ["paper read"]
 ---
   
 
-![](https://raw.githubusercontent.com/Ryanjxy123/picbed/main/databizhihui_com_202504061743928451605703.jpg)
-
-  
 
 ## Abstract
 

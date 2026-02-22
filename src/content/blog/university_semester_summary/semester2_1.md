@@ -3,14 +3,10 @@ title: '大二上总结回顾'
 description: "学期总结"
 pubDate: '2026-01-29'    
 heroImage: "https://raw.githubusercontent.com/Ryanjxy123/picbed/main/data103841958_p0_master1200.jpg"
+heroImageSource: "https://www.pixiv.net/artworks/103841958"  
 tags: ["semester summary"]
 ---
 
-
-![](https://raw.githubusercontent.com/Ryanjxy123/picbed/main/data103841958_p0_master1200.jpg)
-
-
-*image from [汐風HY](https://www.pixiv.net/users/15342001)*
 
 <blockquote style="text-align: center;">
     <p ><em>好，这就是我的一生呢</em></p>

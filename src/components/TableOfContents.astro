@@ -8,108 +8,358 @@ const { headings } = Astro.props;
 const filteredHeadings = headings.filter(heading => heading.depth <= 3);
 ---
 
-<nav class="w-full pr-4">
-    <h3 class="mb-4 pl-2 text-sm font-bold tracking-widest text-[#52525b] dark:text-gray-400 uppercase">TABLE OF CONTENTS</h3>
-    <ul class="relative border-l-2 border-[#e4e4e7] dark:border-[#27272a] ml-2">
-        {
-            filteredHeadings.map(heading => (
-                <li>
-                    <a
-                        href={"#" + heading.slug}
-                        class:list={[
-                            "toc-link block py-2 text-sm text-[#71717a] dark:text-gray-400 transition-colors border-l-2 border-transparent -ml-[2px] hover:text-sky-500 dark:hover:text-sky-400 break-words",
-                            heading.depth === 2 && "pl-4",
-                            heading.depth === 3 && "pl-8",
-                            heading.depth === 4 && "pl-12",
-                            heading.depth === 5 && "pl-16",
-                            heading.depth === 6 && "pl-20",
-                        ]}
-                    >
-                        {heading.text}
-                    </a>
-                </li>
-            ))
-        }
-    </ul>
-</nav>
+<div class="toc-sidebar-wrapper relative h-fit">
+    <nav class="toc-container w-full overflow-y-auto no-native-scroll" style="max-height: 70vh;">
+        <h3 class="mb-4 pl-2 text-lg font-extrabold tracking-widest text-[#52525b] dark:text-gray-400 uppercase">TABLE OF CONTENTS</h3>
+        <ul class="toc-list relative">
+            {
+                filteredHeadings.map(heading => (
+                    <li class={`toc-item depth-${heading.depth}`}>
+                        <a
+                            href={"#" + heading.slug}
+                            class="toc-link block py-2 text-sm text-[#71717a] dark:text-gray-400 transition-colors hover:text-purple-500 dark:hover:text-purple-400 break-words"
+                        >
+                            {heading.text}
+                        </a>
+                    </li>
+                ))
+            }
+        </ul>
+    </nav>
+
+    <div class="custom-scrollbar-track absolute right-0 top-0 bottom-0 w-[8px] pointer-events-none z-[99]">
+        <div class="custom-scrollbar-thumb absolute right-0 top-0 w-full h-[200px] rounded bg-gray-400/30 dark:bg-white/20 transition-colors"></div>
+    </div>
+</div>
 
 <style>
+    .toc-list {
+        --border-color: #e4e4e7;
+        --active-color: rgb(168 85 247); /* purple-500 */
+        --active-color-dark: rgb(192 132 252); /* purple-400 */
+        --scroll-progress: 0%;
+    }
+    :global(.dark) .toc-list {
+        --border-color: #27272a;
+    }
+
+    .toc-item {
+        position: relative;
+        margin-bottom: 2px;
+    }
+
+
+    /* 文字阶梯缩进（通过 padding 实现，竖线保持左对齐） */
+    /* H2 (一级目录，保持默认基准) - depth-2 */
+    .toc-item.depth-2 .toc-link {
+        padding-left: 16px;
+    }
+    /* H3 (二级目录，增加内边距挤压文字，线不动) - depth-3 */
+    .toc-item.depth-3 .toc-link {
+        padding-left: 28px;
+    }
+    /* H4 (三级目录，继续累加) - depth-4 */
+    .toc-item.depth-4 .toc-link {
+        padding-left: 40px;
+    }
+    /* H5 (四级目录) - depth-5 */
+    .toc-item.depth-5 .toc-link {
+        padding-left: 52px;
+    }
+    /* H6 (五级目录) - depth-6 */
+    .toc-item.depth-6 .toc-link {
+        padding-left: 64px;
+    }
+
+    /* 激活状态 - 滚动进度线条 */
+    .toc-item.active .toc-link::before {
+        width: 2px;
+        background: linear-gradient(
+            to bottom,
+            var(--active-color) 0%,
+            var(--active-color) calc(var(--scroll-progress, 0) * 1%),
+            var(--border-color) calc(var(--scroll-progress, 0) * 1%),
+            var(--border-color) 100%
+        );
+    }
+    :global(.dark) .toc-item.active .toc-link::before {
+        width: 2px;
+        background: linear-gradient(
+            to bottom,
+            #6020a0 0%,
+            #6020a0 calc(var(--scroll-progress, 0) * 1%),
+            var(--border-color) calc(var(--scroll-progress, 0) * 1%),
+            var(--border-color) 100%
+        ) !important;
+    }
+
+    /* 链接样式 - 基础盒模型（防抖动） */
+    .toc-link {
+        display: block;
+        position: relative;
+        padding: 6px 12px 6px 16px; /* 锁死文字位置 */
+        margin: 0;
+        font-size: 0.875rem;
+        background-color: transparent;
+        color: #71717a;
+        border-radius: 0;
+        /* 核心修复：为背景色、文字颜色，特别是圆角变化（border-radius）添加 0.3s 的柔和过渡 */
+        transition: background-color 0.3s ease, color 0.3s ease, border-radius 0.3s ease;
+    }
+    :global(.dark) .toc-link {
+        color: #9ca3af;
+    }
+    .toc-link:hover {
+        color: rgb(168 85 247); /* purple-500 */
+    }
+    :global(.dark) .toc-link:hover {
+        color: rgb(192 132 252); /* purple-400 */
+    }
+
+    /* 底色灰线：断开设计 */
+    .toc-link::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 10%;      /* 上端留空隙 */
+        height: 80%;   /* 形成断开感 */
+        width: 2px;
+        background-color: var(--border-color, rgba(150, 150, 150, 0.2));
+        border-radius: 2px;
+        transition: background-color 0.2s;
+    }
+    :global(.dark) .toc-link::before {
+        background-color: var(--border-color);
+    }
+
+    /* 激活链接样式 - 背景框（保持相同盒模型） */
+    .toc-item.active .toc-link {
+        color: var(--active-color);
+        font-weight: 600;
+        background-color: rgba(0, 0, 0, 0.04);
+        border-radius: 6px;
+    }
+    :global(.dark) .toc-item.active .toc-link {
+        color: #7c3aed !important;
+        background-color: rgba(96, 32, 160, 0.15) !important;
+    }
+
+    /* 1. 连体气泡背景（仅在屏幕内可见时触发） */
+    .toc-item.is-visible .toc-link {
+        background-color: rgba(0, 0, 0, 0.04);
+    }
+    :global(.dark) .toc-item.is-visible .toc-link {
+        background-color: rgba(96, 32, 160, 0.15) !important;
+    }
+    .toc-item.first-visible .toc-link {
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+    }
+    .toc-item.last-visible .toc-link {
+        border-bottom-left-radius: 8px;
+        border-bottom-right-radius: 8px;
+    }
+
+    /* 2. 动态紫线（与灰线完全重叠，按比例缩放） */
+    .toc-link::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 10%;     /* 必须与 ::before 保持一致的断开感 */
+        height: 80%;
+        width: 2px;
+        background-color: var(--active-color, #007bff);
+        border-radius: 2px;
+        /* 核心进度动画：默认缩放为 0，只有当前屏幕内的才会获得 >0 的值 */
+        /* 使用 calc 将百分比转换为 scaleY 的数值（例如 50% -> 0.5） */
+        transform-origin: top;
+        transform: scaleY(calc(var(--scroll-progress, 0) / 100));
+        /* 【注意】：这里不要写 transition */
+        z-index: 1;
+    }
+    :global(.dark) .toc-link::after {
+        background-color: #6020a0 !important;
+    }
+
+    /* 紫线进度由 JS requestAnimationFrame 完全控制，禁止 CSS transition 干扰 */
+    /* 【注意】此处不应有任何 transition 属性 */
+
+    /* 旧激活样式兼容 */
     .active-toc-item {
-        color: rgb(14 165 233) !important; /* sky-500 */
-        border-left-color: rgb(14 165 233) !important;
+        color: rgb(168 85 247) !important; /* purple-500 */
+        border-left-color: rgb(168 85 247) !important;
         font-weight: 600;
     }
-    .dark .active-toc-item {
-        color: rgb(56 189 248) !important; /* sky-400 */
-        border-left-color: rgb(56 189 248) !important;
+    :global(.dark) .active-toc-item {
+        color: rgb(192 132 252) !important; /* purple-400 */
+        border-left-color: rgb(192 132 252) !important;
+    }
+
+    /* 1. 限制最大高度并开启内部滚动 */
+    .toc-container {
+        /* 恢复到接近屏幕底部的高度，给文字留出充足的展示空间 */
+        max-height: calc(100vh - 120px);
+        overflow-y: auto;
+        overflow-x: hidden;
+        overscroll-behavior: contain;
+        padding-right: 16px; /* 给滚动条留出空间，同时保持与原有 pr-4 一致的内边距 */
+        /* 确保容器本身是粘性定位，并贴近顶部（如果有顶部导航栏，请适配 top 值） */
+        position: sticky;
+        top: 100px;
+    }
+    /* 2. 恢复纯净的原生 WebKit 滚动条物理引擎 */
+    .toc-container::-webkit-scrollbar {
+        width: 8px; /* 加粗的滚动条，更易操作 */
+    }
+    /* 1. 轨道本身：全长贯通，没有任何 margin 截断 */
+    .toc-container::-webkit-scrollbar-track {
+        background: transparent;
+        /* 立即删除之前所有的 margin-top, margin-bottom */
+    }
+    /* 2. 滑块（Thumb）：去除所有的隐形边框，恢复原生高度计算，确保能摸到底 */
+    .toc-container::-webkit-scrollbar-thumb {
+        background-color: rgba(150, 150, 150, 0.3);
+        border-radius: 4px;
+        /* 立即删除之前所有的 border, background-clip, height 等属性 */
+    }
+    /* 适配暗黑模式 */
+    :global(.dark) .toc-container::-webkit-scrollbar-thumb {
+        background-color: rgba(255, 255, 255, 0.2);
+    }
+    /* 鼠标悬停时才微微加深，提升交互感 */
+    .toc-container:hover::-webkit-scrollbar-thumb {
+        background-color: rgba(150, 150, 150, 0.6);
+    }
+
+    /* 隐藏原生滚动条，显示自定义滚动条 */
+    .no-native-scroll::-webkit-scrollbar {
+        display: none;
+    }
+
+    /* 自定义滚动条轨道过渡效果 */
+    .custom-scrollbar-track {
+        transition: opacity 0.2s ease;
+    }
+    /* 自定义滚动条滑块过渡效果 */
+    .custom-scrollbar-thumb {
+        transition: transform 0.1s linear;
     }
 </style>
 
 <script>
-    // 轻量级 ScrollSpy 实现
     (function() {
         // 获取所有目录链接
         const tocLinks = document.querySelectorAll('.toc-link');
         if (tocLinks.length === 0) return;
 
-        // 收集 TOC 中存在的所有标题 ID（去掉 # 号）
+        // 获取自定义滚动条元素（暴力调试）
+        const container = document.querySelector('.toc-container');
+        const track = document.querySelector('.custom-scrollbar-track');
+        const thumb = document.querySelector('.custom-scrollbar-thumb');
+
+        // 获取文章容器（支持 .prose 或 article 作为备选）
+        const articleWrapper = document.querySelector('.prose') || document.querySelector('article');
+        if (!articleWrapper) return;
+        // 严格获取带 id 的正文标题
+        const headings = Array.from(articleWrapper.querySelectorAll('h1[id], h2[id], h3[id], h4[id], h5[id], h6[id]'));
+        if (headings.length === 0) return;
+
         const tocIds = Array.from(tocLinks).map(link => {
             const href = link.getAttribute('href');
             return href ? href.substring(1) : '';
         }).filter(id => id);
 
-        // 获取文章中存在的、且在 TOC 中有对应的标题元素
-        const headings = Array.from(document.querySelectorAll('article h2, article h3, article h4, article h5, article h6'))
-            .filter(heading => heading.id && tocIds.includes(heading.id));
+        const updateThumbPosition = () => {
+            if (!container || !track || !thumb) return;
 
-        if (headings.length === 0) return;
+            const scrollableHeight = container.scrollHeight - container.clientHeight;
 
-        // 创建 IntersectionObserver
-        const observer = new IntersectionObserver(
-            (entries) => {
-                // 找出当前最突出的标题（最接近视口顶部且在视口内的标题）
-                let activeHeading = null;
-                let minDistance = Infinity;
-
-                entries.forEach(entry => {
-                    const rect = entry.boundingClientRect;
-                    const distance = Math.abs(rect.top);
-
-                    // 如果标题在视口内，或者刚刚离开视口
-                    if (entry.isIntersecting || rect.top < 0) {
-                        // 选择最接近视口顶部的标题
-                        if (distance < minDistance) {
-                            minDistance = distance;
-                            activeHeading = entry.target;
-                        }
-                    }
-                });
-
-                if (activeHeading) {
-                    const activeId = activeHeading.id;
-                    // 移除所有激活状态
-                    tocLinks.forEach(link => {
-                        link.classList.remove('active-toc-item');
-                    });
-                    // 激活对应链接
-                    const activeLink = document.querySelector(`.toc-link[href="#${activeId}"]`);
-                    if (activeLink) {
-                        activeLink.classList.add('active-toc-item');
-                    }
-                }
-            },
-            {
-                rootMargin: '-80px 0px -50% 0px', // 调整触发区域：顶部偏移 80px（考虑固定导航栏），底部偏移 50%
-                threshold: 0.1
+            // 1. 恢复自动隐藏逻辑（取消注释）
+            if (scrollableHeight <= 1) { // 使用 <= 1 增加一点容错
+                track.style.opacity = '0';
+                // 增加 transition 让消失更平滑（可选，需在 CSS track 上加 transition-opacity）
+                return;
             }
-        );
+            track.style.opacity = '1';
 
-        // 观察所有相关标题
-        headings.forEach(heading => {
-            observer.observe(heading);
-        });
+            const scrollRatio = container.scrollTop / scrollableHeight;
+            const maxThumbTravel = track.clientHeight - thumb.clientHeight;
 
-        // 点击目录链接时的平滑滚动和 URL 更新
+            // 直接执行位移，因为前面已经排除了 scrollableHeight <= 1 的情况
+            thumb.style.transform = `translateY(${scrollRatio * maxThumbTravel}px)`;
+        };
+
+        // 初始化自定义滚动条事件
+        if (container && track && thumb) {
+            container.addEventListener('scroll', () => requestAnimationFrame(updateThumbPosition), { passive: true });
+            // 初始调用一次
+            updateThumbPosition();
+        }
+
+        function updateToc() {
+            const windowHeight = window.innerHeight;
+            // 触发线：设在屏幕偏上方 30% 处，代表用户的阅读视线焦点
+            const triggerLine = windowHeight * 0.3;
+            let visibleItems = [];
+
+            // 1. 全局重置：切断“反向动画”，滑出屏幕的瞬间变灰、进度归零
+            document.querySelectorAll('.toc-item').forEach(item => {
+                item.classList.remove('is-visible', 'first-visible', 'last-visible', 'active');
+                // 直接归零，配合 CSS transform 无需动画就能瞬间消失
+                item.style.setProperty('--scroll-progress', '0');
+            });
+
+            // 移除所有链接的激活状态
+            tocLinks.forEach(link => {
+                link.classList.remove('active-toc-item');
+            });
+
+            headings.forEach((heading, index) => {
+                const tocLink = document.querySelector(`a[href="#${heading.id}"]`);
+                if (!tocLink) return;
+                const tocItem = tocLink.closest('li') || tocLink.parentElement;
+
+                // 2. 动态高度计算（完美适配页面 Zoom 缩放和字体大小变化）
+                const rectTop = heading.getBoundingClientRect().top;
+                const nextHeading = headings[index + 1];
+                const rectBottom = nextHeading ? nextHeading.getBoundingClientRect().top : articleWrapper.getBoundingClientRect().bottom;
+                const sectionHeight = rectBottom - rectTop;
+
+                // 3. 视口交叉判定：增加 30px 边缘缓冲防抖，避免绝对边界造成的反复横跳
+                const isVisible = rectBottom > -30 && rectTop < windowHeight + 30;
+
+                if (isVisible && sectionHeight > 0) {
+                    // 加入连体气泡组
+                    tocItem.classList.add('is-visible');
+                    visibleItems.push(tocItem);
+
+                    // 4. 精确比例计算：(焦点线 - 章节顶端) / 章节真实高度
+                    let progress = (triggerLine - rectTop) / sectionHeight;
+                    // 钳制在 0-1 之间，防止过冲
+                    progress = Math.max(0, Math.min(1, progress));
+
+                    // 转换为百分比以匹配 CSS（CSS 期望 0-100 百分比）
+                    const progressPercent = progress * 100;
+                    // 仅对屏幕内可见项赋进度值
+                    tocItem.style.setProperty('--scroll-progress', progressPercent);
+                }
+            });
+
+            // 5. 组装“动态气泡胶囊”的首尾圆角
+            if (visibleItems.length > 0) {
+                visibleItems[0].classList.add('first-visible');
+                visibleItems[visibleItems.length - 1].classList.add('last-visible');
+
+                // 激活第一个可见项（传统高亮）
+                const firstVisibleLink = visibleItems[0].querySelector('.toc-link');
+                if (firstVisibleLink) {
+                    firstVisibleLink.classList.add('active-toc-item');
+                    visibleItems[0].classList.add('active');
+                }
+            }
+        }
+
+        // 点击目录链接时的平滑滚动和 URL 更新（保留原有功能）
         tocLinks.forEach(link => {
             link.addEventListener('click', (e) => {
                 const href = link.getAttribute('href');
@@ -128,32 +378,38 @@ const filteredHeadings = headings.filter(heading => heading.depth <= 3);
             });
         });
 
-        // 页面加载时检查初始激活项
-        const checkInitialActive = () => {
-            // 检查 URL 哈希
+        // 页面加载时检查 URL 哈希
+        const checkInitialHash = () => {
             const hash = window.location.hash.substring(1);
             if (hash && tocIds.includes(hash)) {
                 const initialLink = document.querySelector(`.toc-link[href="#${hash}"]`);
                 if (initialLink) {
                     initialLink.classList.add('active-toc-item');
-                    return;
-                }
-            }
-
-            // 如果没有哈希或哈希无效，检查第一个在视口内的标题
-            for (const heading of headings) {
-                const rect = heading.getBoundingClientRect();
-                if (rect.top >= 0 && rect.top < window.innerHeight * 0.5) {
-                    const firstLink = document.querySelector(`.toc-link[href="#${heading.id}"]`);
-                    if (firstLink) {
-                        firstLink.classList.add('active-toc-item');
-                        break;
-                    }
+                    const tocItem = initialLink.closest('.toc-item') || initialLink.parentElement;
+                    tocItem.classList.add('active');
                 }
             }
         };
 
-        // 延迟执行以等待页面完全加载
-        setTimeout(checkInitialActive, 100);
+        // 确保使用 requestAnimationFrame 保证滚动的极限丝滑，并且在 resize（缩放）时重新计算
+        window.addEventListener('scroll', () => requestAnimationFrame(updateToc), { passive: true });
+        window.addEventListener('resize', () => requestAnimationFrame(updateToc));
+
+        // 页面加载时执行一次
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+                updateToc();
+                checkInitialHash();
+            });
+        } else {
+            updateToc();
+            checkInitialHash();
+        }
+
+        // 监听 View Transitions 事件（如果使用 Astro 页面过渡）
+        document.addEventListener('astro:page-load', () => {
+            updateToc();
+            checkInitialHash();
+        });
     })();
 </script>

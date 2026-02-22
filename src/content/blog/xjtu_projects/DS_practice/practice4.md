@@ -3,11 +3,11 @@ title: '数据结构与算法设计综合训练上机题目4'
 # description: "周记"
 pubDate: '2025-11-16'    
 heroImage: "https://raw.githubusercontent.com/Ryanjxy123/picbed/main/data無題-136350148.png"
+heroImageSource: "https://raw.githubusercontent.com/Ryanjxy123/picbed/main/data無題-136350148.png"
 tags: ["DS"]
 
 ---
 
-![](https://raw.githubusercontent.com/Ryanjxy123/picbed/main/data無題-136350148.png)
 
 ## 题目一：优先队列（最小堆）操作模拟
 【题目描述】  

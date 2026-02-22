@@ -19,6 +19,9 @@ const blog = defineCollection({
 		// 文章的主题图片，用于在 Open Graph 中显示
 		heroImage: z.string().optional(),
 
+		// 主题图片的原作者或来源链接
+		heroImageSource: z.string().url().optional(),
+
 		// 文章为草稿（不发布）
 		draft: z.boolean().optional(),
 

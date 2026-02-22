@@ -2,11 +2,11 @@
 title: '双系统开机后无法进入Ubuntu图形化界面'
 pubDate: '2025-10-14'    
 heroImage: "https://raw.githubusercontent.com/Ryanjxy123/picbed/main/data消えろよクソ社会-135368483.png"
+heroImageSource: "https://raw.githubusercontent.com/Ryanjxy123/picbed/main/data消えろよクソ社会-135368483.png"  
 tags: ["problems","Linux"]
 
 ---
 
-![](https://raw.githubusercontent.com/Ryanjxy123/picbed/main/data消えろよクソ社会-135368483.png)
 
 
 记录一次开机后遇到的Ubuntu图形化界面显示不出来的问题，当时具体报错如下：

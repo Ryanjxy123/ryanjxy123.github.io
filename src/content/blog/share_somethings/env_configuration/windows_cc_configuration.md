@@ -3,14 +3,12 @@ title: 'windows环境简便配置claude code教程'
 description: ""
 pubDate: '2026-02-17'    
 heroImage: "https://raw.githubusercontent.com/Ryanjxy123/picbed/main/data116226715_p0_master1200.jpg"
+heroImageSource: "https://www.pixiv.net/artworks/116226715"  
 tags: ["environment configuration", "share_somethings"]
 
 ---
 
-![](https://raw.githubusercontent.com/Ryanjxy123/picbed/main/data116226715_p0_master1200.jpg)
 
-*image from [おひとり](https://www.pixiv.net/users/8615136)*  
-   
 ## 1.配置git    
  
 这一步可以参考知乎上这个教程来进行配置，十分详细，在此不进行过多叙述：[Git下载安装教程：git安装步骤手把手图文【超详细】](https://zhuanlan.zhihu.com/p/443527549)

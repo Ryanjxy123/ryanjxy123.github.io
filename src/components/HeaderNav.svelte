@@ -4,11 +4,11 @@
     import type { OptionalValue } from "@/utils/types";
     import ThemeToggle from "./ThemeToggle.svelte";
 
-    /*interface Props {
+    interface Props {
         avatar?: import('svelte').Snippet;
     }
 
-    let { avatar }: Props = $props();*/
+    let { avatar }: Props = $props();
 
     const navBarClassNameBase =
         "absolute -translate-x-2/4 left-2/4 h-[var(--navBar-height)] md:h-[inherit] backdrop-blur-2xl bg-white/80 dark:bg-[#18181b]/90 shadow-2xl [transition:top_150ms,height_400ms_cubic-bezier(.47,1.64,.41,.8)] overflow-clip";
@@ -115,7 +115,9 @@
         <div class="flex justify-between md:justify-center items-center gap-8 ps-3 pe-3 py-3">
             <a href="./" class="block flex-none" title="首页">
                 <!-- <img src={SITE_AUTHOR_AVATAR} alt="Avatar" class="block w-12 h-12 rounded-full"> -->
-                <slot name="avatar"></slot>
+                {#if avatar}
+                    {@render avatar()}
+                {/if}
             </a>
             <ul class="hidden md:contents mx-auto">
                 {#each SITE_MENU as e}

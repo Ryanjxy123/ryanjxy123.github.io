@@ -1,12 +1,19 @@
 /*! Global CSS */
 
 @import "tailwindcss";
+@import "katex/dist/katex.min.css";
+
+/* 引入本地 Comic Sans MS 字体 */
+@font-face {
+    font-family: 'ComicSansWeb';
+    src: url('/fronts/comic.ttf') format('truetype');
+    font-display: swap;
+}
+
 @plugin "@tailwindcss/typography";
 
 /* Tailwind v4: 强制启用 class-based dark mode */
 @variant dark (&:where(.dark, .dark *));
-
-@import "katex/dist/katex.min.css";
 
 html {
     scroll-behavior: smooth;

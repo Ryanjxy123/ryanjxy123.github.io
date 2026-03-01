@@ -1,0 +1,13 @@
+---
+import ToolCard from './ToolCard.astro';
+const { category } = Astro.props;
+---
+<div class="mb-12 w-full">
+  <h2 class="text-3xl font-bold mb-4 text-gray-800 dark:text-gray-200">{category.name}</h2>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full">
+    {category.tools.map((tool: any) => (
+      <ToolCard {...tool} />
+    ))}
+  </div>
+</div>

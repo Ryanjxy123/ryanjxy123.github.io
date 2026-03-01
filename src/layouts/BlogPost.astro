@@ -113,10 +113,10 @@ const formattedDate = pubDate.toLocaleDateString('en-US', { year: 'numeric', mon
 							<!-- 标签 -->
 							{
 								Astro.props.tags && Astro.props.tags.length > 0 && (
-									<div class="flex items-start gap-1 flex-wrap">
+									<div class="flex items-center gap-1 flex-wrap">
 										<svg
 											xmlns="http://www.w3.org/2000/svg"
-											class="w-6 h-6 flex-shrink-0 mt-0.5"
+											class="w-6 h-6 flex-shrink-0"
 											viewBox="0 0 24 24"
 											fill="none"
 											stroke="currentColor"
@@ -133,7 +133,7 @@ const formattedDate = pubDate.toLocaleDateString('en-US', { year: 'numeric', mon
 													<>
 														<a
 															href={`/tags/${tag}/`}
-															class="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:underline"
+															class="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:underline align-middle"
 														>
 															{tag}
 														</a>

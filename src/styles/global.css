@@ -113,3 +113,23 @@ html.dark .astro-code, html.dark .astro-code span {
   color: var(--shiki-dark) !important;
   background-color: var(--shiki-dark-bg) !important;
 }
+
+/* 静态渐变文字效果 - 作者信息卡片中的名言 */
+.quote-text {
+  /* 高对比度软糖过渡色：粉红 -> 暖金 -> 青绿 -> 柔蓝 -> 浅紫 */
+  background-image: linear-gradient(to right, #f06292, #f5a623, #4db6ac, #4fc3f7, #ba68c8);
+
+  /* 将背景应用到文字 */
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent; /* 回退 */
+
+  /* 确保文字可读性 */
+  display: inline-block;
+}
+
+/* 暗色模式下的渐变调整（保持相同渐变） */
+html.dark .quote-text {
+  background-image: linear-gradient(to right, #f06292, #f5a623, #4db6ac, #4fc3f7, #ba68c8);
+}

@@ -1,3 +1,8 @@
+export interface ToolMirror {
+  name: string;
+  url: string;
+  icon?: string; // 新增图标字段
+}
 export interface Tool {
   id: string;
   name: string;
@@ -5,6 +10,7 @@ export interface Tool {
   url: string;
   icon?: string; // 图片 URL
   category: string;
+  mirrors?: ToolMirror[]; // 新增的多节点数组
 }
 
 export interface ToolCategory {
@@ -202,6 +208,25 @@ export const toolCategories: ToolCategory[] = [
         url: "https://picgo.github.io/PicGo-Doc/",
         icon: "https://raw.githubusercontent.com/Ryanjxy123/picbed/main/data20260301160632940.png",
         category: "general"
+      }
+    ]
+  },
+  {
+    id: "resources",
+    name: "数字资源",
+    tools: [
+      {
+        id: "zlibrary",
+        name: "Z-Library",
+        description: "全球最大的数字图书馆，提供海量电子书与文献下载",
+        url: "https://zh.zlib.li/",
+        icon: "https://api.iconify.design/fluent-emoji-flat:books.svg",
+        category: "resources",
+        mirrors: [
+          { name: "直连节点", url: "https://zh.zlib.li/", icon: "https://api.iconify.design/mdi:lightning-bolt.svg" }, // 闪电图标代表快速直连
+          { name: "亚洲节点", url: "https://zh.z-lib.gd/", icon: "https://api.iconify.design/mdi:map-marker-radius.svg" }, // 定位图标代表特定区域
+          { name: "国际版", url: "https://z-library.sk/", icon: "https://api.iconify.design/mdi:web.svg" } // 地球图标代表全球/国际
+        ]
       }
     ]
   }

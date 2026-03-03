@@ -22,7 +22,7 @@ export const SITE_AUTHOR_NAME = "Ryanjxy";
 export const SITE_AUTHOR_AVATAR = authorAvatarImage;
 
 // 网站版权起始年份
-export const SITE_COPYRIGHT_YEAR_START = "2024";
+export const SITE_COPYRIGHT_YEAR_START = "2025";
 
 // 网站头部导航菜单
 export const SITE_MENU: { title: string, href: string, target: string }[] = [

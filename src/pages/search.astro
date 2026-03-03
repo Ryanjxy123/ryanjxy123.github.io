@@ -1,0 +1,515 @@
+---
+import BaseHead from "../components/BaseHead.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Container from "../components/Container.astro";
+---
+
+<BaseLayout>
+	<BaseHead slot="head" title={`Search - ${SITE_TITLE}`} description={SITE_DESCRIPTION} />
+	<Header />
+	<Container defaultPadding={true}>
+		<div class="py-12 font-sans space-y-8">
+			<!-- 顶部搜索框 -->
+			<div class="relative max-w-3xl mx-auto">
+				<div class="relative">
+					<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+						<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-zinc-400 dark:text-zinc-500">
+							<circle cx="11" cy="11" r="8"></circle>
+							<line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+						</svg>
+					</div>
+					<input
+						type="search"
+						id="search-input"
+						placeholder="Enter a search term..."
+						class="w-full pl-10 pr-4 py-3 text-base bg-white dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-700 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500/50 focus:border-purple-500 transition-all duration-300 text-zinc-900 dark:text-zinc-100 placeholder-zinc-500 dark:placeholder-zinc-400"
+						autocomplete="off"
+					/>
+				</div>
+				<p class="mt-2 text-sm text-zinc-500 dark:text-zinc-400 text-center">Search across all blog posts by title, content, or tags.</p>
+			</div>
+
+			<!-- 双栏布局 -->
+			<div class="flex flex-col lg:flex-row gap-8">
+				<!-- 左侧标签栏 -->
+				<aside class="lg:w-1/4">
+					<div class="sticky top-24">
+						<h2 class="text-lg font-semibold text-zinc-900 dark:text-zinc-100 mb-4 pb-2 border-b border-zinc-200 dark:border-zinc-800">Tags</h2>
+						<ul id="search-tags" class="space-y-0.5">
+							<!-- 标签将动态插入 -->
+							<li class="text-sm text-zinc-500 dark:text-zinc-400 italic">Loading tags...</li>
+						</ul>
+					</div>
+				</aside>
+
+				<!-- 右侧结果区 -->
+				<main class="lg:w-3/4">
+					<div id="search-stats" class="mb-6 text-zinc-600 dark:text-zinc-400">
+						Found <span id="result-count" class="font-semibold text-zinc-900 dark:text-zinc-100">0</span> matching posts
+					</div>
+
+					<ul id="search-results" class="space-y-6">
+						<!-- 搜索结果将动态插入 -->
+						<li class="text-center py-12 text-zinc-500 dark:text-zinc-400">
+							<p>Enter a search term to find relevant posts.</p>
+						</li>
+					</ul>
+				</main>
+			</div>
+		</div>
+	</Container>
+	<Footer />
+
+	<style is:global>
+		mark {
+			background-color: rgba(253, 224, 71, 0.5); /* 柔和的高亮黄 (Tailwind Yellow-300) */
+			color: inherit;
+			font-weight: 600;
+			padding: 0.1em 0.3em;
+			border-radius: 4px;
+		}
+		.dark mark {
+			background-color: rgba(234, 179, 8, 0.3); /* 暗黑模式下的暗金黄，防止过于刺眼 */
+			color: #f3f4f6;
+		}
+
+		/* 为锚点跳转留出顶部导航栏的距离，防止标题被遮挡 */
+		:global(h1), :global(h2), :global(h3), :global(h4), :global(h5), :global(h6) {
+			scroll-margin-top: 5rem;
+		}
+	</style>
+
+	<script is:inline>
+		(function() {
+			'use strict';
+
+			// DOM 元素
+			const searchInput = document.getElementById('search-input');
+			const searchStats = document.getElementById('search-stats');
+			let resultCount = document.getElementById('result-count');
+			const searchResults = document.getElementById('search-results');
+			const searchTags = document.getElementById('search-tags');
+
+			// 状态
+			let allPosts = [];
+			let searchData = [];
+			let tagMap = new Map(); // 标签 -> 数量
+			let selectedTags = new Set(); // 已选中的标签
+			let debounceTimer = null;
+
+			// 工具函数：转义 HTML 防止 XSS
+			function escapeHtml(text) {
+				const div = document.createElement('div');
+				div.textContent = text;
+				return div.innerHTML;
+			}
+
+			// 工具函数：高亮关键词
+			function highlightText(text, keyword) {
+				if (!keyword.trim()) return escapeHtml(text);
+
+				const escapedKeyword = keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+				const regex = new RegExp(`(${escapedKeyword})`, 'gi');
+
+				// 使用位置匹配以避免转义影响
+				const matches = [];
+				let match;
+				while ((match = regex.exec(text)) !== null) {
+					matches.push({
+						start: match.index,
+						end: match.index + match[0].length,
+						text: match[0]
+					});
+					// 避免无限循环
+					if (match.index === regex.lastIndex) {
+						regex.lastIndex++;
+					}
+				}
+
+				if (matches.length === 0) return escapeHtml(text);
+
+				// 构建结果
+				let result = '';
+				let lastIndex = 0;
+
+				for (const match of matches) {
+					// 添加匹配前的文本（转义）
+					result += escapeHtml(text.substring(lastIndex, match.start));
+					// 添加高亮的匹配文本
+					result += '<mark>' + escapeHtml(match.text) + '</mark>';
+					lastIndex = match.end;
+				}
+
+				// 添加剩余文本
+				result += escapeHtml(text.substring(lastIndex));
+
+				return result;
+			}
+
+			// 工具函数：生成摘要
+			function generateExcerpt(body, keyword) {
+				if (!keyword.trim()) {
+					// 无关键词时，截取前100字符
+					return body.length > 100 ? body.substring(0, 100) + '...' : body;
+				}
+
+				const keywordLower = keyword.toLowerCase();
+				const bodyLower = body.toLowerCase();
+				const index = bodyLower.indexOf(keywordLower);
+
+				if (index === -1) {
+					// 关键词不在正文中（可能在标题或标签）
+					return body.length > 100 ? body.substring(0, 100) + '...' : body;
+				}
+
+				// 截取前后各40字符
+				const start = Math.max(0, index - 40);
+				const end = Math.min(body.length, index + keyword.length + 40);
+				let excerpt = body.substring(start, end);
+
+				// 添加省略号
+				if (start > 0) excerpt = '...' + excerpt;
+				if (end < body.length) excerpt = excerpt + '...';
+
+				return excerpt;
+			}
+
+			// 加载数据
+			async function loadData() {
+				try {
+					const response = await fetch('/search.json?t=' + Date.now());
+					if (!response.ok) throw new Error('Failed to load search data');
+					allPosts = await response.json();
+
+					// 从 URL 读取搜索状态并恢复
+					const params = new URLSearchParams(window.location.search);
+					const q = params.get('q');
+					const tagsParam = params.get('tags');
+
+					// 恢复搜索关键词
+					if (q && searchInput) {
+						searchInput.value = q;
+					}
+
+					// 清空已选标签（初始状态）
+					selectedTags.clear();
+
+					// 恢复选中的标签
+					if (tagsParam) {
+						const tags = tagsParam.split(',');
+						tags.forEach(tag => {
+							if (tag.trim()) {
+								selectedTags.add(tag.trim());
+							}
+						});
+					}
+
+					// 执行初始搜索（显示所有文章）
+					performSearch();
+				} catch (error) {
+					console.error('Error loading search data:', error);
+					searchResults.innerHTML = `
+						<li class="text-center py-12 text-red-500 dark:text-red-400">
+							<p>Failed to load search data. Please refresh the page.</p>
+						</li>
+					`;
+				}
+			}
+
+			// 更新标签统计
+			function updateTagStats(posts) {
+				tagMap.clear();
+
+				for (const post of posts) {
+					if (post.tags && Array.isArray(post.tags)) {
+						for (const tag of post.tags) {
+							const count = tagMap.get(tag) || 0;
+							tagMap.set(tag, count + 1);
+						}
+					}
+				}
+			}
+
+			// 渲染标签列表（带复选框）
+			function renderTags(keyword) {
+				if (tagMap.size === 0) {
+					searchTags.innerHTML = `
+						<li class="text-sm text-zinc-500 dark:text-zinc-400 italic">
+							No tags found.
+						</li>
+					`;
+					return;
+				}
+
+				// 按数量降序排序
+				const sortedTags = Array.from(tagMap.entries())
+					.sort((a, b) => b[1] - a[1]);
+
+				const keywordLower = keyword.toLowerCase().trim();
+
+				let html = '';
+				for (const [tag, count] of sortedTags) {
+					const isHighlighted = keywordLower && tag.toLowerCase().includes(keywordLower);
+					const tagDisplay = isHighlighted ? highlightText(tag, keywordLower) : escapeHtml(tag);
+					const isChecked = selectedTags.has(tag);
+
+					html += `
+						<li class="py-1 px-2 rounded transition-colors">
+							<label class="flex items-center gap-2 cursor-pointer p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors text-sm">
+								<input
+									type="checkbox"
+									value="${escapeHtml(tag)}"
+									class="tag-checkbox w-4 h-4 accent-gray-500 dark:accent-gray-400 bg-white dark:bg-zinc-800 border-zinc-300 dark:border-zinc-600 rounded focus:ring-purple-500 focus:ring-2"
+									${isChecked ? 'checked' : ''}
+								>
+								<span class="flex-1 ${isHighlighted ? 'font-medium' : ''}">${tagDisplay}</span>
+								<span class="text-gray-500 dark:text-gray-400 text-xs bg-gray-100 dark:bg-gray-800 px-2 py-0.5 rounded-full">${count}</span>
+							</label>
+						</li>
+					`;
+				}
+
+				searchTags.innerHTML = html;
+			}
+
+			// 执行搜索（支持文本搜索和标签过滤）
+			function performSearch() {
+				const keyword = searchInput.value.trim();
+				const keywordLower = keyword.toLowerCase();
+
+				// 空状态检查：无搜索词且无选中标签
+				if (keyword === '' && selectedTags.size === 0) {
+					// 清空搜索结果
+					searchResults.innerHTML = '';
+
+					// 更新统计区域显示提示信息
+					searchStats.innerHTML = 'Enter a search term or select a tag to see results.';
+
+					// 统计所有文章的标签（显示完整标签列表）
+					updateTagStats(allPosts);
+
+					// 渲染标签（无关键词高亮）
+					renderTags('');
+
+					// 清空搜索数据
+					searchData = [];
+
+					return; // 提前结束
+				}
+
+				// 正常搜索逻辑（有搜索词或选中标签）
+
+				// 第一阶段：文本过滤
+				const textFilteredPosts = allPosts.filter(post => {
+					if (keyword === '') {
+						return true; // 无关键词时，匹配所有
+					}
+
+					// 匹配标题
+					if (post.title.toLowerCase().includes(keywordLower)) return true;
+
+					// 匹配正文
+					if (post.body.toLowerCase().includes(keywordLower)) return true;
+
+					// 匹配标签（标签文本匹配）
+					if (post.tags && post.tags.some(tag =>
+						tag.toLowerCase().includes(keywordLower)
+					)) return true;
+
+					return false;
+				});
+
+				// 第二阶段：标签过滤（如果已选择标签）
+				if (selectedTags.size > 0) {
+					searchData = textFilteredPosts.filter(post => {
+						// 文章必须至少包含一个被选中的标签
+						return post.tags && post.tags.some(tag => selectedTags.has(tag));
+					});
+				} else {
+					searchData = textFilteredPosts;
+				}
+
+				// 更新标签统计（基于文本过滤的结果，不考虑标签筛选）
+				// 这样用户可以看到当前文本搜索结果中有哪些标签可用
+				updateTagStats(textFilteredPosts);
+
+				// 恢复统计区域结构（如果之前被清空）
+				if (!searchStats.querySelector('#result-count')) {
+					searchStats.innerHTML = 'Found <span id="result-count" class="font-semibold text-zinc-900 dark:text-zinc-100">0</span> matching posts';
+					// 重新获取resultCount元素引用
+					resultCount = document.getElementById('result-count');
+				}
+
+				// 更新统计
+				resultCount.textContent = searchData.length;
+
+				// 渲染结果
+				if (searchData.length === 0) {
+					if (keyword === '' && selectedTags.size > 0) {
+						// 只有标签筛选，无匹配
+						const tagsList = Array.from(selectedTags).map(tag => `"${escapeHtml(tag)}"`).join(', ');
+						searchResults.innerHTML = `
+							<li class="text-center py-12 text-zinc-500 dark:text-zinc-400">
+								<p>No posts found with tags: ${tagsList}</p>
+								<p class="text-sm mt-2">Try selecting different tags or clearing all tags.</p>
+							</li>
+						`;
+					} else if (keyword !== '' && selectedTags.size === 0) {
+						// 只有文本搜索，无匹配
+						searchResults.innerHTML = `
+							<li class="text-center py-12 text-zinc-500 dark:text-zinc-400">
+								<p>No results found for "<span class="font-medium">${escapeHtml(keyword)}</span>".</p>
+								<p class="text-sm mt-2">Try a different search term.</p>
+							</li>
+						`;
+					} else {
+						// 文本+标签组合搜索，无匹配
+						const tagsList = Array.from(selectedTags).map(tag => `"${escapeHtml(tag)}"`).join(', ');
+						searchResults.innerHTML = `
+							<li class="text-center py-12 text-zinc-500 dark:text-zinc-400">
+								<p>No results found for "<span class="font-medium">${escapeHtml(keyword)}</span>" with tags: ${tagsList}</p>
+								<p class="text-sm mt-2">Try a different search term or select different tags.</p>
+							</li>
+						`;
+					}
+				} else {
+					renderResults(searchData, keyword);
+				}
+
+				// 渲染标签（高亮包含关键词的标签）
+				renderTags(keyword);
+
+				// 将搜索状态同步到 URL（不刷新页面）
+				const params = new URLSearchParams();
+				if (keyword) {
+					params.set('q', keyword);
+				}
+				if (selectedTags.size > 0) {
+					params.set('tags', Array.from(selectedTags).join(','));
+				}
+				const newUrl = window.location.pathname + (params.toString() ? '?' + params.toString() : '');
+				history.replaceState(null, '', newUrl);
+			}
+
+			// 渲染搜索结果
+			function renderResults(posts, keyword) {
+				let html = '';
+
+				for (const post of posts) {
+					const highlightedTitle = highlightText(post.title, keyword);
+
+					// 构建标签 HTML
+					let tagsHtml = '';
+					if (post.tags && post.tags.length > 0) {
+						tagsHtml = `
+							<div class="flex flex-wrap gap-2 mt-2">
+								${post.tags.map(tag => `
+									<span class="text-xs px-2 py-1 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400">
+										${escapeHtml(tag)}
+									</span>
+								`).join('')}
+							</div>
+						`;
+					}
+
+					// 生成章节高亮与兜底逻辑
+					const keywordLower = keyword.toLowerCase();
+					let sectionsHtml = '';
+					// 1. 筛选出内容或标题包含关键词的章节 (最多3个)
+					const matchedSections = (post.sections || []).filter(section =>
+						(section.heading && section.heading.toLowerCase().includes(keywordLower)) ||
+						(section.content && section.content.toLowerCase().includes(keywordLower))
+					).slice(0, 3);
+
+					// 2. 生成 HTML
+					if (matchedSections.length > 0) {
+						// 有匹配的章节，渲染带锚点的跳链
+						matchedSections.forEach(section => {
+							const snippet = highlightText(generateExcerpt(section.content, keyword), keyword);
+							const headingDisplay = section.heading ? highlightText(section.heading, keyword) : '前言';
+
+							sectionsHtml += `
+								<div class="mt-4 border-l-2 border-gray-100 dark:border-gray-800 pl-3">
+									<div class="mb-1 text-sm font-bold text-gray-800 dark:text-gray-200">
+										<a href="/post/${post.slug}#${section.anchor}" class="group/anchor hover:text-sky-400 transition-colors inline-flex items-center gap-1">
+											<span class="text-gray-400 group-hover/anchor:text-sky-400 transition-colors">↳</span>
+											<span>${headingDisplay}#</span>
+										</a>
+									</div>
+									<p class="text-sm text-gray-600 dark:text-gray-400">${snippet}</p>
+								</div>
+							`;
+						});
+					} else {
+						// 兜底逻辑：如果找不到 section，取全文或 body
+						const fullContent = (post.sections && post.sections.length > 0)
+							? post.sections.map(s => s.content).join(' ')
+							: (post.body || '');
+						const fallbackSnippet = highlightText(generateExcerpt(fullContent, keyword), keyword);
+						sectionsHtml = `<p class="mt-3 text-sm text-gray-600 dark:text-gray-400">${fallbackSnippet}</p>`;
+					}
+
+					html += `
+						<li class="group bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-xl p-6 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300">
+							<div class="block group">
+								<h3 class="text-xl font-bold text-zinc-900 dark:text-zinc-100 group-hover:text-sky-400 dark:group-hover:text-purple-400 transition-colors mb-2">
+									<a href="/post/${post.slug}/" class="hover:text-sky-400 dark:hover:text-purple-400 transition-colors">
+										${highlightedTitle}
+									</a>
+								</h3>
+								${sectionsHtml}
+								${tagsHtml}
+							</div>
+						</li>
+					`;
+				}
+
+				searchResults.innerHTML = html;
+			}
+
+			// 防抖搜索
+			function debouncedSearch() {
+				clearTimeout(debounceTimer);
+				debounceTimer = setTimeout(performSearch, 300);
+			}
+
+			// 处理标签复选框变化
+			function handleTagCheckboxChange(event) {
+				const checkbox = event.target;
+				if (checkbox.classList.contains('tag-checkbox')) {
+					const tag = checkbox.value;
+
+					if (checkbox.checked) {
+						selectedTags.add(tag);
+					} else {
+						selectedTags.delete(tag);
+					}
+
+					// 触发搜索（包含标签过滤）
+					performSearch();
+				}
+			}
+
+			// 初始化
+			document.addEventListener('DOMContentLoaded', () => {
+				loadData();
+
+				// 监听输入事件
+				searchInput.addEventListener('input', debouncedSearch);
+
+				// 监听标签复选框变化（事件代理）
+				searchTags.addEventListener('change', handleTagCheckboxChange);
+
+				// 监听焦点事件（立即加载数据如果尚未加载）
+				searchInput.addEventListener('focus', () => {
+					if (allPosts.length === 0) {
+						loadData();
+					}
+				});
+			});
+		})();
+	</script>
+</BaseLayout>

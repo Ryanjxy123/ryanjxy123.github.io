@@ -129,16 +129,39 @@
                         >
                     </li>
                 {/each}
-                <!-- PC 端：主题切换按钮放在导航链接最右侧 -->
-                <li class="contents">
-                    <ThemeToggle />
-                </li>
             </ul>
             <div class="flex flex-none gap-2 items-center">
+                <!-- PC 端：主题切换和搜索按钮容器 -->
+                <div class="hidden md:flex items-center gap-1">
+                    <ThemeToggle />
+                    <a
+                        href="/search"
+                        class="p-2 transition-transform active:scale-95 rounded-full hover:bg-black/5 dark:hover:bg-white/10 flex items-center justify-center mr-2"
+                        aria-label="Search"
+                        title="Search"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                    </a>
+                </div>
                 <!-- 移动端：主题切换按钮放在汉堡菜单左侧 -->
                 <div class="md:hidden">
                     <ThemeToggle />
                 </div>
+                <!-- 移动端：搜索按钮 -->
+                <a
+                    href="/search"
+                    class="p-2 transition-transform active:scale-95 rounded-full hover:bg-black/5 dark:hover:bg-white/10 flex items-center justify-center md:hidden mr-2"
+                    aria-label="Search"
+                    title="Search"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                </a>
 
                 <button
                     onclick={() => handleMobileMenuToggle()}

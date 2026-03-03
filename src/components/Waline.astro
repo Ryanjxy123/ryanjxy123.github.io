@@ -1,0 +1,116 @@
+---
+// src/components/Waline.astro
+const serverURL = 'https://waline-comment-api-gamma.vercel.app';
+---
+
+<div id="waline-container" class="mt-12 pt-8 border-t border-zinc-200 dark:border-zinc-800"></div>
+
+<link rel="stylesheet" href="https://unpkg.com/@waline/client@v3/dist/waline.css" />
+
+<script type="module" define:vars={{ serverURL }}>
+  import { init } from 'https://unpkg.com/@waline/client@v3/dist/waline.js';
+
+  document.addEventListener('DOMContentLoaded', () => {
+    init({
+      el: '#waline-container',
+      serverURL: serverURL,
+      dark: 'html.dark', // 适配博客的 Tailwind 深色模式策略
+      path: window.location.pathname,
+      login: 'enable', // 支持匿名和注册登录
+      search: false,
+      imageUploader: false, // 关闭传图功能以保持页面纯粹
+      pageview: true, // 开启阅读量统计
+      comment: true, // 开启评论数统计
+    });
+  });
+</script>
+
+<style is:global>
+  /* --- 强效覆盖：将变量直接绑定到 ID 容器上，权重高于官方默认的 :root --- */
+
+  /* 亮色模式 */
+  #waline-container {
+    --waline-theme-color: #3f3f46; /* 主题色：深沉的锌灰 (zinc-700) */
+    --waline-active-color: #18181b; /* 悬停激活：近乎纯黑 (zinc-900) */
+    --waline-color: #52525b; /* 主文字色：中度灰 */
+    --waline-bgcolor: transparent; /* 整体背景透明 */
+    --waline-bgcolor-light: #f4f4f5; /* 引用/次要区域背景 */
+    --waline-bgcolor-hover: #f4f4f5;
+    --waline-border-color: #e4e4e7; /* 极浅的边框色 (zinc-200) */
+    --waline-disable-bgcolor: #f4f4f5;
+    --waline-disable-color: #a1a1aa;
+    --waline-badge-color: #71717a; /* 博主徽章也改为低调灰色 */
+    --waline-info-color: #a1a1aa;
+    --waline-text-color: #3f3f46;
+  }
+  /* 暗黑模式 */
+  html.dark #waline-container {
+    --waline-theme-color: #d4d4d8; /* 暗黑主色：浅灰 (zinc-300) */
+    --waline-active-color: #f4f4f5; /* 暗黑悬停：近乎纯白 (zinc-100) */
+    --waline-color: #a1a1aa;
+    --waline-bgcolor: transparent;
+    --waline-bgcolor-light: #27272a;
+    --waline-bgcolor-hover: #27272a;
+    --waline-border-color: #3f3f46;
+    --waline-disable-bgcolor: #3f3f46;
+    --waline-disable-color: #71717a;
+    --waline-badge-color: #a1a1aa;
+    --waline-info-color: #71717a;
+    --waline-text-color: #d4d4d8;
+  }
+
+  /* --- 暴力清除：去除官方多余的阴影和彩色边框修饰 --- */
+
+  /* 1. 输入框面板：去阴影、纯平线框 */
+  #waline-container .wl-panel {
+    border-radius: 6px !important;
+    box-shadow: none !important;
+    border: 1px solid var(--waline-border-color) !important;
+    background: var(--waline-bgcolor) !important;
+  }
+
+  /* 2. 普通按钮：极其克制的质感 */
+  #waline-container .wl-btn {
+    border-radius: 6px !important;
+    border: 1px solid var(--waline-border-color) !important;
+    background: transparent !important;
+    color: var(--waline-color) !important;
+    transition: all 0.2s ease !important;
+  }
+  #waline-container .wl-btn:hover {
+    background: var(--waline-bgcolor-light) !important;
+    color: var(--waline-active-color) !important;
+  }
+
+  /* 3. 提交按钮 (Primary)：沉稳的实心色块 */
+  #waline-container .wl-btn.primary {
+    background: var(--waline-theme-color) !important;
+    border-color: var(--waline-theme-color) !important;
+    color: #ffffff !important;
+  }
+  html.dark #waline-container .wl-btn.primary {
+    color: #18181b !important;
+  }
+  #waline-container .wl-btn.primary:hover {
+    opacity: 0.9 !important;
+  }
+
+  /* 4. 评论列表分割线微调 */
+  #waline-container .wl-card {
+    padding-bottom: 1rem !important;
+    border-bottom: 1px solid var(--waline-border-color) !important;
+  }
+
+  /* --- 暗黑模式专属：输入框氛围光影效果 --- */
+  html.dark #waline-container .wl-panel {
+    /* 叠加两层极淡的白色光晕，营造柔和的悬浮感 */
+    box-shadow: 0 4px 20px -2px rgba(255, 255, 255, 0.08),
+                0 0 8px 0 rgba(255, 255, 255, 0.05) !important;
+    /* 微调边框颜色，使其与光晕融合 */
+    border-color: rgba(255, 255, 255, 0.1) !important;
+    /* 确保背景色有足够的对比度 */
+    background: var(--waline-bgcolor-light) !important;
+    /* 增加一点圆角让光影更柔和 */
+    border-radius: 8px !important;
+  }
+</style>

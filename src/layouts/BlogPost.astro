@@ -9,6 +9,7 @@ import Container from "../components/Container.astro";
 import MarkdownBody from "../components/MarkdownBody.astro";
 import TagBadge from "../components/TagBadge.astro";
 import TableOfContents from "../components/TableOfContents.astro";
+import Waline from "../components/Waline.astro";
 
 import { getReadingTime } from "../utils/readingTime";
 
@@ -167,70 +168,76 @@ const formattedDate = pubDate.toLocaleDateString('en-US', { year: 'numeric', mon
 							<slot />
 						</MarkdownBody>
 
-						<!-- 版权协议卡片 -->
-						<div class="relative border border-gray-200 dark:border-zinc-800 rounded-xl p-6 bg-gray-50 dark:bg-zinc-900 mt-8 mb-8">
-							<!-- 标题和链接 -->
-							<div class="mb-6">
-								<h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2">{title}</h3>
-								<p class="text-sm text-gray-500 dark:text-gray-400 break-all">{Astro.url.href}</p>
-							</div>
-							<!-- 三列信息 -->
-							<div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-								<div>
-									<div class="font-medium text-gray-700 dark:text-gray-300">Author</div>
-									<div class="text-gray-600 dark:text-gray-400">Ryanjxy</div>
-								</div>
-								<div>
-									<div class="font-medium text-gray-700 dark:text-gray-300">Published at</div>
-									<div class="text-gray-600 dark:text-gray-400">{formattedDate}</div>
-								</div>
-								<div>
-									<div class="font-medium text-gray-700 dark:text-gray-300">Copyright</div>
-									<div class="text-gray-600 dark:text-gray-400">
-										<a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener noreferrer" class="hover:underline">CC BY-NC-SA 4.0</a>
-									</div>
-								</div>
-							</div>
-							<!-- 大型半透明版权水印 -->
-							<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="absolute top-[35%] -translate-y-1/2 right-1 w-28 h-28 opacity-[0.03] text-gray-900 dark:text-white pointer-events-none">
-								<circle cx="12" cy="12" r="10"></circle>
-								<path d="M14.83 14.83a4 4 0 1 1 0-5.66"></path>
-							</svg>
-							<!-- 动态手写签名 -->
-							<svg viewBox="0 0 180 50" class="absolute bottom-2 right-[-20px] w-36 h-12 opacity-30 text-gray-700 dark:text-gray-300">
-								<text x="15" y="38" font-family="'ComicSansWeb', cursive, sans-serif" font-size="36" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" class="signature-text">Ryanjxy</text>
-							</svg>
-						</div>
 
-						<style>
-							.signature-text {
-								/* 保持 800 确保长名字 Ryanjxy 完整显示 */
-								stroke-dasharray: 800;
-								stroke-dashoffset: 800;
-
-								/* 10秒为一个周期，无限循环 */
-								animation: auto-sign 10s ease-in-out infinite;
-							}
-							/* 自动循环签名动画的时间轴 */
-							@keyframes auto-sign {
-								0%   { stroke-dashoffset: 800; } /* 0秒：开始，完全隐藏 */
-								20%  { stroke-dashoffset: 0; }   /* 2秒：完全画出 */
-								60%  { stroke-dashoffset: 0; }   /* 2秒~6秒：保持显示 4 秒钟，供读者看清 */
-								80%  { stroke-dashoffset: 800; } /* 6秒~8秒：倒退擦除 */
-								100% { stroke-dashoffset: 800; } /* 8秒~10秒：保持空白隐藏状态 2 秒钟，然后开始下一次循环 */
-							}
-						</style>
 					</div>
 
 					<!-- 右侧目录栏（固定悬浮） -->
 					{
 						headings && headings.length > 0 && (
-							<div class="hidden lg:block sticky top-24 h-fit mt-3">
+							<div class="hidden lg:block sticky top-24 self-start h-max overflow-y-auto mt-3">
 								<TableOfContents headings={headings} />
 							</div>
 						)
 					}
 				</div>
+
+			<div class="min-w-0 lg:mr-[300px]">
+				<!-- 版权协议卡片 -->
+				<div class="relative border border-gray-200 dark:border-zinc-800 rounded-xl p-6 bg-gray-50 dark:bg-zinc-900 mt-8 mb-8">
+					<!-- 标题和链接 -->
+					<div class="mb-6">
+						<h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2">{title}</h3>
+						<p class="text-sm text-gray-500 dark:text-gray-400 break-all">{Astro.url.href}</p>
+					</div>
+					<!-- 三列信息 -->
+					<div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+						<div>
+							<div class="font-medium text-gray-700 dark:text-gray-300">Author</div>
+							<div class="text-gray-600 dark:text-gray-400">Ryanjxy</div>
+						</div>
+						<div>
+							<div class="font-medium text-gray-700 dark:text-gray-300">Published at</div>
+							<div class="text-gray-600 dark:text-gray-400">{formattedDate}</div>
+						</div>
+						<div>
+							<div class="font-medium text-gray-700 dark:text-gray-300">Copyright</div>
+							<div class="text-gray-600 dark:text-gray-400">
+								<a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener noreferrer" class="hover:underline">CC BY-NC-SA 4.0</a>
+							</div>
+						</div>
+					</div>
+					<!-- 大型半透明版权水印 -->
+					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="absolute top-[35%] -translate-y-1/2 right-1 w-28 h-28 opacity-[0.03] text-gray-900 dark:text-white pointer-events-none">
+						<circle cx="12" cy="12" r="10"></circle>
+						<path d="M14.83 14.83a4 4 0 1 1 0-5.66"></path>
+					</svg>
+					<!-- 动态手写签名 -->
+					<svg viewBox="0 0 180 50" class="absolute bottom-2 right-[-20px] w-36 h-12 opacity-30 text-gray-700 dark:text-gray-300">
+						<text x="15" y="38" font-family="'ComicSansWeb', cursive, sans-serif" font-size="36" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" class="signature-text">Ryanjxy</text>
+					</svg>
+				</div>
+
+				<style>
+					.signature-text {
+						/* 保持 800 确保长名字 Ryanjxy 完整显示 */
+						stroke-dasharray: 800;
+						stroke-dashoffset: 800;
+
+						/* 10秒为一个周期，无限循环 */
+						animation: auto-sign 10s ease-in-out infinite;
+					}
+					/* 自动循环签名动画的时间轴 */
+					@keyframes auto-sign {
+						0%   { stroke-dashoffset: 800; } /* 0秒：开始，完全隐藏 */
+						20%  { stroke-dashoffset: 0; }   /* 2秒：完全画出 */
+						60%  { stroke-dashoffset: 0; }   /* 2秒~6秒：保持显示 4 秒钟，供读者看清 */
+						80%  { stroke-dashoffset: 800; } /* 6秒~8秒：倒退擦除 */
+						100% { stroke-dashoffset: 800; } /* 8秒~10秒：保持空白隐藏状态 2 秒钟，然后开始下一次循环 */
+					}
+				</style>
+
+				<Waline />
+			</div>
 
 
 				<slot name="comment" />

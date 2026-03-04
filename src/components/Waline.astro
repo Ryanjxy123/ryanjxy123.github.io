@@ -17,7 +17,7 @@ const serverURL = 'https://waline-comment-api-gamma.vercel.app';
       dark: 'html.dark', // 适配博客的 Tailwind 深色模式策略
       path: window.location.pathname,
       login: 'enable', // 支持匿名和注册登录
-      search: false,
+      search: true,
       imageUploader: false, // 关闭传图功能以保持页面纯粹
       pageview: true, // 开启阅读量统计
       comment: true, // 开启评论数统计
@@ -112,5 +112,49 @@ const serverURL = 'https://waline-comment-api-gamma.vercel.app';
     background: var(--waline-bgcolor-light) !important;
     /* 增加一点圆角让光影更柔和 */
     border-radius: 8px !important;
+  }
+
+  /* --- 表情/GIF 搜索面板 UI 极简扁平化适配 --- */
+
+  /* 弹出面板基础容器 */
+  #waline-container .wl-emoji-popup {
+    border-radius: 8px !important;
+    border: 1px solid var(--waline-border-color) !important;
+    background: var(--waline-bgcolor) !important;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05) !important; /* 仅保留极淡的悬浮阴影 */
+  }
+
+  /* 暗黑模式下，弹出面板使用略微亮一点的底色以区分层级 */
+  html.dark #waline-container .wl-emoji-popup {
+    background: var(--waline-bgcolor-light) !important;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2),
+                0 0 0 1px rgba(255, 255, 255, 0.05) !important;
+  }
+
+  /* GIF 搜索输入框极简处理 */
+  #waline-container .wl-search {
+    background: transparent !important;
+  }
+  #waline-container .wl-search input {
+    border-radius: 6px !important;
+    border: 1px solid var(--waline-border-color) !important;
+    background: var(--waline-bgcolor-light) !important;
+    color: var(--waline-color) !important;
+  }
+  html.dark #waline-container .wl-search input {
+    background: #3f3f46 !important; /* zinc-700 搜索框底色 */
+  }
+
+  /* 表情包 Tab 切换栏底边框微调 */
+  #waline-container .wl-tabs {
+    border-bottom: 1px solid var(--waline-border-color) !important;
+  }
+
+  /* 左下角工具栏按钮（表情、GIF 等图标）悬停反馈优化 */
+  #waline-container .wl-action {
+    transition: color 0.2s ease !important;
+  }
+  #waline-container .wl-action:hover {
+    color: var(--waline-active-color) !important;
   }
 </style>

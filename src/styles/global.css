@@ -95,6 +95,44 @@ html.dark .hover\:shadow-xl:hover {
     margin: 0 0.125rem;
 }
 
+/* 优化行内代码样式 */
+.prose :not(pre) code {
+    /* 移除伪元素反引号 */
+    &::before,
+    &::after {
+        content: none;
+    }
+    /* 背景色与圆角 */
+    background-color: rgb(243 244 246); /* gray-100 */
+    border-radius: 0.25rem; /* rounded */
+    padding: 0.125rem 0.375rem; /* px-1.5 py-0.5 */
+    /* 字体外观 */
+    font-weight: 400; /* font-normal */
+    font-size: 0.875em; /* 稍微调小 */
+    color: var(--color-accent-600); /* 使用强调色 */
+}
+
+/* 暗黑模式适配 */
+html.dark .prose :not(pre) code {
+    background-color: rgb(31 41 55); /* gray-800 */
+    color: var(--color-accent-400); /* 暗黑模式下的强调色 */
+}
+
+/* 优化列表对齐样式 */
+.prose ol,
+.prose ul {
+    padding-left: 1.2em; /* 减少缩进，使列表标记与段落左边缘对齐 */
+    list-style-position: outside; /* 确保换行时文本与第一行文字对齐 */
+}
+
+/* 调整嵌套列表缩进，保持层级关系 */
+.prose ol ol,
+.prose ul ul,
+.prose ol ul,
+.prose ul ol {
+    padding-left: 1.5em; /* 嵌套列表稍增加缩进 */
+}
+
 .prose a:hover {
     border-color: var(--color-accent-300);
     background-color: var(--color-accent-100);

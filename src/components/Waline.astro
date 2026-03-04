@@ -157,4 +157,10 @@ const serverURL = 'https://waline-comment-api-gamma.vercel.app';
   #waline-container .wl-action:hover {
     color: var(--waline-active-color) !important;
   }
+
+  /* 强制去除容器偏移 */
+  #waline-container {
+    padding-left: 0 !important;
+    margin-left: -1rem !important; /* -12px 抵消缩进 */
+  }
 </style>

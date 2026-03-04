@@ -9,7 +9,7 @@ const filteredHeadings = headings.filter(heading => heading.depth <= 3);
 ---
 
 <div class="toc-sidebar-wrapper relative h-fit">
-    <nav class="toc-container w-full overflow-y-auto no-native-scroll" style="max-height: 70vh;">
+    <nav id="toc-scroll-container" class="toc-container w-full overflow-y-auto">
         <h3 class="mb-4 pl-2 text-lg font-extrabold tracking-widest text-[#52525b] dark:text-gray-400 uppercase">TABLE OF CONTENTS</h3>
         <ul class="toc-list relative">
             {
@@ -27,9 +27,6 @@ const filteredHeadings = headings.filter(heading => heading.depth <= 3);
         </ul>
     </nav>
 
-    <div class="custom-scrollbar-track absolute right-0 top-0 bottom-0 w-[8px] pointer-events-none z-[99]">
-        <div class="custom-scrollbar-thumb absolute right-0 top-0 w-full h-[200px] rounded bg-gray-400/30 dark:bg-white/20 transition-colors"></div>
-    </div>
 </div>
 
 <style>
@@ -197,52 +194,49 @@ const filteredHeadings = headings.filter(heading => heading.depth <= 3);
 
     /* 1. 限制最大高度并开启内部滚动 */
     .toc-container {
-        /* 恢复到接近屏幕底部的高度，给文字留出充足的展示空间 */
-        max-height: calc(100vh - 120px);
+        /* 使用动态高度，距离视口顶部和底部各留出适当空间 */
+        max-height: calc(100vh - 8rem);
         overflow-y: auto;
         overflow-x: hidden;
         overscroll-behavior: contain;
-        padding-right: 16px; /* 给滚动条留出空间，同时保持与原有 pr-4 一致的内边距 */
         /* 确保容器本身是粘性定位，并贴近顶部（如果有顶部导航栏，请适配 top 值） */
         position: sticky;
         top: 100px;
     }
-    /* 2. 恢复纯净的原生 WebKit 滚动条物理引擎 */
-    .toc-container::-webkit-scrollbar {
-        width: 8px; /* 加粗的滚动条，更易操作 */
+
+    /* 极简自定义滚动条样式 */
+    #toc-scroll-container::-webkit-scrollbar {
+        width: 4px; /* 极细滚动条 */
     }
-    /* 1. 轨道本身：全长贯通，没有任何 margin 截断 */
-    .toc-container::-webkit-scrollbar-track {
-        background: transparent;
-        /* 立即删除之前所有的 margin-top, margin-bottom */
+
+    #toc-scroll-container::-webkit-scrollbar-track {
+        background: transparent; /* 轨道完全透明 */
     }
-    /* 2. 滑块（Thumb）：去除所有的隐形边框，恢复原生高度计算，确保能摸到底 */
-    .toc-container::-webkit-scrollbar-thumb {
-        background-color: rgba(150, 150, 150, 0.3);
+
+    #toc-scroll-container::-webkit-scrollbar-thumb {
+        background-color: #e4e4e7; /* 亮色模式：极淡的锌灰 (zinc-200) */
         border-radius: 4px;
-        /* 立即删除之前所有的 border, background-clip, height 等属性 */
-    }
-    /* 适配暗黑模式 */
-    :global(.dark) .toc-container::-webkit-scrollbar-thumb {
-        background-color: rgba(255, 255, 255, 0.2);
-    }
-    /* 鼠标悬停时才微微加深，提升交互感 */
-    .toc-container:hover::-webkit-scrollbar-thumb {
-        background-color: rgba(150, 150, 150, 0.6);
     }
 
-    /* 隐藏原生滚动条，显示自定义滚动条 */
-    .no-native-scroll::-webkit-scrollbar {
-        display: none;
+    #toc-scroll-container::-webkit-scrollbar-thumb:hover {
+        background-color: #d4d4d8; /* 悬停时稍微加深 (zinc-300) */
     }
 
-    /* 自定义滚动条轨道过渡效果 */
-    .custom-scrollbar-track {
-        transition: opacity 0.2s ease;
+    /* 暗黑模式适配 */
+    :global(.dark) #toc-scroll-container::-webkit-scrollbar-thumb {
+        background-color: #3f3f46; /* 暗色模式：深灰 (zinc-700) */
     }
-    /* 自定义滚动条滑块过渡效果 */
-    .custom-scrollbar-thumb {
-        transition: transform 0.1s linear;
+    :global(.dark) #toc-scroll-container::-webkit-scrollbar-thumb:hover {
+        background-color: #52525b; /* 暗色模式悬停 (zinc-600) */
+    }
+
+    /* Firefox 支持 */
+    #toc-scroll-container {
+        scrollbar-width: thin;
+        scrollbar-color: #e4e4e7 transparent;
+    }
+    :global(.dark) #toc-scroll-container {
+        scrollbar-color: #3f3f46 transparent;
     }
 </style>
 
@@ -252,10 +246,6 @@ const filteredHeadings = headings.filter(heading => heading.depth <= 3);
         const tocLinks = document.querySelectorAll('.toc-link');
         if (tocLinks.length === 0) return;
 
-        // 获取自定义滚动条元素（暴力调试）
-        const container = document.querySelector('.toc-container');
-        const track = document.querySelector('.custom-scrollbar-track');
-        const thumb = document.querySelector('.custom-scrollbar-thumb');
 
         // 获取文章容器（支持 .prose 或 article 作为备选）
         const articleWrapper = document.querySelector('.prose') || document.querySelector('article');
@@ -269,32 +259,6 @@ const filteredHeadings = headings.filter(heading => heading.depth <= 3);
             return href ? href.substring(1) : '';
         }).filter(id => id);
 
-        const updateThumbPosition = () => {
-            if (!container || !track || !thumb) return;
-
-            const scrollableHeight = container.scrollHeight - container.clientHeight;
-
-            // 1. 恢复自动隐藏逻辑（取消注释）
-            if (scrollableHeight <= 1) { // 使用 <= 1 增加一点容错
-                track.style.opacity = '0';
-                // 增加 transition 让消失更平滑（可选，需在 CSS track 上加 transition-opacity）
-                return;
-            }
-            track.style.opacity = '1';
-
-            const scrollRatio = container.scrollTop / scrollableHeight;
-            const maxThumbTravel = track.clientHeight - thumb.clientHeight;
-
-            // 直接执行位移，因为前面已经排除了 scrollableHeight <= 1 的情况
-            thumb.style.transform = `translateY(${scrollRatio * maxThumbTravel}px)`;
-        };
-
-        // 初始化自定义滚动条事件
-        if (container && track && thumb) {
-            container.addEventListener('scroll', () => requestAnimationFrame(updateThumbPosition), { passive: true });
-            // 初始调用一次
-            updateThumbPosition();
-        }
 
         function updateToc() {
             const windowHeight = window.innerHeight;

@@ -208,6 +208,22 @@ export const toolCategories: ToolCategory[] = [
         url: "https://picgo.github.io/PicGo-Doc/",
         icon: "https://raw.githubusercontent.com/Ryanjxy123/picbed/main/data20260301160632940.png",
         category: "general"
+      },
+      {
+        id: "pdf24",
+        name: "PDF24 Tools",
+        description: "免费且易于使用的在线 PDF 工具箱，提供合并、压缩、转换等功能",
+        url: "https://tools.pdf24.org/en/",
+        icon: "https://raw.githubusercontent.com/Ryanjxy123/picbed/main/datafile.png",
+        category: "general"
+      },
+      {
+        id: "ilovepdf",
+        name: "iLovePDF",
+        description: "功能强大的 PDF 在线处理工具，支持几乎所有常见的 PDF 操作",
+        url: "https://www.ilovepdf.com/",
+        icon: "https://api.iconify.design/ph:file-pdf-fill.svg?color=%23E53935",
+        category: "general"
       }
     ]
   },

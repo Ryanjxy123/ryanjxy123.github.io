@@ -56,7 +56,7 @@ function gemini {
     Write-Host "Starting Gemini CLI..." -ForegroundColor Green
 
     # 使用 npx 动态拉取最新版运行，避免全局安装产生的版本 bug
-    npx [https://github.com/google-gemini/gemini-cli](https://github.com/google-gemini/gemini-cli)
+    npx https://github.com/google-gemini/gemini-cli
 }
 ```
 

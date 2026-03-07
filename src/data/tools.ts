@@ -202,6 +202,14 @@ export const toolCategories: ToolCategory[] = [
         category: "general"
       },
       {
+        id: "everything",
+        name: "Everything",
+        description: "轻量级且速度极快的 Windows 桌面文件搜索神器",
+        url: "https://www.voidtools.com/zh-cn/",
+        icon: "https://raw.githubusercontent.com/Ryanjxy123/picbed/main/datasearch-file-svgrepo-com.png",
+        category: "general"
+      },
+      {
         id: "picgo",
         name: "PicGo",
         description: "一个用于快速上传图片并获取图片 URL 链接的工具",

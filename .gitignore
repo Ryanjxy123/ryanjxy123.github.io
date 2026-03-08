@@ -24,3 +24,6 @@ pnpm-debug.log*
 
 # Ignore Claude Code local configs
 .claude/
+
+# Gemini CLI
+GEMINI.md

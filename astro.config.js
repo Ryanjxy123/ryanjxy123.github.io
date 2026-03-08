@@ -1,4 +1,4 @@
-import { defineConfig } from 'astro/config';
+import { defineConfig, passthroughImageService } from 'astro/config';
 import mdx from '@astrojs/mdx';
 import rehypeSlug from 'rehype-slug';
 import sitemap from '@astrojs/sitemap';
@@ -14,6 +14,12 @@ export default defineConfig({
   base: '/',
   output: 'static',
   integrations: [mdx(), sitemap(), svelte(), react()],
+  
+  // 👉 新增的图片处理配置，临时禁用 Sharp 图片优化以排查死锁
+  image: {
+    service: passthroughImageService(),
+  },
+
   markdown: {
     remarkPlugins: [remarkMath],
     rehypePlugins: [rehypeKatex, rehypeSlug],

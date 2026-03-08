@@ -1,4 +1,4 @@
-import { defineConfig, passthroughImageService } from 'astro/config';
+import { defineConfig } from 'astro/config';
 import mdx from '@astrojs/mdx';
 import rehypeSlug from 'rehype-slug';
 import sitemap from '@astrojs/sitemap';
@@ -15,30 +15,23 @@ export default defineConfig({
   output: 'static',
   integrations: [mdx(), sitemap(), svelte(), react()],
   
-  // 👉 新增的图片处理配置，临时禁用 Sharp 图片优化以排查死锁
-  image: {
-    service: passthroughImageService(),
-  },
-
   markdown: {
+    // 正确的做法：插件只在最外层声明一次
     remarkPlugins: [remarkMath],
     rehypePlugins: [rehypeKatex, rehypeSlug],
     remarkRehype: {
       footnoteLabel: "脚注",
       footnoteBackLabel: '文档内容的脚注',
-      remarkPlugins: [remarkMath], // 告诉 Astro 使用 remark-math 处理数学语法
-      rehypePlugins: [rehypeKatex, rehypeSlug], // 告诉 Astro 使用 rehype-katex 渲染 KaTeX
+      // 这里只放 remark-rehype 的配置项，绝不能放函数插件！
       allowDangerousHtml: true,
     },
     shikiConfig: {
-      // 启用双主题适配
       themes: {
         light: 'github-light',
         dark: 'github-dark',
       },
-      // 其他Shiki配置
       wrap: true,
-      langs: [], // 自动检测语言
+      langs: [], 
     },
     syntaxHighlight: 'shiki',
   },

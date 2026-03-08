@@ -47,9 +47,9 @@ importers:
       markdown-to-text:
         specifier: ^0.1.1
         version: 0.1.1
-      pinyin:
-        specifier: ^4.0.0
-        version: 4.0.0
+      pinyin-pro:
+        specifier: ^3.28.0
+        version: 3.28.0
       prettier:
         specifier: ^3.5.3
         version: 3.5.3
@@ -1105,10 +1105,6 @@ packages:
   comma-separated-tokens@2.0.3:
     resolution: {integrity: sha512-Fu4hJdvzeylCfQPp9SGWidpzrMs7tTrlu6Vb8XGaRGck8QSNZJJp538Wrb60Lax4fPwR64ViY468OIUTbRlGZg==}
 
-  commander@1.1.1:
-    resolution: {integrity: sha512-71Rod2AhcH3JhkBikVpNd0pA+fWsmAaVoti6OR38T76chA7vE3pSerS0Jor4wDw+tOueD2zLVvFOw5H0Rcj7rA==}
-    engines: {node: '>= 0.6.x'}
-
   commander@8.3.0:
     resolution: {integrity: sha512-OkTL9umf+He2DZkUq8f8J9of7yL6RJKI24dVITBmNfZBmri9zYZQrKkuXiKhyfPSu8tUhnVBB1iKXevvnlR4Ww==}
     engines: {node: '>= 12'}
@@ -1509,9 +1505,6 @@ packages:
     resolution: {integrity: sha512-XCHRdUw4lf3SKBaJe4EvgqIuWwkPSo9XoeO8GjQW94Bp7TWv9hNhzZjZ+OH9yf1UmLygb7DIT5GSFQiyt16zYg==}
     hasBin: true
 
-  keypress@0.1.0:
-    resolution: {integrity: sha512-x0yf9PL/nx9Nw9oLL8ZVErFAk85/lslwEP7Vz7s5SI1ODXZIgit3C5qyWjw4DxOuO/3Hb4866SQh28a1V1d+WA==}
-
   kleur@3.0.3:
     resolution: {integrity: sha512-eTIzlVOSUR+JxdDFepEYcBMtZ9Qqdef+rnzWdRZuMbOywu5tO2w2N7rqjoANZ5k9vywhL6Br1VRjUIgTQx4E8w==}
     engines: {node: '>=6'}
@@ -1906,21 +1899,8 @@ packages:
     resolution: {integrity: sha512-M7BAV6Rlcy5u+m6oPhAPFgJTzAioX/6B0DxyvDlo9l8+T3nLKbrczg2WLUyzd45L8RqfUMyGPzekbMvX2Ldkwg==}
     engines: {node: '>=12'}
 
-  pinyin@4.0.0:
-    resolution: {integrity: sha512-vHpV5K+vpp6XUUpZNGRDuHoN+1xcmieM3EWlH4QjSX2kkpG/gVOwpqwV9EOJ9x9c9UERFKeLml5XVSukE/PLgQ==}
-    engines: {install-node: ^18.0.0}
-    hasBin: true
-    peerDependencies:
-      '@node-rs/jieba': ^1.6.0
-      nodejieba: ^3.4.4
-      segmentit: ^2.0.3
-    peerDependenciesMeta:
-      '@node-rs/jieba':
-        optional: true
-      nodejieba:
-        optional: true
-      segmentit:
-        optional: true
+  pinyin-pro@3.28.0:
+    resolution: {integrity: sha512-mMRty6RisoyYNphJrTo3pnvp3w8OMZBrXm9YSWkxhAfxKj1KZk2y8T2PDIZlDDRsvZ0No+Hz6FI4sZpA6Ey25g==}
 
   postcss-selector-parser@6.0.10:
     resolution: {integrity: sha512-IQ7TZdoaqbT+LCpShg46jnZVlhWD2w6iQYAcYXfHARZ7X1t/UGhhceQDs5X0cGqKvYlHNOuv7Oa1xmb0oQuA3w==}
@@ -3756,10 +3736,6 @@ snapshots:
 
   comma-separated-tokens@2.0.3: {}
 
-  commander@1.1.1:
-    dependencies:
-      keypress: 0.1.0
-
   commander@8.3.0: {}
 
   common-ancestor-path@1.0.1: {}
@@ -4248,8 +4224,6 @@ snapshots:
   katex@0.16.22:
     dependencies:
       commander: 8.3.0
-
-  keypress@0.1.0: {}
 
   kleur@3.0.3: {}
 
@@ -4907,9 +4881,7 @@ snapshots:
 
   picomatch@4.0.2: {}
 
-  pinyin@4.0.0:
-    dependencies:
-      commander: 1.1.1
+  pinyin-pro@3.28.0: {}
 
   postcss-selector-parser@6.0.10:
     dependencies:

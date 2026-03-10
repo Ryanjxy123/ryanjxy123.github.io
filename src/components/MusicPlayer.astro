@@ -1,0 +1,228 @@
+---
+---
+<div id="global-music-player" transition:persist="global-player" class="is-embedded">
+	<div id="aplayer-mount"></div>
+</div>
+
+<script is:inline>
+	document.addEventListener('astro:page-load', () => {
+		const playerWrap = document.getElementById('global-music-player');
+		if (!playerWrap) return;
+
+		// 1. 形态切换：吸附主页占位符 vs 右下角悬浮
+		const updatePosition = () => {
+			const placeholder = document.getElementById('player-placeholder');
+			if (placeholder) {
+				const rect = placeholder.getBoundingClientRect();
+				playerWrap.style.position = 'absolute';
+				playerWrap.style.top = (rect.top + window.scrollY) + 'px';
+				playerWrap.style.left = (rect.left + window.scrollX) + 'px';
+				playerWrap.style.width = rect.width + 'px';
+				playerWrap.style.height = rect.height + 'px';
+				playerWrap.classList.remove('is-floating');
+				playerWrap.classList.add('is-embedded');
+			} else {
+				// 非主页模式
+				playerWrap.style.position = 'fixed';
+				playerWrap.style.top = '';
+				playerWrap.style.left = '';
+				playerWrap.style.width = '';
+				playerWrap.style.height = '';
+				playerWrap.classList.remove('is-embedded');
+				playerWrap.classList.add('is-floating');
+			}
+		};
+
+		updatePosition();
+		window.addEventListener('resize', updatePosition);
+		window.addEventListener('scroll', updatePosition);
+
+		// 2. 原生初始化与无缝续播
+		if (!window.ap) {
+			fetch('https://api.i-meto.com/meting/api?server=netease&type=playlist&id=17822229873')
+				.then(res => res.json())
+				.then(data => {
+					window.ap = new APlayer({
+						container: document.getElementById('aplayer-mount'),
+						audio: data, 
+						order: 'list', 
+						loop: 'all', 
+						theme: '#3b82f6', 
+						listFolded: true,
+						lrcType: 3
+					});
+					
+					// 监听播放状态以备续播
+					window.ap.on('play', () => { window.ap_was_playing = true; });
+					window.ap.on('pause', () => { window.ap_was_playing = false; });
+					
+					initCustomUI();
+				});
+		} else {
+			// 如果已经初始化，尝试恢复播放状态
+			if (window.ap_was_playing) {
+				setTimeout(() => { 
+					if (window.ap.paused) window.ap.play(); 
+				}, 100);
+			}
+			initCustomUI();
+		}
+
+		// 3. 注入交互与渐变歌词 (防止重复执行)
+		function initCustomUI() {
+			if (playerWrap.dataset.ui_inited === "true") return;
+			playerWrap.dataset.ui_inited = "true";
+			
+			const ap = window.ap;
+			
+			const checkControl = setInterval(() => {
+				const timeBar = document.querySelector('.aplayer-time');
+				if (!timeBar) return;
+				clearInterval(checkControl);
+
+				ap.setMode('normal');
+				
+				// --- 注入完美的控制按键组 (上一首、播放/暂停、下一首) ---
+				// 清理可能存在的旧自定义按钮防重复
+				document.querySelectorAll('.custom-control-btn').forEach(btn => btn.remove());
+				const btnStyle = 'cursor: pointer; font-size: 15px; opacity: 0.7; transition: opacity 0.2s; display: flex; align-items: center; justify-content: center;';
+
+				const prevBtn = document.createElement('span');
+				prevBtn.innerHTML = '⏮';
+				prevBtn.className = 'custom-control-btn aplayer-icon';
+				prevBtn.style.cssText = btnStyle;
+				prevBtn.onclick = (e) => { e.stopPropagation(); ap.skipBack(); ap.play(); };
+
+				const playBtn = document.createElement('span');
+				// 初始状态判断
+				playBtn.innerHTML = ap.audio.paused ? '▶' : '⏸';
+				playBtn.className = 'custom-control-btn aplayer-icon';
+				playBtn.style.cssText = btnStyle + 'font-size: 17px; margin: 0 8px;';
+				playBtn.onclick = (e) => { e.stopPropagation(); ap.toggle(); };
+				// 监听 APlayer 原生事件，实时同步图标状态
+				ap.on('play', () => playBtn.innerHTML = '⏸');
+				ap.on('pause', () => playBtn.innerHTML = '▶');
+
+				const nextBtn = document.createElement('span');
+				nextBtn.innerHTML = '⏭';
+				nextBtn.className = 'custom-control-btn aplayer-icon';
+				nextBtn.style.cssText = btnStyle;
+				nextBtn.onclick = (e) => { e.stopPropagation(); ap.skipForward(); ap.play(); };
+
+				// 按顺序插入到时间文本前面: Prev -> Play -> Next
+				timeBar.insertBefore(nextBtn, timeBar.firstChild);
+				timeBar.insertBefore(playBtn, nextBtn);
+				timeBar.insertBefore(prevBtn, playBtn);
+
+				const lrcDisplay = document.createElement('div');
+				lrcDisplay.className = 'custom-lrc-display';
+				lrcDisplay.textContent = 'Enjoy Music...';
+				const infoArea = document.querySelector('.aplayer-info');
+				const musicArea = document.querySelector('.aplayer-music');
+				if (infoArea && musicArea) infoArea.insertBefore(lrcDisplay, musicArea.nextSibling);
+
+				const syncLrc = () => {
+					if (!ap || !lrcDisplay) return requestAnimationFrame(syncLrc);
+					const currentLrc = document.querySelector('.aplayer-lrc-current');
+					if (currentLrc) {
+						const text = currentLrc.textContent.replace(/\[\d+:\d+.\d+\]/g, '').trim();
+						if (text && lrcDisplay.textContent !== text) lrcDisplay.textContent = text;
+						else if (!text && lrcDisplay.textContent !== '...') lrcDisplay.textContent = '...';
+					} else if (!ap.paused && lrcDisplay.textContent !== 'Enjoy Music...') {
+						lrcDisplay.textContent = 'Enjoy Music...';
+					}
+					requestAnimationFrame(syncLrc);
+				};
+				requestAnimationFrame(syncLrc);
+			}, 100);
+		}
+	});
+</script>
+
+<style is:global>
+	/* =========================================
+	   1. 彻底斩杀原生多余按钮 (提升选择器权重)
+	========================================= */
+	#global-music-player .aplayer-controller .aplayer-time .aplayer-icon.aplayer-icon-order,
+	#global-music-player .aplayer-controller .aplayer-time .aplayer-icon.aplayer-icon-menu,
+	#global-music-player .aplayer-controller .aplayer-time .aplayer-icon.aplayer-icon-lrc { 
+		display: none !important; 
+	}
+
+	#global-music-player .aplayer { 
+		margin: 0 !important; font-family: inherit !important; border: none !important; 
+		background: transparent !important; box-shadow: none !important; 
+	}
+	#global-music-player .aplayer-body { background: transparent !important; }
+	#global-music-player .aplayer-list, #global-music-player .aplayer-lrc { display: none !important; }
+
+	/* =========================================
+	   2. 强制水平对齐与 Flexbox 间距优化
+	========================================= */
+	#global-music-player .aplayer-info .aplayer-controller {
+		display: flex !important;
+		align-items: center !important;
+		margin-top: 6px !important;
+	}
+	#global-music-player .aplayer-bar-wrap {
+		flex: 1 !important;
+		margin: 0 16px 0 0 !important;
+		padding: 0 !important;
+	}
+	#global-music-player .aplayer-time {
+		position: static !important;
+		display: flex !important;
+		align-items: center !important;
+		padding: 0 !important; margin: 0 !important;
+		gap: 6px !important; /* 关键：给时间区所有按钮统一的间距 */
+	}
+	#global-music-player .aplayer-time .aplayer-time-inner {
+		margin: 0 6px 0 4px !important; /* 给时间数字两边留白 */
+		display: flex !important;
+		align-items: center !important;
+	}
+	/* 修正原生 SVG 图标的幽灵位移 */
+	#global-music-player .aplayer-icon svg {
+		position: static !important; margin: 0 !important; top: 0 !important; left: 0 !important;
+	}
+
+	/* =========================================
+	   3. 自定义渐变歌词展示
+	========================================= */
+	.custom-lrc-display {
+		display: block !important;
+		font-size: 13px !important; height: 22px !important; line-height: 22px !important; margin: 4px 0 !important;
+		white-space: nowrap !important; overflow: hidden !important; text-overflow: ellipsis !important;
+		background: linear-gradient(to right, #3b82f6 0%, #8b5cf6 var(--lrc-progress, 0%), #a1a1aa calc(var(--lrc-progress, 0%) + 1%), #a1a1aa 100%) !important;
+		-webkit-background-clip: text !important; -webkit-text-fill-color: transparent !important; font-weight: 600 !important;
+	}
+	.dark .custom-lrc-display { background: linear-gradient(to right, #60a5fa 0%, #a78bfa var(--lrc-progress, 0%), #52525b calc(var(--lrc-progress, 0%) + 1%), #52525b 100%) !important; -webkit-background-clip: text !important; -webkit-text-fill-color: transparent !important; }
+
+	#global-music-player .aplayer-title { font-size: 14px !important; font-weight: bold !important; color: #27272a !important; }
+	.dark #global-music-player .aplayer-title { color: #f4f4f5 !important; }
+	#global-music-player .aplayer-author { font-size: 12px !important; color: #71717a !important; }
+
+	/* =========================================
+	   4. 嵌入模式 (主页：透明融入)
+	========================================= */
+	#global-music-player.is-embedded { background: transparent !important; box-shadow: none !important; border: none !important; z-index: 10; }
+	#global-music-player.is-embedded .aplayer-pic { height: 80px !important; width: 80px !important; border-radius: 8px !important; }
+	#global-music-player.is-embedded .aplayer-info { margin-left: 96px !important; padding: 10px 10px 10px 0 !important; border-bottom: none !important; }
+
+	/* =========================================
+	   5. 悬浮窗模式 (其它页：防拥挤)
+	========================================= */
+	#global-music-player.is-floating {
+		position: fixed !important; bottom: 25px !important; right: 25px !important;
+		width: 360px !important; height: auto !important; padding: 10px 14px 10px 10px !important;
+		z-index: 9999 !important; border-radius: 16px !important;
+		background: rgba(255, 255, 255, 0.85) !important; backdrop-filter: blur(16px) !important;
+		border: 1px solid rgba(0, 0, 0, 0.05) !important; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1) !important;
+		transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
+	}
+	.dark #global-music-player.is-floating { background: rgba(24, 24, 27, 0.85) !important; border: 1px solid rgba(255, 255, 255, 0.05) !important; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5) !important; }
+
+	#global-music-player.is-floating .aplayer-pic { height: 64px !important; width: 64px !important; border-radius: 10px !important; margin-top: 4px !important; }
+	#global-music-player.is-floating .aplayer-info { margin-left: 78px !important; padding: 4px 0 !important; border-bottom: none !important; }
+	#global-music-player.is-floating .custom-lrc-display { font-size: 12px !important; margin: 2px 0 !important; }
+</style>

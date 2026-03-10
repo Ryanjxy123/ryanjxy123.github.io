@@ -2,12 +2,15 @@
 import { SITE_LANGUAGE } from "../consts";
 import "@/assets/fonts/ChillRoundF/ChillRoundF.css";
 import ClickEffect from "../components/ClickEffect.tsx";
+import { ViewTransitions } from 'astro:transitions';
+import MusicPlayer from '../components/MusicPlayer.astro';
 ---
 
 <!doctype html>
 <html lang={SITE_LANGUAGE}>
     <head>
         <slot name="head" />
+        <ViewTransitions />
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" />
         <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
         <script
@@ -39,5 +42,6 @@ import ClickEffect from "../components/ClickEffect.tsx";
     <body class="dark:bg-transparent">
         <ClickEffect client:load />
         <slot />
+        <MusicPlayer />
     </body>
 </html>

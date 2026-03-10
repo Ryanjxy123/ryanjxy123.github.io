@@ -73,66 +73,167 @@ const ArrowRightIcon = `
 			<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
 				<!-- Profile Card (Row 1: Full Width) -->
 				<div
-					class="md:col-span-3 bg-white dark:bg-[#18181b] border border-zinc-200 dark:border-zinc-800 rounded-2xl p-6 flex flex-col sm:flex-row items-center sm:items-start gap-6 shadow-sm dark:shadow-none hover:shadow-md dark:hover:shadow-none transition-shadow duration-300"
+					class="md:col-span-3 bg-white dark:bg-[#18181b] border border-zinc-200 dark:border-zinc-800 rounded-2xl p-6 flex flex-col sm:flex-row items-center justify-between gap-6 shadow-sm dark:shadow-none hover:shadow-md dark:hover:shadow-none transition-shadow duration-300"
 				>
-					<div class="shrink-0 relative group">
-						<div
-							class="absolute -inset-1 bg-gradient-to-r from-blue-600 to-cyan-600 rounded-full blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"
-						>
+					<!-- Profile Info (Left) -->
+					<div class="flex flex-col sm:flex-row items-center sm:items-start gap-6">
+						<div class="shrink-0 relative group">
+							<div
+								class="absolute -inset-1 bg-gradient-to-r from-blue-600 to-cyan-600 rounded-full blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"
+							>
+							</div>
+							<img
+								src={SITE_AUTHOR_AVATAR.src}
+								alt={SITE_AUTHOR_NAME}
+								class="relative w-28 h-28 rounded-full border-4 border-white dark:border-zinc-800 shadow-xl object-cover"
+							/>
 						</div>
-						<img
-							src={SITE_AUTHOR_AVATAR.src}
-							alt={SITE_AUTHOR_NAME}
-							class="relative w-28 h-28 rounded-full border-4 border-white dark:border-zinc-800 shadow-xl object-cover"
-						/>
-					</div>
-					<div class="flex-1 text-center sm:text-left">
-						<h1 class="text-2xl font-bold text-zinc-900 dark:text-zinc-100">{SITE_AUTHOR_NAME}</h1>
-						<p class="quote-text text-zinc-600 dark:text-zinc-400 mt-2 text-sm leading-relaxed max-w-2xl">
-							{SITE_DESCRIPTION}
-						</p>
+						<div class="flex-1 text-center sm:text-left">
+							<h1 class="text-2xl font-bold text-zinc-900 dark:text-zinc-100">{SITE_AUTHOR_NAME}</h1>
+							<p class="quote-text text-zinc-600 dark:text-zinc-400 mt-2 text-sm leading-relaxed max-w-2xl">
+								{SITE_DESCRIPTION}
+							</p>
 
-						<div class="mt-4 flex flex-wrap justify-center sm:justify-start gap-3">
-							<a
-								href="https://github.com/ryanjxy123"
-								target="_blank"
-								class="px-4 py-1.5 text-xs font-medium rounded-full bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors flex items-center gap-2"
-							>
-								<svg
-									xmlns="http://www.w3.org/2000/svg"
-									width="14"
-									height="14"
-									viewBox="0 0 24 24"
-									fill="currentColor"
-									class="w-3.5 h-3.5"
-									><path
-										d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"
-									></path></svg
+							<div class="mt-4 flex flex-wrap justify-center sm:justify-start gap-3">
+								<a
+									href="https://github.com/ryanjxy123"
+									target="_blank"
+									class="px-4 py-1.5 text-xs font-medium rounded-full bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors flex items-center gap-2"
 								>
-								GitHub
-							</a>
-							<a
-								href="./blog"
-								class="px-4 py-1.5 text-xs font-medium rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 hover:bg-blue-200 dark:hover:bg-blue-900/50 transition-colors flex items-center gap-2"
-							>
-								<svg
-									xmlns="http://www.w3.org/2000/svg"
-									width="14"
-									height="14"
-									viewBox="0 0 24 24"
-									fill="none"
-									stroke="currentColor"
-									stroke-width="2"
-									stroke-linecap="round"
-									stroke-linejoin="round"
-									><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"
-									></path><circle cx="5" cy="19" r="1"></circle></svg
+									<svg
+										xmlns="http://www.w3.org/2000/svg"
+										width="14"
+										height="14"
+										viewBox="0 0 24 24"
+										fill="currentColor"
+										class="w-3.5 h-3.5"
+										><path
+											d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"
+										></path></svg
+									>
+									GitHub
+								</a>
+								<a
+									href="./blog"
+									class="px-4 py-1.5 text-xs font-medium rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 hover:bg-blue-200 dark:hover:bg-blue-900/50 transition-colors flex items-center gap-2"
 								>
-								Blog
-							</a>
+									<svg
+										xmlns="http://www.w3.org/2000/svg"
+										width="14"
+										height="14"
+										viewBox="0 0 24 24"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="2"
+										stroke-linecap="round"
+										stroke-linejoin="round"
+										><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"
+										></path><circle cx="5" cy="19" r="1"></circle></svg
+									>
+									Blog
+								</a>
+							</div>
 						</div>
+					</div>
+
+					<!-- Music Player Placeholder (Right) -->
+					<div class="music-player-container w-full sm:w-[520px] shrink-0">
+						<meting-js
+							server="netease"
+							type="playlist"
+							id="17822229873"
+							fixed="false"
+							mini="false"
+							list-folded="true"
+							theme="#3b82f6"
+							autoplay="false"
+							volume="0.5"
+							mutex="true"
+						></meting-js>
 					</div>
 				</div>
+
+				<script is:inline>
+					document.addEventListener('DOMContentLoaded', () => {
+						const checkExist = setInterval(() => {
+							const meting = document.querySelector('meting-js');
+							if (meting && meting.aplayer && document.querySelector('.aplayer-time')) {
+								clearInterval(checkExist);
+								const ap = meting.aplayer;
+								const timeBar = document.querySelector('.aplayer-time');
+								
+								if (document.querySelector('.custom-prev-btn')) return;
+								
+								// 强制将列表循环模式设为列表循环
+								ap.setMode('normal'); 
+								
+								// 1. 注入切歌按钮
+								const btnStyle = 'cursor: pointer; margin-right: 12px; font-size: 15px; opacity: 0.7; transition: opacity 0.2s; vertical-align: middle;';
+								const prevBtn = document.createElement('span');
+								prevBtn.innerHTML = '⏮';
+								prevBtn.className = 'custom-prev-btn aplayer-icon';
+								prevBtn.style.cssText = btnStyle;
+								prevBtn.onclick = (e) => {
+									e.stopPropagation();
+									if (ap.list.audios.length <= 1) return; 
+									let targetIndex = ap.list.index - 1;
+									if (targetIndex < 0) targetIndex = ap.list.audios.length - 1;
+									ap.list.switch(targetIndex);
+									ap.play();
+								};
+								
+								const nextBtn = document.createElement('span');
+								nextBtn.innerHTML = '⏭';
+								nextBtn.className = 'custom-next-btn aplayer-icon';
+								nextBtn.style.cssText = btnStyle;
+								nextBtn.onclick = (e) => {
+									e.stopPropagation();
+									if (ap.list.audios.length <= 1) return;
+									let targetIndex = (ap.list.index + 1) % ap.list.audios.length;
+									ap.list.switch(targetIndex);
+									ap.play();
+								};
+								
+								timeBar.insertBefore(nextBtn, timeBar.firstChild);
+								timeBar.insertBefore(prevBtn, nextBtn);
+
+								// 2. 注入自定义歌词容器
+								const lrcDisplay = document.createElement('div');
+								lrcDisplay.className = 'custom-lrc-display';
+								lrcDisplay.textContent = 'Loading...';
+								const infoArea = document.querySelector('.aplayer-info');
+								const musicArea = document.querySelector('.aplayer-music');
+								if (infoArea && musicArea) {
+									infoArea.insertBefore(lrcDisplay, musicArea.nextSibling);
+								}
+
+								// 实时同步歌词逻辑
+								const syncLrc = () => {
+									const currentLrc = document.querySelector('.aplayer-lrc-current');
+									if (currentLrc) {
+										// 关键修复：使用 textContent 替代 innerText，以无视 display: none 状态
+										const text = currentLrc.textContent.replace(/\[\d+:\d+.\d+\]/g, '').trim();
+										
+										// 如果解析到了有效歌词，且内容有变化才更新 DOM
+										if (text && lrcDisplay.textContent !== text) {
+											lrcDisplay.textContent = text;
+										} 
+										// 如果当前行为空（纯音乐过场），显示点点点占位
+										else if (!text && lrcDisplay.textContent !== '...') {
+											lrcDisplay.textContent = '...';
+										}
+									} else if (!ap.paused) {
+										// 只有在彻底找不到歌词节点时，才显示兜底文案
+										if (lrcDisplay.textContent !== 'Enjoy Music...') {
+											lrcDisplay.textContent = 'Enjoy Music...';
+										}
+									}
+								};
+								setInterval(syncLrc, 500);
+							}
+						}, 500);
+					});
+				</script>
 
 				<!-- About Section -->
 				<div class="md:col-span-3">
@@ -257,3 +358,86 @@ const ArrowRightIcon = `
 	</Container>
 	<Footer />
 </BaseLayout>
+
+<style is:global>
+	.music-player-container .aplayer {
+		margin: 0 !important;
+		box-shadow: none !important;
+		background: transparent !important;
+		border: none !important;
+		border-radius: 12px !important;
+		font-family: inherit !important;
+	}
+
+	.music-player-container .aplayer .aplayer-body {
+		background: transparent !important;
+	}
+
+	.music-player-container .aplayer .aplayer-info {
+		padding: 10px 10px 10px 10px !important;
+		border-bottom: none !important;
+	}
+
+	.music-player-container .aplayer .aplayer-info .aplayer-music {
+		margin-bottom: 5px !important;
+	}
+
+	.music-player-container .aplayer .aplayer-info .aplayer-music .aplayer-title {
+		font-size: 14px !important;
+		font-weight: bold !important;
+		color: #27272a !important; /* text-zinc-800 */
+	}
+
+	.dark .music-player-container .aplayer .aplayer-info .aplayer-music .aplayer-title {
+		color: #f4f4f5 !important; /* text-zinc-100 */
+	}
+
+	.music-player-container .aplayer .aplayer-info .aplayer-music .aplayer-author {
+		font-size: 12px !important;
+		color: #71717a !important; /* text-zinc-500 */
+	}
+
+	.music-player-container .aplayer .aplayer-pic {
+		height: 80px !important;
+		width: 80px !important;
+		border-radius: 8px !important;
+	}
+
+	.music-player-container .aplayer .aplayer-list {
+		display: none !important;
+	}
+
+	/* 彻底隐藏原生歌词容器，防止占用空间或溢出 */
+	.music-player-container .aplayer .aplayer-lrc {
+		display: none !important;
+	}
+
+	/* 自定义歌词显示层样式 */
+	.custom-lrc-display {
+		font-size: 13px !important;
+		height: 22px !important;
+		line-height: 22px !important;
+		margin: 6px 0 2px 0 !important;
+		white-space: nowrap !important;
+		overflow: hidden !important;
+		text-overflow: ellipsis !important;
+		transition: all 0.5s ease !important;
+		/* 蓝紫渐变效果 */
+		background: linear-gradient(to right, #3b82f6, #8b5cf6) !important;
+		-webkit-background-clip: text !important;
+		-webkit-text-fill-color: transparent !important;
+		font-weight: 600 !important;
+		letter-spacing: 0.02em !important;
+	}
+
+	/* 优化进度条位置 */
+	.music-player-container .aplayer .aplayer-info .aplayer-controller {
+		margin-top: 4px !important;
+	}
+
+	/* 隐藏最右侧的“播放顺序”和“播放列表”菜单按钮 */
+	.music-player-container .aplayer .aplayer-info .aplayer-controller .aplayer-time .aplayer-icon-order,
+	.music-player-container .aplayer .aplayer-info .aplayer-controller .aplayer-time .aplayer-icon-menu {
+		display: none !important;
+	}
+</style>

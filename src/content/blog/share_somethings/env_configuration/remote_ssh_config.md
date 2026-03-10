@@ -3,7 +3,7 @@ title: 'VScode 基于Remote-SSH的远程开发指南'
 pubDate: '2026-03-09'    
 heroImage: "https://raw.githubusercontent.com/Ryanjxy123/picbed/main/data20260309205352465.png"
 heroImageSource: "https://www.pixiv.net/artworks/124221486"  
-tags: ["environment configuration","share_somethings"]   
+tags: ["environment configuration","SSH"]   
 ---
 
 

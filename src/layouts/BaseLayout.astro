@@ -24,14 +24,20 @@ import MusicPlayer from '../components/MusicPlayer.astro';
 
         <!-- 主题初始化脚本：防止页面闪烁 (FOUC) -->
         <script is:inline>
-            (function () {
+            const setTheme = () => {
                 const theme =
                     localStorage.getItem("theme") ||
                     (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
                 if (theme === "dark") {
                     document.documentElement.classList.add("dark");
+                } else {
+                    document.documentElement.classList.remove("dark");
                 }
-            })();
+            };
+            // 1. 页面首次硬加载时立即执行
+            setTheme();
+            // 2. Astro 视图过渡：在新旧 DOM 交换后立即恢复主题
+            document.addEventListener("astro:after-swap", setTheme);
         </script>
 
         <!-- APlayer and MetingJS Dependencies -->

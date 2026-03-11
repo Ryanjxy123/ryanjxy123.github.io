@@ -38,31 +38,35 @@ Gemini CLI 的运行依赖于 Google Cloud 的项目鉴权。
 
 ## 二、 本地全局启动配置
 
-为了实现“在电脑任意代码文件夹下，输入一条命令即可唤起 AI”，我们需要配置 PowerShell 的全局 Profile 文件。
+为了实现"在电脑任意代码文件夹下,输入一条命令即可唤起 AI",我们需要配置 PowerShell 的全局 Profile 文件。
 
-1. 在 VS Code 的 PowerShell 终端中按照顺序执行以下命令，强制创建并打开配置文件：
-   ```powershell
-   New-Item -Type File -Path $PROFILE -Force
-   notepad $PROFILE
-   ```
-2. 在弹出的记事本中，写入以下精简版启动脚本（由于已配置系统级代理，无需在脚本中重复指定）：
+1. 首先全局安装 Gemini CLI:
+```powershell
+npm install -g @google/gemini-cli
+```
 
+2. 在 VS Code 的 PowerShell 终端中按照顺序执行以下命令,强制创建并打开配置文件:
+```powershell
+New-Item -Type File -Path $PROFILE -Force
+notepad $PROFILE
+```
+
+3. 在弹出的记事本中,写入以下精简版启动脚本(由于已配置系统级代理,无需在脚本中重复指定):
 ```powershell
 function gemini {
-    # 绑定你的 Google Cloud 项目凭证
-    $env:GOOGLE_CLOUD_PROJECT="在此处替换为你的真实项目ID"
-
-    
-    Write-Host "Starting Gemini CLI..." -ForegroundColor Green
-
-    # 使用 npx 动态拉取最新版运行，避免全局安装产生的版本 bug
-    npx -y https://github.com/google-gemini/gemini-cli
+      # 绑定你的 Google Cloud 项目凭证
+      $env:GOOGLE_CLOUD_PROJECT="在此处替换为你的真实项目ID"
+      Write-Host "Starting Gemini CLI..." -ForegroundColor Green
+      # 调用全局安装的 gemini 命令(比 npx 方式启动更快)
+      & gemini.cmd
 }
 ```
 
-3. 保存并关闭记事本。
+   > ⚠️ **注意**：早期教程中使用 `npx -y https://github.com/google-gemini/gemini-cli` 的方式,每次启动都会从 GitHub 重新下载并编译源码,耗时可能长达数分钟。改用全局安装后可避免此问题。
 
-4. 务必重启 VS Code 终端，使全局配置生效。
+4. 保存并关闭记事本。
+
+5. 务必重启 VS Code 终端,使全局配置生效。
 
 ## 三、 首次启动与鉴权
 在 VS Code 终端中输入 gemini 并回车。
